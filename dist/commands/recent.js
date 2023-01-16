@@ -4,7 +4,7 @@ import { formatRelativeDate } from '../utils/formatRelativeDate.js';
 import { formatResultTime } from '../utils/formatResultTime.js';
 export const recent = {
     name: 'recent',
-    description: 'Get recent records',
+    description: 'Get recent personal bests and world records',
     type: ApplicationCommandType.ChatInput,
     options: [],
     run: async (interaction) => {
@@ -21,13 +21,14 @@ export const recent = {
                 const recordTime = inlineCode(formatResultTime(record.time));
                 const recordUser = hyperlink(record.user.steamName, `https://zeepkist.wopian.me/user/${record.user.steamId}`);
                 const recordLevel = `${italic(hyperlink(record.level.name, `https://zeepkist.wopian.me/level/${record.level.id}`))} by ${record.level.author}`;
+                const recordWR = record.isWorldRecord ? ' (WR)' : '';
                 const recordDate = formatRelativeDate(record.dateCreated);
-                return `${recordNumber} ${recordUser} got ${recordTime} on ${recordLevel} (${recordDate})`;
+                return `${recordNumber} ${recordUser} got ${recordTime}${recordWR} on ${recordLevel} (${recordDate})`;
             })
                 .join('\n');
             const embed = new EmbedBuilder()
                 .setColor(0xff_92_00)
-                .setTitle(`Recent Records`)
+                .setTitle(`Recent Personal Bests`)
                 .setDescription(recentRecordsList)
                 .setFooter({
                 text: `Page 1 of ${Math.ceil(bestAndWrRecords.length / 10)}. Data provided by Zeepkist GTR`

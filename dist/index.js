@@ -7,6 +7,6 @@ console.log('Bot is starting...');
 const client = new Client({
     intents: [GatewayIntentBits.Guilds]
 });
-client.on(Events.ClientReady, ready);
+client.once(Events.ClientReady, ready);
 interactionCreate(client);
 client.login(process.env.DISCORD_TOKEN);
