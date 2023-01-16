@@ -2,7 +2,6 @@ import { AxiosError } from 'axios'
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  Client,
   CommandInteraction,
   EmbedBuilder,
   inlineCode

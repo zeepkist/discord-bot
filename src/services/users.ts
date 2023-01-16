@@ -18,7 +18,7 @@ export const getUser = async ({ id, steamId }: GetUserParameters) => {
     else {
       throw response.data.error
     }
-  } catch (error: AxiosError | any) {
+  } catch (error: AxiosError | unknown) {
     throw error
   }
 }

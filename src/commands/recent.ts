@@ -1,12 +1,10 @@
 import { AxiosError } from 'axios'
-import { isAfter } from 'date-fns'
 import {
   ActionRowBuilder,
   ApplicationCommandType,
   bold,
   ButtonBuilder,
   ButtonStyle,
-  Client,
   CommandInteraction,
   EmbedBuilder,
   hyperlink,

@@ -47,7 +47,7 @@ export const getRecords = async ({
     else {
       throw response.data.error
     }
-  } catch (error: AxiosError | any) {
+  } catch (error: AxiosError | unknown) {
     throw error
   }
 }
@@ -83,7 +83,7 @@ export const getRecentRecords = async ({
     else {
       throw response.data.error
     }
-  } catch (error: AxiosError | any) {
+  } catch (error: AxiosError | unknown) {
     throw error
   }
 }

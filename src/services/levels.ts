@@ -38,7 +38,7 @@ export const getLevels = async ({
     else {
       throw response.data.error
     }
-  } catch (error: AxiosError | any) {
+  } catch (error: AxiosError | unknown) {
     throw error
   }
 }
