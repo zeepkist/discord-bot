@@ -6,11 +6,13 @@ export default async (client) => {
     await client.application.commands.set(commands);
     console.log(`${client.user.username} is online!`);
     client.user?.setPresence({
-        activities: [{
+        activities: [
+            {
                 type: ActivityType.Watching,
                 name: 'Zeepkist',
                 url: 'https://zeepkist.wopian.me'
-            }],
-        status: 'online',
+            }
+        ],
+        status: 'online'
     });
 };

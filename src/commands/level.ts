@@ -96,18 +96,28 @@ export const level: Command = {
       if (levels.totalAmount > 1) {
         console.log('[level]:', 'Found multiple levels', levels)
 
-        const levelsList = levels.levels.slice(0, 10).map((level, index) => {
-          const levelNumber = bold(`${index + 1}.`)
-          const levelName = hyperlink(level.name, `https://zeepkist.wopian.me/level/${level.id}`)
-          const levelAuthor = italic(level.author)
-          const levelId = inlineCode(String(level.id))
-          return `${levelNumber} ${levelName} by ${levelAuthor} (ID ${levelId})`
-        }).join('\n')
+        const levelsList = levels.levels
+          .slice(0, 10)
+          .map((level, index) => {
+            const levelNumber = bold(`${index + 1}.`)
+            const levelName = hyperlink(
+              level.name,
+              `https://zeepkist.wopian.me/level/${level.id}`
+            )
+            const levelAuthor = italic(level.author)
+            const levelId = inlineCode(String(level.id))
+            return `${levelNumber} ${levelName} by ${levelAuthor} (ID ${levelId})`
+          })
+          .join('\n')
 
         const embed = new EmbedBuilder()
           .setColor(0xff_92_00)
           .setTitle('Levels')
-          .setDescription(`Found ${bold(String(levels.totalAmount))} levels matching your search:\n\n${levelsList}`)
+          .setDescription(
+            `Found ${bold(
+              String(levels.totalAmount)
+            )} levels matching your search:\n\n${levelsList}`
+          )
           .setFooter({
             text: `Data provided by Zeepkist GTR`
           })
