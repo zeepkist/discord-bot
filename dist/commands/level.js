@@ -102,9 +102,8 @@ export const level = {
                     const recordNumber = bold(`${index + 1}.`);
                     const recordTime = inlineCode(formatResultTime(record.time));
                     const recordUser = hyperlink(record.user.steamName, `https://zeepkist.wopian.me/user/${record.user.steamId}`);
-                    const recordLevel = `${italic(hyperlink(record.level.name, `https://zeepkist.wopian.me/level/${record.level.id}`))} by ${record.level.author}`;
                     const recordDate = formatRelativeDate(record.dateCreated);
-                    return `${recordNumber} ${recordUser} got ${recordTime} on ${recordLevel} (${recordDate})`;
+                    return `${recordNumber} ${recordTime} by ${recordUser} (${recordDate})`;
                 })
                     .join('\n');
                 const embed = new EmbedBuilder()
