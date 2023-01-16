@@ -4,4 +4,4 @@ export interface User {
   steamName: string
 }
 
-export interface UserResponse extends User {}
+export type UserResponse = User

@@ -9,7 +9,8 @@ module.exports = {
   plugins: ['@typescript-eslint', 'simple-import-sort', 'import'],
   extends: [
     'eslint:recommended',
-    'plugin:unicorn/recommended',,
+    'plugin:@typescript-eslint/recommended',
+    'plugin:unicorn/recommended',
     'plugin:prettier/recommended'
   ],
   parserOptions: {

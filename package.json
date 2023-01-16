@@ -4,11 +4,13 @@
     "start": "nodemon --esm src/index.ts",
     "invite": "ts-node --esm src/inviteUrl.ts",
     "build": "tsc",
-    "lint": "eslint . --ext ,.js,.cjs,.mjs,.ts,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .js,.cjs,.mjs,.ts,.cts,.mts --fix --ignore-path .gitignore"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
     "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.48.1",
+    "@typescript-eslint/parser": "^5.48.1",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.27.4",

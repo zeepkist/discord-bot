@@ -1,6 +1,6 @@
 import type { AxiosError } from 'axios'
 
-import type { RecordResponse, RecentRecordResponse } from '../models/record.js'
+import type { RecentRecordResponse, RecordResponse } from '../models/record.js'
 import { api } from './api.js'
 
 interface GetRecordsParameters {
