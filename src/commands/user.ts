@@ -10,7 +10,7 @@ import {
 import { Command } from '../command.js'
 import { getRecords } from '../services/records.js'
 import { getUser } from '../services/users.js'
-import { formatResultTime } from '../utils/formatResultTime.js'
+import { formatResultTime } from '../utils/index.js'
 
 export const user: Command = {
   name: 'user',

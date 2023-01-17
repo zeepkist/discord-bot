@@ -1,66 +1,13 @@
-import { ActionRowBuilder, bold, ButtonBuilder, ButtonStyle, EmbedBuilder, hyperlink, inlineCode, italic } from 'discord.js';
-import { getRecentRecords } from '../services/records.js';
-import { formatRelativeDate } from '../utils/formatRelativeDate.js';
-import { formatResultTime } from '../utils/formatResultTime.js';
+import { recentRecords } from '../components/recentRecords.js'
+import { extractPages } from '../utils/index.js'
+
 export const recentLast = {
-    name: 'recentLastButton',
-    run: async (interaction) => {
-        const pages = interaction.message.embeds[0].footer?.text
-            ?.split('Page ')[1]
-            .split('. Data')[0];
-        const [currentPage, totalPages] = pages?.split(' of ');
-        const offset = Number.parseInt(totalPages) * 10 - 10;
-        const cutoff = Number.parseInt(totalPages) * 10;
-        const recentRecords = await getRecentRecords();
-        const bestAndWrRecords = recentRecords.records.filter(record => {
-            return record.isBest || record.isWorldRecord;
-        });
-        console.log('[recent]:', 'obtained recent records', bestAndWrRecords.length);
-        const recentRecordsList = bestAndWrRecords
-            .slice(offset, cutoff)
-            .map((record, index) => {
-            const recordNumber = bold(`${index + 1}.`);
-            const recordTime = inlineCode(formatResultTime(record.time));
-            const recordUser = hyperlink(record.user.steamName, `https://zeepkist.wopian.me/user/${record.user.steamId}`);
-            const recordLevel = `${italic(hyperlink(record.level.name, `https://zeepkist.wopian.me/level/${record.level.id}`))} by ${record.level.author}`;
-            const recordWR = record.isWorldRecord ? ' (WR)' : '';
-            const recordDate = formatRelativeDate(record.dateCreated);
-            return `${recordNumber} ${recordUser} got ${recordTime}${recordWR} on ${recordLevel} (${recordDate})`;
-        })
-            .join('\n');
-        const embed = new EmbedBuilder()
-            .setColor(0xff_92_00)
-            .setTitle(`Recent Personal Bests`)
-            .setDescription(recentRecordsList)
-            .setFooter({
-            text: `Page ${Math.ceil(bestAndWrRecords.length / 10)} of ${Math.ceil(bestAndWrRecords.length / 10)}. Data provided by Zeepkist GTR`
-        })
-            .setTimestamp();
-        const paginationButtons = new ActionRowBuilder().addComponents([
-            new ButtonBuilder()
-                .setCustomId('recentFirstButton')
-                .setLabel('First')
-                .setStyle(ButtonStyle.Primary),
-            new ButtonBuilder()
-                .setCustomId('recentPreviousButton')
-                .setLabel('Previous')
-                .setStyle(ButtonStyle.Primary),
-            new ButtonBuilder()
-                .setCustomId('recentNextButton')
-                .setLabel('Next')
-                .setStyle(ButtonStyle.Primary)
-                .setDisabled(true),
-            new ButtonBuilder()
-                .setCustomId('recentLastButton')
-                .setLabel('Last')
-                .setStyle(ButtonStyle.Primary)
-                .setDisabled(true)
-        ]);
-        if (Number.parseInt(currentPage) - 1 === Number.parseInt(totalPages)) {
-            paginationButtons.components[2].setDisabled(true);
-            paginationButtons.components[3].setDisabled(true);
-        }
-        interaction.update({ embeds: [embed], components: [paginationButtons] });
-        console.log('recentNextButton');
-    }
-};
+  name: 'recentLastButton',
+  run: async interaction => {
+    const { totalPages } = extractPages(
+      interaction.message.embeds[0].footer?.text
+    )
+    const { embeds, components } = await recentRecords(interaction, totalPages)
+    interaction.update({ embeds, components })
+  }
+}

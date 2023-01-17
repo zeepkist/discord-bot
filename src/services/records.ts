@@ -1,5 +1,3 @@
-import type { AxiosError } from 'axios'
-
 import type { RecentRecordResponse, RecordResponse } from '../models/record.js'
 import { api } from './api.js'
 
@@ -28,27 +26,23 @@ export const getRecords = async ({
   Limit,
   Offset
 }: GetRecordsParameters = {}) => {
-  try {
-    const query = {
-      LevelId,
-      LevelUid,
-      LevelWorkshopId,
-      UserSteamId,
-      UserId,
-      BestOnly,
-      ValidOnly,
-      WorldRecordOnly,
-      Limit,
-      Offset
-    }
-    const response = await api.get('record', { params: query })
+  const query = {
+    LevelId,
+    LevelUid,
+    LevelWorkshopId,
+    UserSteamId,
+    UserId,
+    BestOnly,
+    ValidOnly,
+    WorldRecordOnly,
+    Limit,
+    Offset
+  }
+  const response = await api.get('record', { params: query })
 
-    if (response.status === 200) return response.data as RecordResponse
-    else {
-      throw response.data.error
-    }
-  } catch (error: AxiosError | unknown) {
-    throw error
+  if (response.status === 200) return response.data as RecordResponse
+  else {
+    throw response.data.error
   }
 }
 
@@ -64,26 +58,22 @@ export const getRecentRecords = async ({
   Limit,
   Offset
 }: GetRecordsParameters = {}) => {
-  try {
-    const query = {
-      LevelId,
-      LevelUid,
-      LevelWorkshopId,
-      UserSteamId,
-      UserId,
-      BestOnly,
-      ValidOnly,
-      WorldRecordOnly,
-      Limit,
-      Offset
-    }
-    const response = await api.get('record/recent', { params: query })
+  const query = {
+    LevelId,
+    LevelUid,
+    LevelWorkshopId,
+    UserSteamId,
+    UserId,
+    BestOnly,
+    ValidOnly,
+    WorldRecordOnly,
+    Limit,
+    Offset
+  }
+  const response = await api.get('records/recent', { params: query })
 
-    if (response.status === 200) return response.data as RecentRecordResponse
-    else {
-      throw response.data.error
-    }
-  } catch (error: AxiosError | unknown) {
-    throw error
+  if (response.status === 200) return response.data as RecentRecordResponse
+  else {
+    throw response.data.error
   }
 }

@@ -1,23 +1,15 @@
-import type { AxiosError } from 'axios'
 import {
-  ActionRowBuilder,
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  bold,
-  ButtonBuilder,
-  ButtonStyle,
   CommandInteraction,
-  EmbedBuilder,
-  hyperlink,
-  inlineCode,
-  italic
+  EmbedBuilder
 } from 'discord.js'
 
 import { Command } from '../command.js'
+import { errorReply } from '../components/errorReply.js'
+import { levelRecords } from '../components/levelRecords.js'
+import { levelsList } from '../components/levelsList.js'
 import { getLevels } from '../services/levels.js'
-import { getRecords } from '../services/records.js'
-import { formatRelativeDate } from '../utils/formatRelativeDate.js'
-import { formatResultTime } from '../utils/formatResultTime.js'
 
 export const level: Command = {
   name: 'level',
@@ -78,7 +70,8 @@ export const level: Command = {
         Id: id,
         WorkshopId: workshopId,
         Author: author,
-        Name: name
+        Name: name,
+        Limit: 10
       })
 
       if (levels.totalAmount === 0) {
@@ -95,111 +88,26 @@ export const level: Command = {
 
       if (levels.totalAmount > 1) {
         console.log('[level]:', 'Found multiple levels', levels)
+        const { embeds } = await levelsList(
+          interaction,
+          levels.levels,
+          levels.totalAmount
+        )
 
-        const levelsList = levels.levels
-          .slice(0, 10)
-          .map((level, index) => {
-            const levelNumber = bold(`${index + 1}.`)
-            const levelName = hyperlink(
-              level.name,
-              `https://zeepkist.wopian.me/level/${level.id}`
-            )
-            const levelAuthor = italic(level.author)
-            const levelId = inlineCode(String(level.id))
-            return `${levelNumber} ${levelName} by ${levelAuthor} (ID ${levelId})`
-          })
-          .join('\n')
-
-        const embed = new EmbedBuilder()
-          .setColor(0xff_92_00)
-          .setTitle('Levels')
-          .setDescription(
-            `Found ${bold(
-              String(levels.totalAmount)
-            )} levels matching your search:\n\n${levelsList}`
-          )
-          .setFooter({
-            text: `Data provided by Zeepkist GTR`
-          })
-
-        await interaction.reply({ embeds: [embed], ephemeral: true })
+        await interaction.reply({ embeds })
         return
       }
 
       if (levels.totalAmount === 1) {
         console.log('[level]:', 'Found 1 level', levels)
-
-        const level = levels.levels[0]
-        const records = await getRecords({
-          LevelId: level.id,
-          BestOnly: true,
-          Limit: 10
-        })
-
-        const recordsList = records.records
-          .slice(0, 10)
-          .map((record, index) => {
-            const recordNumber = bold(`${index + 1}.`)
-            const recordTime = inlineCode(formatResultTime(record.time))
-            const recordUser = hyperlink(
-              record.user.steamName,
-              `https://zeepkist.wopian.me/user/${record.user.steamId}`
-            )
-            const recordDate = formatRelativeDate(record.dateCreated)
-            return `${recordNumber} ${recordTime} by ${recordUser} (${recordDate})`
-          })
-          .join('\n')
-
-        const embed = new EmbedBuilder()
-          .setColor(0xff_92_00)
-          .setTitle(level.name)
-          .setURL(`http://zeepkist.wopian.me/level/${level.id}`)
-          .setTimestamp()
-          .setFooter({
-            text: `Page 1 of ${Math.ceil(
-              records.records.length / 10
-            )}. Data provided by Zeepkist GTR`
-          })
-          .setDescription(`${records.totalAmount} records\n\n${recordsList}`)
-
-        if (level.thumbnailUrl) embed.setThumbnail(level.thumbnailUrl)
-
-        const paginationButtons =
-          new ActionRowBuilder<ButtonBuilder>().addComponents([
-            new ButtonBuilder()
-              .setCustomId('first')
-              .setLabel('First')
-              .setStyle(ButtonStyle.Primary)
-              .setDisabled(true),
-            new ButtonBuilder()
-              .setCustomId('previous')
-              .setLabel('Previous')
-              .setStyle(ButtonStyle.Primary)
-              .setDisabled(true),
-            new ButtonBuilder()
-              .setCustomId('next')
-              .setLabel('Next')
-              .setStyle(ButtonStyle.Primary)
-              .setDisabled(true),
-            new ButtonBuilder()
-              .setCustomId('last')
-              .setLabel('Last')
-              .setStyle(ButtonStyle.Primary)
-              .setDisabled(true)
-          ])
-
-        await interaction.reply({
-          embeds: [embed],
-          components: [paginationButtons]
-        })
+        const { embeds, components } = await levelRecords(
+          interaction,
+          levels.levels[0]
+        )
+        await interaction.reply({ embeds, components })
       }
-    } catch (error: AxiosError | any) {
-      console.error(error, String(error))
-      await interaction.reply({
-        ephemeral: true,
-        content:
-          'An error occurred while fetching user data. Please try again later.'
-      })
+    } catch (error: unknown) {
+      errorReply(interaction, level.name, error)
     }
   }
 }

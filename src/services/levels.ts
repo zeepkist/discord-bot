@@ -1,5 +1,3 @@
-import type { AxiosError } from 'axios'
-
 import type { LevelResponse } from '../models/level.js'
 import { api } from './api.js'
 
@@ -22,23 +20,19 @@ export const getLevels = async ({
   Limit,
   Offset
 }: GetLevelsParameters = {}) => {
-  try {
-    const query = {
-      Id,
-      Author,
-      Name,
-      Uid,
-      WorkshopId,
-      Limit,
-      Offset
-    }
-    const response = await api.get('level', { params: query })
+  const query = {
+    Id,
+    Author,
+    Name,
+    Uid,
+    WorkshopId,
+    Limit,
+    Offset
+  }
+  const response = await api.get('levels', { params: query })
 
-    if (response.status === 200) return response.data as LevelResponse
-    else {
-      throw response.data.error
-    }
-  } catch (error: AxiosError | unknown) {
-    throw error
+  if (response.status === 200) return response.data as LevelResponse
+  else {
+    throw response.data.error
   }
 }

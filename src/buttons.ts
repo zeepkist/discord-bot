@@ -5,9 +5,9 @@ import { recentPrevious } from './buttons/recentPrevious.js'
 import { submitToken } from './buttons/submitToken.js'
 
 export const buttons = [
-  recentNext,
-  recentPrevious,
   recentFirst,
   recentLast,
+  recentNext,
+  recentPrevious,
   submitToken
 ]

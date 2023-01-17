@@ -4,4 +4,4 @@ import { recent } from './commands/recent.js'
 import { user } from './commands/user.js'
 // import { verify } from './commands/verify.js'
 
-export const commands: Command[] = [recent, level, user]
+export const commands: Command[] = [level, recent, user]
