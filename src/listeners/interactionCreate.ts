@@ -1,11 +1,25 @@
-import { Client, CommandInteraction, Interaction } from 'discord.js'
+import {
+  ButtonInteraction,
+  Client,
+  CommandInteraction,
+  Interaction,
+  ModalSubmitInteraction
+} from 'discord.js'
 
+import { buttons } from '../buttons.js'
 import { commands } from '../commands.js'
+import { modalSubmissions } from '../modalSubmissions.js'
 
 export default (client: Client): void => {
   client.on('interactionCreate', async (interaction: Interaction) => {
     if (interaction.isCommand() || interaction.isContextMenuCommand()) {
       await handleSlashCommand(interaction)
+    }
+    if (interaction.isButton()) {
+      await handleButton(interaction)
+    }
+    if (interaction.isModalSubmit()) {
+      await handleModalSubmit(interaction)
     }
   })
 }
@@ -26,4 +40,28 @@ const handleSlashCommand = async (
   }
 
   slashCommand.run(interaction)
+}
+
+const handleButton = async (interaction: ButtonInteraction): Promise<void> => {
+  console.log(`[button]: Handling request from "${interaction.guild?.name}"`)
+
+  const button = buttons.find(button => button.name === interaction.customId)
+
+  console.log(button)
+
+  button?.run(interaction)
+}
+
+const handleModalSubmit = async (
+  interaction: ModalSubmitInteraction
+): Promise<void> => {
+  console.log(`[modal]: Handling request from "${interaction.guild?.name}"`)
+
+  const modal = modalSubmissions.find(
+    modal => modal.name === interaction.customId
+  )
+
+  console.log(modal)
+
+  modal?.run(interaction)
 }

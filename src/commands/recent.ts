@@ -13,6 +13,7 @@ import {
 } from 'discord.js'
 
 import { Command } from '../command.js'
+import { CollectorFilterValue } from '../models/collector.js'
 import { getRecentRecords } from '../services/records.js'
 import { formatRelativeDate } from '../utils/formatRelativeDate.js'
 import { formatResultTime } from '../utils/formatResultTime.js'
@@ -24,12 +25,16 @@ export const recent: Command = {
   options: [],
   run: async (interaction: CommandInteraction) => {
     try {
-      const recentRecords = await getRecentRecords({ Limit: 5 })
+      const recentRecords = await getRecentRecords()
       const bestAndWrRecords = recentRecords.records.filter(record => {
         return record.isBest || record.isWorldRecord
       })
 
-      console.log('[recent]:', 'obtained recent records', bestAndWrRecords)
+      console.log(
+        '[recent]:',
+        'obtained recent records',
+        bestAndWrRecords.length
+      )
 
       const recentRecordsList = bestAndWrRecords
         .slice(0, 10)
@@ -66,28 +71,45 @@ export const recent: Command = {
       const paginationButtons =
         new ActionRowBuilder<ButtonBuilder>().addComponents([
           new ButtonBuilder()
-            .setCustomId('first')
+            .setCustomId('recentFirstButton')
             .setLabel('First')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(true),
           new ButtonBuilder()
-            .setCustomId('previous')
+            .setCustomId('recentPreviousButton')
             .setLabel('Previous')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(true),
           new ButtonBuilder()
-            .setCustomId('next')
+            .setCustomId('recentNextButton')
             .setLabel('Next')
-            .setStyle(ButtonStyle.Primary)
-            .setDisabled(true),
+            .setStyle(ButtonStyle.Primary),
           new ButtonBuilder()
-            .setCustomId('last')
+            .setCustomId('recentLastButton')
             .setLabel('Last')
             .setStyle(ButtonStyle.Primary)
-            .setDisabled(true)
         ])
 
-      interaction.reply({ embeds: [embed], components: [paginationButtons] })
+      if (bestAndWrRecords.length > 10) {
+        const collector = interaction.channel?.createMessageComponentCollector({
+          filter: (m: CollectorFilterValue) =>
+            ['first', 'previous', 'next', 'last'].includes(m.customId),
+          time: 5 * 1000 * 60 // 5 minutes
+        })
+
+        collector?.on('end', () => {
+          paginationButtons.components[0].setDisabled(true)
+          paginationButtons.components[1].setDisabled(true)
+          paginationButtons.components[2].setDisabled(true)
+          paginationButtons.components[3].setDisabled(true)
+          interaction.editReply({ components: [paginationButtons] })
+        })
+      }
+
+      interaction.reply({
+        embeds: [embed],
+        components: bestAndWrRecords.length > 10 ? [paginationButtons] : []
+      })
     } catch (error: AxiosError | any) {
       console.error(String(error))
       await interaction.reply({
