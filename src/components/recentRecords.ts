@@ -37,7 +37,7 @@ export const recentRecords = async (
   const recordsList = filteredRecords
     .slice(offset, cutoff)
     .map((record, index) => {
-      const recordNumber = bold(`${index + 1}.`)
+      const recordNumber = bold(`${index + 1 + offset}.`)
       const recordTime = inlineCode(formatResultTime(record.time))
       const recordUser = hyperlink(
         record.user.steamName,

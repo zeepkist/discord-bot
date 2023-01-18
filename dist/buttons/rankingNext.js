@@ -1,10 +1,10 @@
-import { recentRecords } from '../components/recentRecords.js';
+import { userRankings } from '../components/userRankings.js';
 import { extractPages } from '../utils/index.js';
-export const recentPrevious = {
-    name: 'recentPreviousButton',
+export const rankingNext = {
+    name: 'rankingNextButton',
     run: async (interaction) => {
         const { currentPage } = extractPages(interaction.message.embeds[0].footer?.text);
-        const { embeds, components } = await recentRecords(interaction, currentPage - 1);
+        const { embeds, components } = await userRankings(interaction, currentPage + 1);
         interaction.update({ embeds, components });
     }
 };

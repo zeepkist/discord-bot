@@ -1,4 +1,4 @@
-import type { UserResponse } from '../models/user.js'
+import type { UserRankingsResponse, UserResponse } from '../models/user.js'
 import { api } from './api.js'
 
 interface GetUserParameters {
@@ -12,6 +12,27 @@ export const getUser = async ({ id, steamId }: GetUserParameters) => {
     : api.get('users/steamid', { params: { SteamId: steamId } }))
 
   if (response.status === 200) return response.data as UserResponse
+  else {
+    throw response.data.error
+  }
+}
+
+interface GetUserRankingsParameters {
+  Limit?: number
+  Offset?: number
+}
+
+export const getUserRankings = async ({
+  Limit,
+  Offset
+}: GetUserRankingsParameters = {}) => {
+  const query = {
+    Limit,
+    Offset
+  }
+  const response = await api.get('users/rankings', { params: query })
+
+  if (response.status === 200) return response.data as UserRankingsResponse
   else {
     throw response.data.error
   }

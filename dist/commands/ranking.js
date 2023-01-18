@@ -1,18 +1,18 @@
 import { ApplicationCommandType } from 'discord.js';
 import { errorReply } from '../components/errorReply.js';
-import { recentRecords } from '../components/recentRecords.js';
-export const recent = {
-    name: 'recent',
-    description: 'Get recent personal bests and world records',
+import { userRankings } from '../components/userRankings.js';
+export const ranking = {
+    name: 'ranking',
+    description: 'Get user rankings',
     type: ApplicationCommandType.ChatInput,
     options: [],
     run: async (interaction) => {
         try {
-            const { embeds, components } = await recentRecords(interaction);
+            const { embeds, components } = await userRankings(interaction);
             interaction.reply({ embeds, components });
         }
         catch (error) {
-            errorReply(interaction, recent.name, error);
+            errorReply(interaction, ranking.name, error);
         }
     }
 };
