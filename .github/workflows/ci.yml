@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+  repository_dispatch:
+    types: [trigger-ci-workflow]
+
+env:
+  FORCE_COLOR: true
+
+jobs:
+  build:
+    name: Build Bot
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18]
+
+    steps:
+      - uses: actions/checkout@v3
+        if: ${{ github.event.action != 'repository_dispatch' }}
+
+      - uses: actions/checkout@v3
+        if: ${{ github.event.action == 'repository_dispatch' }}
+        with:
+          ref: ${{ github.event.client_payload.sha }}
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Get Yarn Cache Directory
+        id: yarn-cache-dir-path
+        run: echo '::set-output name=dir::$(yarn cache dir)'
+
+      - name: Use Yarn Cache
+        uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Dependencies
+        run: yarn install --prefer-offline --pure-lockfile
+
+      - name: Build Bot
+        run: yarn build
