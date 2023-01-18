@@ -1,7 +1,8 @@
 {
   "type": "module",
   "scripts": {
-    "start": "nodemon --esm src/index.ts",
+    "dev": "nodemon --esm src/index.ts",
+    "start": "ts-node --esm src/index.ts",
     "invite": "ts-node --esm src/inviteUrl.ts",
     "build": "tsc",
     "lint": "eslint . --ext .js,.cjs,.mjs,.ts,.cts,.mts --fix --ignore-path .gitignore"
