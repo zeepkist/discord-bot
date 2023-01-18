@@ -42,7 +42,7 @@ export const paginationButtons = (
   const collector = interaction.channel?.createMessageComponentCollector({
     filter: (m: CollectorFilterValue) =>
       ['first', 'previous', 'next', 'last'].includes(m.customId),
-    time: 5 * 1000 * 60 // 5 minutes
+    time: 3 * 1000 * 60 // 3 minutes
   })
 
   collector?.on('end', () => {

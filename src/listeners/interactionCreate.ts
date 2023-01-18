@@ -47,7 +47,14 @@ const handleButton = async (interaction: ButtonInteraction): Promise<void> => {
 
   const button = buttons.find(button => button.name === interaction.customId)
 
-  console.log(button)
+  if (!button) {
+    console.log('Unknown button interaction', interaction.customId)
+    interaction.reply({
+      content: 'Unknown button interaction',
+      ephemeral: true
+    })
+    return
+  }
 
   button?.run(interaction)
 }
@@ -61,7 +68,11 @@ const handleModalSubmit = async (
     modal => modal.name === interaction.customId
   )
 
-  console.log(modal)
+  if (!modal) {
+    console.log('Unknown button interaction', interaction.customId)
+    interaction.reply({ content: 'Unknown modal submission', ephemeral: true })
+    return
+  }
 
   modal?.run(interaction)
 }

@@ -8,6 +8,7 @@ import {
 } from 'discord.js'
 
 import { Command } from '../command.js'
+import { database } from '../services/database.js'
 import { getRecords } from '../services/records.js'
 import { getUser } from '../services/users.js'
 import { formatResultTime } from '../utils/index.js'
@@ -34,18 +35,27 @@ export const user: Command = {
     }
   ],
   run: async (interaction: CommandInteraction) => {
-    const steamId = interaction.options.data.find(
+    const user = await database('linked_accounts').select('steamId').where({
+      discordId: interaction.user.id
+    })
+    let steamId = interaction.options.data.find(
       option => option.name === 'steamid'
     )?.value as string
     const id = interaction.options.data.find(option => option.name === 'id')
       ?.value as number
 
-    if (!steamId && !id) {
+    if ((!user || user.length === 0) && !steamId && !id) {
       await interaction.reply({
-        content: 'You must provide either a Steam ID or a user ID.',
+        content: `You must provide either a Steam ID or a user ID.\n\nIf you link your Steam account with ${inlineCode(
+          '/verify'
+        )}, you can use this command without providing a Steam ID or user ID.`,
         ephemeral: true
       })
       return
+    }
+
+    if (!steamId && !id) {
+      steamId = user[0].steamId
     }
 
     try {

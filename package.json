@@ -28,6 +28,8 @@
     "date-fns": "2.29.3",
     "discord.js": "14.7.1",
     "dotenv": "16.0.3",
+    "knex": "^2.4.1",
+    "mysql2": "^3.0.1",
     "pbkdf2": "^3.1.2"
   },
   "renovate": {

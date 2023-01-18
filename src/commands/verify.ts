@@ -9,13 +9,20 @@ import {
 } from 'discord.js'
 
 import { Command } from '../command.js'
+import { alreadyLinkedReply } from '../components/accountAlreadyLinked.js'
 import { CollectorFilterValue } from '../models/collector.js'
+import { database } from '../services/database.js'
 
 export const verify: Command = {
   name: 'verify',
   description: 'Link your Steam and Discord accounts',
   type: ApplicationCommandType.ChatInput,
   run: async interaction => {
+    const linkedAccount = await database('linked_accounts').where({
+      discordId: interaction.user.id
+    })
+    if (linkedAccount.length > 0) alreadyLinkedReply(interaction)
+
     const embed = new EmbedBuilder()
       .setTitle('Link your Steam and Discord accounts')
       .setDescription(
@@ -46,7 +53,7 @@ export const verify: Command = {
 
     const collector = interaction.channel?.createMessageComponentCollector({
       filter: (m: CollectorFilterValue) => m.customId === 'submitToken',
-      time: 15 * 1000 * 60 // 15 minutes
+      time: 3 * 1000 * 60 // 3 minutes
     })
 
     collector?.on('end', () => {
