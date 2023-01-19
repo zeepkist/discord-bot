@@ -29,11 +29,10 @@ export const submitToken = {
   name: 'submitTokenModal',
   run: async interaction => {
     const token = interaction.fields.getTextInputValue('token')
-    console.log('token', token)
+    const discordId = interaction.user.id
     let steamId
     try {
       steamId = decryptSteamId(token)
-      console.log('steam', steamId)
       if (steamId.length !== 17) {
         throw new Error('Invalid steamId length')
       }
@@ -42,8 +41,6 @@ export const submitToken = {
       invalidTokenReply(interaction)
       return
     }
-    const discordId = interaction.user.id
-    console.log('discord', discordId)
     let response
     try {
       response = await database('linked_accounts').insert({
