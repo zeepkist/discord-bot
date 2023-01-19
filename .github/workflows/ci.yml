@@ -60,6 +60,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Copy Files
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          cp package.json dist/package.json
+          cp yarn.lock dist/yarn.lock
+
       - name: Deploy Changes
         if: github.ref == 'refs/heads/develop'
         uses: wopian/git-publish-subdir-action@develop
