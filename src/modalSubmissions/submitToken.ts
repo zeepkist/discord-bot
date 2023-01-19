@@ -9,7 +9,7 @@ import { alreadyLinkedReply } from '../components/accountAlreadyLinked.js'
 import { database } from '../services/database.js'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
-const privateKey = readFileSync(join(__dirname, '../../private.pem'), 'utf8')
+const privateKey = readFileSync(join(__dirname, '../private.pem'), 'utf8')
 
 const decryptSteamId = (token: string): string =>
   privateDecrypt(
