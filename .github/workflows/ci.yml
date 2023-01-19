@@ -63,7 +63,7 @@ jobs:
         if: github.ref == 'refs/heads/develop'
         uses: wopian/git-publish-subdir-action@develop
         env:
-          REPO: SELF
+          REPO: self
           BRANCH: production
           FOLDER: dist
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
