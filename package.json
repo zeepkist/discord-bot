@@ -44,5 +44,6 @@
     "extends": [
       "local>wopian/renovate-config"
     ]
-  }
+  },
+  "packageManager": "yarn@3.3.1"
 }

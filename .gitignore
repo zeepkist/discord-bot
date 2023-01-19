@@ -105,3 +105,8 @@ typings/
 
 *.pub
 *.pem
+.yarn/cache
+.yarn/unplugged
+.yarn/*.gz
+.pnp.cjs
+.pnp.loader.mjs
