@@ -2,20 +2,19 @@ name: CI
 
 on:
   push:
+    branches: [develop]
   repository_dispatch:
     types: [trigger-ci-workflow]
+    branches: [develop]
 
 env:
   FORCE_COLOR: true
+  NODE_VERSION: 18 # Used by semantic-release
 
 jobs:
   build:
     name: Build Bot
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18]
 
     steps:
       - uses: actions/checkout@v3
@@ -26,10 +25,10 @@ jobs:
         with:
           ref: ${{ github.event.client_payload.sha }}
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
 
       - name: Get Yarn Cache Directory
         id: yarn-cache-dir-path
@@ -40,10 +39,31 @@ jobs:
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-yarn-${{ env.NODE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Dependencies
         run: yarn install --prefer-offline --pure-lockfile
 
       - name: Build Bot
         run: yarn build
+
+      - name: Run Tests
+        run: yarn test
+
+      - name: Run Linter
+        run: yarn lint
+
+      - name: Create Release
+        if: github.ref == 'refs/heads/develop'
+        run: yarn semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy Changes
+        if: github.ref == 'refs/heads/develop'
+        uses: wopian/git-publish-subdir-action@develop
+        env:
+          REPO: ${{ github.repository }}
+          BRANCH: production
+          FOLDER: dist
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
