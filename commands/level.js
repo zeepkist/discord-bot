@@ -9,6 +9,33 @@ import { levelRecords } from '../components/levelRecords.js'
 import { levelsList } from '../components/levelsList.js'
 import { getLevels } from '../services/levels.js'
 
+const getOptions = interaction => {
+  const id = interaction.options.data.find(
+    option => option.name === 'id'
+  )?.value
+  const workshopId = interaction.options.data.find(
+    option => option.name === 'workshopid'
+  )?.value
+  const author = interaction.options.data.find(
+    option => option.name === 'author'
+  )?.value
+  const name = interaction.options.data.find(
+    option => option.name === 'name'
+  )?.value
+  return { id, workshopId, author, name }
+}
+const replyNoLevels = async (interaction, invalidArguments = false) => {
+  const embed = new EmbedBuilder()
+    .setColor(0xff_00_00)
+    .setTitle(invalidArguments ? 'Missing Arguments' : 'No level found')
+    .setDescription(
+      invalidArguments
+        ? 'You must provide either a level ID, workshop ID, author or name of a level.'
+        : 'No level found with the provided arguments.'
+    )
+    .setTimestamp()
+  await interaction.reply({ embeds: [embed], ephemeral: true })
+}
 export const level = {
   name: 'level',
   description: 'Get records for a level',
@@ -40,26 +67,11 @@ export const level = {
     }
   ],
   run: async interaction => {
-    const id = interaction.options.data.find(
-      option => option.name === 'id'
-    )?.value
-    const workshopId = interaction.options.data.find(
-      option => option.name === 'workshopid'
-    )?.value
-    const author = interaction.options.data.find(
-      option => option.name === 'author'
-    )?.value
-    const name = interaction.options.data.find(
-      option => option.name === 'name'
-    )?.value
+    const { id, workshopId, author, name } = getOptions(interaction)
     console.log('[level]:', id, workshopId, author, name)
     if (!id && !workshopId && !author && !name) {
       console.log('[level]:', 'No arguments provided')
-      await interaction.reply({
-        content:
-          'You must provide either a level ID, workshop ID, author or name of a level.',
-        ephemeral: true
-      })
+      await replyNoLevels(interaction, true)
       return
     }
     try {
@@ -72,12 +84,7 @@ export const level = {
       })
       if (levels.totalAmount === 0) {
         console.log('[level]:', 'No level found', levels)
-        const embed = new EmbedBuilder()
-          .setColor(0xff_00_00)
-          .setTitle('No level found')
-          .setDescription('No level found with the provided arguments.')
-          .setTimestamp()
-        await interaction.reply({ embeds: [embed], ephemeral: true })
+        await replyNoLevels(interaction)
         return
       }
       if (levels.totalAmount > 1) {
