@@ -21,7 +21,10 @@ export const verify: Command = {
     const linkedAccount = await database('linked_accounts').where({
       discordId: interaction.user.id
     })
-    if (linkedAccount.length > 0) alreadyLinkedReply(interaction)
+    if (linkedAccount.length > 0) {
+      alreadyLinkedReply(interaction)
+      return
+    }
 
     const embed = new EmbedBuilder()
       .setTitle('Link your Steam and Discord accounts')
