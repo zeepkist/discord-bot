@@ -42,7 +42,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install Dependencies
-        run: yarn install --prefer-offline --immutable
+        run: yarn install --cached --immutable
 
       - name: Build Bot
         run: yarn build
