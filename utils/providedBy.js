@@ -1,1 +1,1 @@
-export const providedBy = 'Data provided by Zeepkist GTR'
+export const providedBy = 'Data provided by Zeepkist GTR';
