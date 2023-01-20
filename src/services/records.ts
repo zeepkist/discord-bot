@@ -9,38 +9,14 @@ interface GetRecordsParameters {
   UserId?: number | string
   BestOnly?: boolean
   ValidOnly?: boolean
+  InvalidOnly?: boolean
   WorldRecordOnly?: boolean
   Sort?: string
   Limit?: number
   Offset?: number
 }
 
-export const getRecords = async ({
-  LevelId,
-  LevelUid,
-  LevelWorkshopId,
-  UserSteamId,
-  UserId,
-  BestOnly,
-  ValidOnly,
-  WorldRecordOnly,
-  Sort,
-  Limit,
-  Offset
-}: GetRecordsParameters = {}) => {
-  const query = {
-    LevelId,
-    LevelUid,
-    LevelWorkshopId,
-    UserSteamId,
-    UserId,
-    BestOnly,
-    ValidOnly,
-    WorldRecordOnly,
-    Sort,
-    Limit,
-    Offset
-  }
+export const getRecords = async (query: GetRecordsParameters = {}) => {
   const response = await api.get('record', { params: query })
 
   if (response.status === 200) return response.data as RecordResponse
@@ -49,31 +25,8 @@ export const getRecords = async ({
   }
 }
 
-export const getRecentRecords = async ({
-  LevelId,
-  LevelUid,
-  LevelWorkshopId,
-  UserSteamId,
-  UserId,
-  BestOnly,
-  ValidOnly,
-  WorldRecordOnly,
-  Limit,
-  Offset
-}: GetRecordsParameters = {}) => {
-  const query = {
-    LevelId,
-    LevelUid,
-    LevelWorkshopId,
-    UserSteamId,
-    UserId,
-    BestOnly,
-    ValidOnly,
-    WorldRecordOnly,
-    Limit,
-    Offset
-  }
-  const response = await api.get('records/recent', { params: query })
+export const getRecentRecords = async () => {
+  const response = await api.get('records/recent')
 
   if (response.status === 200) return response.data as RecentRecordResponse
   else {

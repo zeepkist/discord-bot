@@ -11,24 +11,7 @@ interface GetLevelsParameters {
   Offset?: number
 }
 
-export const getLevels = async ({
-  Id,
-  Author,
-  Name,
-  Uid,
-  WorkshopId,
-  Limit,
-  Offset
-}: GetLevelsParameters = {}) => {
-  const query = {
-    Id,
-    Author,
-    Name,
-    Uid,
-    WorkshopId,
-    Limit,
-    Offset
-  }
+export const getLevels = async (query: GetLevelsParameters = {}) => {
   const response = await api.get('levels', { params: query })
 
   if (response.status === 200) return response.data as LevelResponse

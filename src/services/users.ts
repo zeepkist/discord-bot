@@ -22,14 +22,9 @@ interface GetUserRankingsParameters {
   Offset?: number
 }
 
-export const getUserRankings = async ({
-  Limit,
-  Offset
-}: GetUserRankingsParameters = {}) => {
-  const query = {
-    Limit,
-    Offset
-  }
+export const getUserRankings = async (
+  query: GetUserRankingsParameters = {}
+) => {
   const response = await api.get('users/rankings', { params: query })
 
   if (response.status === 200) return response.data as UserRankingsResponse
