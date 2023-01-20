@@ -101,9 +101,8 @@ export const user: Command = {
       const allValidRecords = await getRecords({
         UserSteamId: steamId,
         UserId: id,
-        InvalidOnly: true,
-        Sort: '-id',
-        Limit: 5
+        ValidOnly: true,
+        Limit: 0
       })
       const allInvalidRecords = await getRecords({
         UserSteamId: steamId,
