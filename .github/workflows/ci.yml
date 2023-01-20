@@ -67,6 +67,8 @@ jobs:
           cp .yarnrc.yml dist/.yarnrc.yml
           mkdir -p dist/.yarn/releases
           cp -r .yarn/releases/ dist/.yarn/
+          mkdir -p dist/.yarn/plugins
+          cp -r .yarn/plugins/ dist/.yarn/
 
       - name: Deploy Changes
         if: success() && github.ref == 'refs/heads/develop'
