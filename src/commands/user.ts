@@ -7,6 +7,7 @@ import {
   EmbedBuilder,
   inlineCode
 } from 'discord.js'
+import { distance } from 'fastest-levenshtein'
 
 import { Command } from '../command.js'
 import { listRecords } from '../components/lists/listRecords.js'
@@ -36,16 +37,18 @@ export const user: Command = {
     }
   ],
   run: async (interaction: CommandInteraction) => {
-    const user = await database('linked_accounts').select('steamId').where({
-      discordId: interaction.user.id
-    })
+    const linkedAccount = await database('linked_accounts')
+      .select('steamId')
+      .where({
+        discordId: interaction.user.id
+      })
     let steamId = interaction.options.data.find(
       option => option.name === 'steamid'
     )?.value as string
     const id = interaction.options.data.find(option => option.name === 'id')
       ?.value as number
 
-    if ((!user || user.length === 0) && !steamId && !id) {
+    if ((!linkedAccount || linkedAccount.length === 0) && !steamId && !id) {
       await interaction.reply({
         content: `You must provide either a Steam ID or a user ID.\n\nIf you link your Steam account with ${inlineCode(
           '/verify'
@@ -56,7 +59,7 @@ export const user: Command = {
     }
 
     if (!steamId && !id) {
-      steamId = user[0].steamId
+      steamId = linkedAccount[0].steamId
     }
 
     try {
@@ -116,6 +119,47 @@ export const user: Command = {
         .setTimestamp()
         .setFooter({ text: 'Data provided by Zeepkist GTR' })
 
+      if (!linkedAccount || linkedAccount?.length === 0) {
+        const discordName = interaction.user.username
+        const userSimilarity = distance(
+          discordName.toLowerCase().replaceAll(/\[.*]/, ''),
+          user.steamName.toLowerCase().replaceAll(/\[.*]/, '')
+        )
+        if (userSimilarity < 3) {
+          const verifyPrompt = `Link your Steam ID with ${inlineCode(
+            '/verify'
+          )} to use this command without options!`
+          embed.setDescription(verifyPrompt)
+        }
+      }
+
+      setAuthor: if (
+        linkedAccount &&
+        linkedAccount[0].steamId === user.steamId
+      ) {
+        embed.setAuthor({
+          name: interaction.user.username,
+          iconURL: interaction.user.avatarURL() ?? ''
+        })
+      } else {
+        const findLinkedAccount = await database('linked_accounts')
+          .select('discordId')
+          .where({
+            steamId: user.steamId
+          })
+        if (!findLinkedAccount || findLinkedAccount.length === 0)
+          break setAuthor
+
+        const linkedUser = await interaction.client.users.fetch(
+          findLinkedAccount[0].discordId
+        )
+
+        embed.setAuthor({
+          name: linkedUser.username,
+          iconURL: linkedUser.avatarURL() ?? ''
+        })
+      }
+
       const worldRecordsList = listRecords({
         records: worldRecords.records,
         showLevel: true,
@@ -143,7 +187,7 @@ export const user: Command = {
       }
 
       const anyPercentRecordsList = listRecords({
-        records: allInvalidRecords.records,
+        records: allInvalidRecords.records.filter(record => !record.isValid),
         showLevel: true
       })
 

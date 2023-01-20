@@ -5,7 +5,8 @@ import { LevelRecord } from '../../models/record.js'
 import {
   bestMedal,
   formatRelativeDate,
-  formatResultTime
+  formatResultTime,
+  numberToMonospace
 } from '../../utils/index.js'
 
 interface RecordProperties {
@@ -27,7 +28,9 @@ export const listRecords = ({
 }: RecordProperties): string =>
   records
     .map((record, index) => {
-      const rank = showRank ? bold(`${index + 1 + offset}`) : ''
+      const rank = showRank
+        ? bold(`${numberToMonospace(index + 1 + offset)}`.padEnd(3, ' '))
+        : ''
       const time = inlineCode(formatResultTime(record.time))
       const user = showUser
         ? hyperlink(
@@ -36,7 +39,7 @@ export const listRecords = ({
           )
         : ''
       const level = showLevel
-        ? `on ${hyperlink(
+        ? `— ${hyperlink(
             record.level.name,
             `https://zeepkist.wopian.me/level/${record.level.id}`
           )} by ${italic(record.level.author)}`
@@ -44,7 +47,7 @@ export const listRecords = ({
       const date = `(${formatRelativeDate(record.dateCreated)})`
       const medal = showMedal ? bestMedal(record) : ''
 
-      return `${rank} ${medal} ${user} ${time} ${level} ${date}`.replaceAll(
+      return `${rank} ${medal} ${time} ${user} ${level} ${date}`.replaceAll(
         '  ',
         ' '
       )

@@ -2521,7 +2521,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastest-levenshtein@npm:^1.0.12":
+"fastest-levenshtein@npm:^1.0.12, fastest-levenshtein@npm:~1.0.16":
   version: 1.0.16
   resolution: "fastest-levenshtein@npm:1.0.16"
   checksum: a78d44285c9e2ae2c25f3ef0f8a73f332c1247b7ea7fb4a191e6bb51aa6ee1ef0dfb3ed113616dcdc7023e18e35a8db41f61c8d88988e877cf510df8edafbc71
@@ -5771,6 +5771,7 @@ __metadata:
     eslint-plugin-prettier: ~4.2.1
     eslint-plugin-simple-import-sort: ~9.0.0
     eslint-plugin-unicorn: ~45.0.2
+    fastest-levenshtein: ~1.0.16
     knex: ^2.4.1
     mysql2: ^3.0.1
     nodemon: ~2.0.20
@@ -5779,6 +5780,11 @@ __metadata:
     semantic-release: ~20.0.2
     ts-node: ~10.9.1
     typescript: ~4.9.4
+  dependenciesMeta:
+    discord.js@14.7.1:
+      unplugged: true
+    ts-node@10.9.1:
+      unplugged: true
   languageName: unknown
   linkType: soft
 
