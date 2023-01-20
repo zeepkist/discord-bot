@@ -12,6 +12,11 @@ export interface UserRankings {
 
 export type UserResponse = User
 
+export interface UserRankingResponse {
+  amountOfWorldRecords: number
+  position: number
+}
+
 export interface UserRankingsResponse {
   totalAmount: number
   rankings: UserRankings[]

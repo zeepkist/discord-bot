@@ -13,8 +13,8 @@ import { Command } from '../command.js'
 import { listRecords } from '../components/lists/listRecords.js'
 import { database } from '../services/database.js'
 import { getRecords } from '../services/records.js'
-import { getUser } from '../services/users.js'
-import { userSimilarity } from '../utils/index.js'
+import { getUser, getUserRanking } from '../services/users.js'
+import { formatOrdinal, userSimilarity } from '../utils/index.js'
 
 const addDiscordAuthor = (
   embed: EmbedBuilder,
@@ -27,6 +27,9 @@ const addDiscordAuthor = (
     url: `https://zeepkist.wopian.me/user/${steamId}`
   })
   embed.setThumbnail(linkedAccount.avatarURL() ?? '')
+  if (linkedAccount.hexAccentColor) {
+    embed.setColor(linkedAccount.hexAccentColor)
+  }
 }
 
 export const user: Command = {
@@ -77,20 +80,20 @@ export const user: Command = {
     }
 
     try {
-      const user = await getUser({ steamId, id })
+      const user = await getUser({ SteamId: steamId, Id: id })
+      const userRanking = await getUserRanking({ SteamId: user.steamId })
 
-      /*
       const allValidRecords = await getRecords({
         UserSteamId: steamId,
         UserId: id,
+        InvalidOnly: true,
         Sort: '-id',
         Limit: 5
       })
-      */
       const allInvalidRecords = await getRecords({
         UserSteamId: steamId,
         UserId: id,
-        ValidOnly: false,
+        InvalidOnly: true,
         Sort: '-id',
         Limit: 5
       })
@@ -109,8 +112,8 @@ export const user: Command = {
         Limit: 5
       })
 
-      const totalRuns = allInvalidRecords.totalAmount
-      // allValidRecords.totalAmount + allInvalidRecords.totalAmount
+      const totalRuns =
+        allValidRecords.totalAmount + allInvalidRecords.totalAmount
 
       const embed = new EmbedBuilder()
         .setColor(0xff_92_00)
@@ -119,12 +122,19 @@ export const user: Command = {
         .addFields(
           {
             name: 'World Records',
-            value: String(worldRecords.totalAmount),
+            value: `${worldRecords.totalAmount} (${formatOrdinal(
+              userRanking.position
+            )})`,
             inline: true
           },
           {
             name: 'Best Times',
             value: String(bestRecords.totalAmount),
+            inline: true
+          },
+          {
+            name: 'any% Times',
+            value: String(allValidRecords.totalAmount),
             inline: true
           },
           {
