@@ -8,13 +8,13 @@ import {
   inlineCode,
   User
 } from 'discord.js'
-import { distance } from 'fastest-levenshtein'
 
 import { Command } from '../command.js'
 import { listRecords } from '../components/lists/listRecords.js'
 import { database } from '../services/database.js'
 import { getRecords } from '../services/records.js'
 import { getUser } from '../services/users.js'
+import { userSimilarity } from '../utils/index.js'
 
 const addDiscordAuthor = (
   embed: EmbedBuilder,
@@ -78,6 +78,7 @@ export const user: Command = {
 
     try {
       const user = await getUser({ steamId, id })
+
       /*
       const allValidRecords = await getRecords({
         UserSteamId: steamId,
@@ -135,22 +136,19 @@ export const user: Command = {
         .setTimestamp()
         .setFooter({ text: 'Data provided by Zeepkist GTR' })
 
-      if (!linkedAccount || linkedAccount?.length === 0) {
-        const discordName = interaction.user.username
-        const userSimilarity = distance(
-          discordName.toLowerCase().replaceAll(/\[.*]/, ''),
-          user.steamName.toLowerCase().replaceAll(/\[.*]/, '')
-        )
-        if (userSimilarity < 3) {
-          const verifyPrompt = `Link your Steam ID with ${inlineCode(
-            '/verify'
-          )} to use this command without options!`
-          embed.setDescription(verifyPrompt)
-        }
+      if (
+        (!linkedAccount || linkedAccount?.length === 0) &&
+        userSimilarity(interaction.user.username, [user.steamName]) < 3
+      ) {
+        const verifyPrompt = `Link your Steam ID with ${inlineCode(
+          '/verify'
+        )} to use this command without options!`
+        embed.setDescription(verifyPrompt)
       }
 
       setAuthor: if (
         linkedAccount &&
+        linkedAccount.length > 0 &&
         linkedAccount[0].steamId === user.steamId
       ) {
         addDiscordAuthor(embed, interaction.user, user.steamId)

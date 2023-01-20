@@ -5,7 +5,6 @@ import {
   inlineCode,
   italic
 } from 'discord.js'
-import { distance } from 'fastest-levenshtein'
 
 import { LinkedAccount } from '../models/database/linkedAccounts.js'
 import { Level } from '../models/level.js'
@@ -16,7 +15,8 @@ import {
   formatRelativeDate,
   formatResultTime,
   MEDAL,
-  providedBy
+  providedBy,
+  userSimilarity
 } from '../utils/index.js'
 import { listRecords } from './lists/listRecords.js'
 // import { paginationButtons } from './paginationButtons.js'
@@ -107,24 +107,16 @@ export const levelRecords = async (
   if (records.totalAmount > limit) {
     bestRecords += `\n\n${italic('Only the first 10 records are shown.')}`
 
-    if (!user || user.length === 0) {
-      const discordName = interaction.user.username
-        .toLowerCase()
-        .replaceAll(/\[.*]/, '')
-      const userSimilarity = records.records
-        .map(({ user }) => {
-          const steamName = user.steamName.toLowerCase().replaceAll(/\[.*]/, '')
-          return distance(discordName, steamName)
-        })
-        .reduce(
-          (minimum, value) => Math.min(minimum, value),
-          Number.POSITIVE_INFINITY
-        )
-      if (userSimilarity > 3) {
-        bestRecords += `\n\nLink your Steam ID with ${inlineCode(
-          '/verify'
-        )} to always see your personal best.`
-      }
+    if (
+      (!user || user.length === 0) &&
+      userSimilarity(
+        interaction.user.username,
+        records.records.map(({ user }) => user.steamName)
+      ) > 3
+    ) {
+      bestRecords += `\n\nLink your Steam ID with ${inlineCode(
+        '/verify'
+      )} to always see your personal best.`
     }
   }
 
