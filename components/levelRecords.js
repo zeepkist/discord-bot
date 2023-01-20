@@ -1,12 +1,16 @@
-import { bold, EmbedBuilder, hyperlink, inlineCode, italic } from 'discord.js'
+import { EmbedBuilder, inlineCode, italic } from 'discord.js'
 
 import { database } from '../services/database.js'
 import { getRecords } from '../services/records.js'
 import {
+  bestMedal,
   formatRelativeDate,
   formatResultTime,
-  providedBy
+  MEDAL,
+  providedBy,
+  userSimilarity
 } from '../utils/index.js'
+import { listRecords } from './lists/listRecords.js'
 
 export const levelRecords = async (
   interaction,
@@ -40,76 +44,63 @@ export const levelRecords = async (
     })
   const medalTimes = [
     level.timeAuthor &&
-      `<:zeepkist_author:1008786679173234688> ${inlineCode(
-        formatResultTime(level.timeAuthor)
-      )}`,
+      `${MEDAL.AUTHOR} ${inlineCode(formatResultTime(level.timeAuthor))}`,
     level.timeGold &&
-      `<:zeepkist_gold:1008786743706783826> ${inlineCode(
-        formatResultTime(level.timeGold)
-      )}`,
+      `${MEDAL.GOLD} ${inlineCode(formatResultTime(level.timeGold))}`,
     level.timeSilver &&
-      `<:zeepkist_silver:1008786769380130959> ${inlineCode(
-        formatResultTime(level.timeSilver)
-      )}`,
+      `${MEDAL.SILVER} ${inlineCode(formatResultTime(level.timeSilver))}`,
     level.timeBronze &&
-      `<:zeepkist_bronze:1008786713688166400> ${inlineCode(
-        formatResultTime(level.timeBronze)
-      )}`
+      `${MEDAL.BRONZE} ${inlineCode(formatResultTime(level.timeBronze))}`
   ].join('\n')
   embed.addFields({
     name: 'Medal Times',
     value: medalTimes,
     inline: true
   })
-  if (user && user.length > 0) {
+  handleUserRecords: if (user && user.length > 0) {
     const userRecord = await getRecords({
       LevelId: level.id,
       UserSteamId: user[0].steamId,
       BestOnly: true
     })
-    console.log(userRecord)
-    if (userRecord && userRecord.records.length > 0) {
-      const record = userRecord.records[0]
-      let bestMedal
-      if (record.isWorldRecord) bestMedal = 'WR '
-      else if (record.time < level.timeAuthor)
-        bestMedal = '<:zeepkist_author:1008786679173234688> '
-      else if (record.time < level.timeGold)
-        bestMedal = '<:zeepkist_gold:1008786743706783826> '
-      else if (record.time < level.timeSilver)
-        bestMedal = '<:zeepkist_silver:1008786769380130959> '
-      else if (record.time < level.timeBronze)
-        bestMedal = '<:zeepkist_bronze:1008786713688166400> '
-      const personalBest = `${bestMedal}${inlineCode(
-        formatResultTime(record.time)
-      )}\n${formatRelativeDate(record.dateCreated)} with ${
-        userRecord.totalAmount
-      } total runs`
-      embed.addFields({
-        name: 'Your Personal Best',
-        value: personalBest,
-        inline: true
-      })
+    if (!userRecord || userRecord.records.length === 0) {
+      break handleUserRecords
     }
-  }
-  let recordsList = records.records
-    .map((record, index) => {
-      const recordNumber = bold(`${index + 1}.`)
-      const recordTime = inlineCode(formatResultTime(record.time))
-      const recordUser = hyperlink(
-        record.user.steamName,
-        `https://zeepkist.wopian.me/user/${record.user.steamId}`
-      )
-      const recordDate = formatRelativeDate(record.dateCreated)
-      return `${recordNumber} ${recordTime} by ${recordUser} (${recordDate})`
+    const record = userRecord.records[0]
+    const personalBest = `${bestMedal(record)} ${inlineCode(
+      formatResultTime(record.time)
+    )}\n${formatRelativeDate(record.dateCreated)} with ${
+      userRecord.totalAmount
+    } total runs`
+    embed.addFields({
+      name: 'Your Personal Best',
+      value: personalBest,
+      inline: true
     })
-    .join('\n')
+  }
+  let bestRecords = listRecords({
+    records: records.records,
+    showRank: true,
+    showUser: true,
+    showMedal: true
+  })
   if (records.totalAmount > limit) {
-    recordsList += `\n\n${italic('Only the first 10 levels are shown.')}`
+    bestRecords += `\n\n${italic('Only the first 10 records are shown.')}`
+    if (
+      (!user || user.length === 0) &&
+      userSimilarity(
+        interaction.user.username,
+        records.records.map(({ user }) => user.steamName)
+      ) > 3
+    ) {
+      bestRecords += `\n\nLink your Steam ID with ${inlineCode(
+        '/verify'
+      )} to always see your personal best.`
+    }
   }
   embed.addFields({
     name: 'Best Times',
-    value: recordsList ?? 'No records recorded.'
+    value: bestRecords ?? 'No records have been set yet.'
   })
   if (level.thumbnailUrl) {
     embed.setThumbnail(level.thumbnailUrl.replace(' ', '%20'))

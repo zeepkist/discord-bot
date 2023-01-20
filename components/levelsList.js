@@ -1,20 +1,10 @@
-import { bold, EmbedBuilder, hyperlink, inlineCode, italic } from 'discord.js'
+import { bold, EmbedBuilder, italic } from 'discord.js'
 
 import { providedBy } from '../utils/providedBy.js'
+import { listLevels } from './lists/listRecords.js'
 
 export const levelsList = async (interaction, levels, totalAmount) => {
-  const list = levels
-    .map((level, index) => {
-      const levelNumber = bold(`${index + 1}.`)
-      const levelName = hyperlink(
-        level.name,
-        `https://zeepkist.wopian.me/level/${level.id}`
-      )
-      const levelAuthor = italic(level.author)
-      const levelId = `ID ${inlineCode(String(level.id))}`
-      return `${levelNumber} ${levelName} by ${levelAuthor} (${levelId})`
-    })
-    .join('\n')
+  const list = listLevels({ levels, showRank: true, showId: true })
   let description = `Found ${bold(String(totalAmount))} levels:\n\n${list}`
   if (totalAmount > 10) {
     description += `\n\n${italic('Only the first 10 levels are shown.')}`

@@ -1,5 +1,6 @@
 import { buttons } from '../buttons.js'
 import { commands } from '../commands.js'
+import { trackCommandUsage } from '../components/trackCommandUsage.js'
 import { modalSubmissions } from '../modalSubmissions.js'
 
 export default client => {
@@ -26,6 +27,7 @@ const handleSlashCommand = async interaction => {
     interaction.reply({ content: 'Unknown command', ephemeral: true })
     return
   }
+  await trackCommandUsage(interaction.commandName)
   slashCommand.run(interaction)
 }
 const handleButton = async interaction => {

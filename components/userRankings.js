@@ -1,7 +1,7 @@
-import { bold, EmbedBuilder, hyperlink } from 'discord.js'
+import { bold, EmbedBuilder } from 'discord.js'
 
 import { getUserRankings } from '../services/users.js'
-import { providedBy } from '../utils/providedBy.js'
+import { formatRank, formatUser, providedBy } from '../utils/index.js'
 
 export const userRankings = async (interaction, page = 1, limit = 10) => {
   const offset = (page - 1) * limit
@@ -13,11 +13,8 @@ export const userRankings = async (interaction, page = 1, limit = 10) => {
   )
   const rankingsList = rankings.rankings
     .map(ranking => {
-      const rankingNumber = bold(`${ranking.position}.`)
-      const rankingUser = hyperlink(
-        ranking.user.steamName,
-        `https://zeepkist.wopian.me/user/${ranking.user.steamId}`
-      )
+      const rankingNumber = formatRank(ranking.position)
+      const rankingUser = formatUser(ranking.user)
       const rankingWRs = bold(String(ranking.amountOfWorldRecords))
       return `${rankingNumber} ${rankingUser} has ${rankingWRs} world records`
     })

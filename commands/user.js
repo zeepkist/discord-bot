@@ -5,11 +5,20 @@ import {
   inlineCode
 } from 'discord.js'
 
+import { listRecords } from '../components/lists/listRecords.js'
 import { database } from '../services/database.js'
 import { getRecords } from '../services/records.js'
 import { getUser } from '../services/users.js'
-import { formatResultTime } from '../utils/index.js'
+import { userSimilarity } from '../utils/index.js'
 
+const addDiscordAuthor = (embed, linkedAccount, steamId) => {
+  embed.setAuthor({
+    name: linkedAccount.username,
+    iconURL: linkedAccount.avatarURL() ?? '',
+    url: `https://zeepkist.wopian.me/user/${steamId}`
+  })
+  embed.setThumbnail(linkedAccount.avatarURL() ?? '')
+}
 export const user = {
   name: 'user',
   description: 'Get information about a user.',
@@ -32,16 +41,18 @@ export const user = {
     }
   ],
   run: async interaction => {
-    const user = await database('linked_accounts').select('steamId').where({
-      discordId: interaction.user.id
-    })
+    const linkedAccount = await database('linked_accounts')
+      .select('steamId')
+      .where({
+        discordId: interaction.user.id
+      })
     let steamId = interaction.options.data.find(
       option => option.name === 'steamid'
     )?.value
     const id = interaction.options.data.find(
       option => option.name === 'id'
     )?.value
-    if ((!user || user.length === 0) && !steamId && !id) {
+    if ((!linkedAccount || linkedAccount.length === 0) && !steamId && !id) {
       await interaction.reply({
         content: `You must provide either a Steam ID or a user ID.\n\nIf you link your Steam account with ${inlineCode(
           '/verify'
@@ -51,45 +62,32 @@ export const user = {
       return
     }
     if (!steamId && !id) {
-      steamId = user[0].steamId
+      steamId = linkedAccount[0].steamId
     }
     try {
       const user = await getUser({ steamId, id })
-      const allValidRecords = await getRecords({
-        UserSteamId: steamId,
-        UserId: id,
-        Limit: 0
-      })
       const allInvalidRecords = await getRecords({
         UserSteamId: steamId,
         UserId: id,
         ValidOnly: false,
-        Limit: 0
+        Sort: '-id',
+        Limit: 5
       })
       const bestRecords = await getRecords({
         UserSteamId: steamId,
         UserId: id,
         BestOnly: true,
-        Limit: 0
+        Sort: '-id',
+        Limit: 5
       })
       const worldRecords = await getRecords({
         UserSteamId: steamId,
         UserId: id,
         WorldRecordOnly: true,
+        Sort: '-id',
         Limit: 5
       })
-      const totalRuns =
-        allValidRecords.totalAmount + allInvalidRecords.totalAmount
-      const worldRecordsList = worldRecords.records
-        .map(record => {
-          return `${record.level.name} by ${record.level.author}`
-        })
-        .join('\n')
-      const worldRecordsTimeList = worldRecords.records
-        .map(record => {
-          return inlineCode(formatResultTime(record.time))
-        })
-        .join('\n')
+      const totalRuns = allInvalidRecords.totalAmount
       const embed = new EmbedBuilder()
         .setColor(0xff_92_00)
         .setTitle(`${user.steamName}'s Stats`)
@@ -113,19 +111,66 @@ export const user = {
         )
         .setTimestamp()
         .setFooter({ text: 'Data provided by Zeepkist GTR' })
-      if (worldRecords.records.length > 0) {
-        embed.addFields(
-          {
-            name: 'Recent World Records',
-            value: worldRecordsList,
-            inline: true
-          },
-          {
-            name: 'Time',
-            value: worldRecordsTimeList,
-            inline: true
-          }
+      if (
+        (!linkedAccount || linkedAccount?.length === 0) &&
+        userSimilarity(interaction.user.username, [user.steamName]) < 3
+      ) {
+        const verifyPrompt = `Link your Steam ID with ${inlineCode(
+          '/verify'
+        )} to use this command without options!`
+        embed.setDescription(verifyPrompt)
+      }
+      setAuthor: if (
+        linkedAccount &&
+        linkedAccount.length > 0 &&
+        linkedAccount[0].steamId === user.steamId
+      ) {
+        addDiscordAuthor(embed, interaction.user, user.steamId)
+      } else {
+        const findLinkedAccount = await database('linked_accounts')
+          .select('discordId')
+          .where({
+            steamId: user.steamId
+          })
+        if (!findLinkedAccount || findLinkedAccount.length === 0) {
+          break setAuthor
+        }
+        const linkedUser = await interaction.client.users.fetch(
+          findLinkedAccount[0].discordId
         )
+        addDiscordAuthor(embed, linkedUser, user.steamId)
+      }
+      const worldRecordsList = listRecords({
+        records: worldRecords.records,
+        showLevel: true,
+        showMedal: true
+      })
+      if (worldRecordsList.length > 0) {
+        embed.addFields({
+          name: 'Recent World Records',
+          value: worldRecordsList
+        })
+      }
+      const bestRecordsList = listRecords({
+        records: bestRecords.records,
+        showLevel: true,
+        showMedal: true
+      })
+      if (bestRecordsList.length > 0) {
+        embed.addFields({
+          name: 'Recent Bests',
+          value: bestRecordsList
+        })
+      }
+      const anyPercentRecordsList = listRecords({
+        records: allInvalidRecords.records.filter(record => !record.isValid),
+        showLevel: true
+      })
+      if (anyPercentRecordsList.length > 0) {
+        embed.addFields({
+          name: 'Recent any% Runs',
+          value: anyPercentRecordsList
+        })
       }
       await interaction.reply({
         embeds: [embed]

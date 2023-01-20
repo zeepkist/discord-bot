@@ -9,11 +9,7 @@ export const getUser = async ({ id, steamId }) => {
     throw response.data.error
   }
 }
-export const getUserRankings = async ({ Limit, Offset } = {}) => {
-  const query = {
-    Limit,
-    Offset
-  }
+export const getUserRankings = async (query = {}) => {
   const response = await api.get('users/rankings', { params: query })
   if (response.status === 200) return response.data
   else {
