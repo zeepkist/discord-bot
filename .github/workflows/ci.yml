@@ -80,7 +80,7 @@ jobs:
       - name: Announce Deployment
         if: success() && github.ref == 'refs/heads/develop'
         run: |
-          curl "https://pterodactyl.file.properties/api/client/servers/${{ vars.SPARKEDHOST_SERVER }}/power" \
+          curl "https://control.sparkedhost.us/api/client/servers/${{ vars.SPARKEDHOST_SERVER }}/power" \
           -H 'Accept: application/json' \
           -H 'Content-Type: application/json' \
           -H 'Authorization: Bearer ${{ secrets.SPARKEDHOST_TOKEN }}' \
