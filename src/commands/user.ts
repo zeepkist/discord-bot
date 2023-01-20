@@ -81,7 +81,22 @@ export const user: Command = {
 
     try {
       const user = await getUser({ SteamId: steamId, Id: id })
-      const userRanking = await getUserRanking({ SteamId: user.steamId })
+      let userRanking
+      try {
+        userRanking = await getUserRanking({ SteamId: user.steamId })
+      } catch (error) {
+        if ((error as AxiosError).response?.status === 404) {
+          userRanking = {
+            position: 0,
+            totalAmount: 0
+          }
+        } else {
+          throw error
+        }
+      }
+      const userRankingPosition = userRanking.position
+        ? `(${formatOrdinal(userRanking.position)})`
+        : ''
 
       const allValidRecords = await getRecords({
         UserSteamId: steamId,
@@ -122,9 +137,7 @@ export const user: Command = {
         .addFields(
           {
             name: 'World Records',
-            value: `${worldRecords.totalAmount} (${formatOrdinal(
-              userRanking.position
-            )})`,
+            value: `${worldRecords.totalAmount} ${userRankingPosition}`.trim(),
             inline: true
           },
           {
