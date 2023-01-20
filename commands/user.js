@@ -57,7 +57,24 @@ export const user = {
         }
         try {
             const user = await getUser({ SteamId: steamId, Id: id });
-            const userRanking = await getUserRanking({ SteamId: user.steamId });
+            let userRanking;
+            try {
+                userRanking = await getUserRanking({ SteamId: user.steamId });
+            }
+            catch (error) {
+                if (error.response?.status === 404) {
+                    userRanking = {
+                        position: 0,
+                        totalAmount: 0
+                    };
+                }
+                else {
+                    throw error;
+                }
+            }
+            const userRankingPosition = userRanking.position
+                ? `(${formatOrdinal(userRanking.position)})`
+                : '';
             const allValidRecords = await getRecords({
                 UserSteamId: steamId,
                 UserId: id,
@@ -93,7 +110,7 @@ export const user = {
                 .setURL(`https://zeepkist.wopian.me/user/${user.steamId}`)
                 .addFields({
                 name: 'World Records',
-                value: `${worldRecords.totalAmount} (${formatOrdinal(userRanking.position)})`,
+                value: `${worldRecords.totalAmount} ${userRankingPosition}`.trim(),
                 inline: true
             }, {
                 name: 'Best Times',
