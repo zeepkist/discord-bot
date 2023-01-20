@@ -1,12 +1,14 @@
-import { bold, hyperlink, inlineCode, italic } from 'discord.js'
+import { inlineCode } from 'discord.js'
 
 import { Level } from '../../models/level.js'
 import { LevelRecord } from '../../models/record.js'
 import {
   bestMedal,
+  formatLevel,
+  formatRank,
   formatRelativeDate,
   formatResultTime,
-  numberToMonospace
+  formatUser
 } from '../../utils/index.js'
 
 interface RecordProperties {
@@ -28,22 +30,10 @@ export const listRecords = ({
 }: RecordProperties): string =>
   records
     .map((record, index) => {
-      const rank = showRank
-        ? bold(`${numberToMonospace(index + 1 + offset)}`.padEnd(3, ' '))
-        : ''
+      const rank = showRank ? formatRank(index + 1 + offset) : ''
       const time = inlineCode(formatResultTime(record.time))
-      const user = showUser
-        ? hyperlink(
-            record.user.steamName,
-            `https://zeepkist.wopian.me/user/${record.user.steamId}`
-          )
-        : ''
-      const level = showLevel
-        ? `— ${hyperlink(
-            record.level.name,
-            `https://zeepkist.wopian.me/level/${record.level.id}`
-          )} by ${italic(record.level.author)}`
-        : ''
+      const user = showUser ? formatUser(record.user) : ''
+      const level = showLevel ? `— ${formatLevel(record.level)}` : ''
       const date = `(${formatRelativeDate(record.dateCreated)})`
       const medal = showMedal ? bestMedal(record) : ''
 
@@ -69,11 +59,8 @@ export const listLevels = ({
 }: LevelProperties): string =>
   levels
     .map((level, index) => {
-      const rank = showRank ? bold(`${index + 1 + offset}`) : ''
-      const name = `${hyperlink(
-        level.name,
-        `https://zeepkist.wopian.me/level/${level.id}`
-      )} by ${italic(level.author)}`
+      const rank = showRank ? formatRank(index + 1 + offset) : ''
+      const name = formatLevel(level)
       const id = showId ? `(${level.id})` : ''
 
       return `${rank} ${name} ${id}`.replaceAll('  ', ' ')

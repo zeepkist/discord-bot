@@ -5,7 +5,8 @@ import {
   ApplicationCommandType,
   CommandInteraction,
   EmbedBuilder,
-  inlineCode
+  inlineCode,
+  User
 } from 'discord.js'
 import { distance } from 'fastest-levenshtein'
 
@@ -14,6 +15,19 @@ import { listRecords } from '../components/lists/listRecords.js'
 import { database } from '../services/database.js'
 import { getRecords } from '../services/records.js'
 import { getUser } from '../services/users.js'
+
+const addDiscordAuthor = (
+  embed: EmbedBuilder,
+  linkedAccount: User,
+  steamId: string
+) => {
+  embed.setAuthor({
+    name: linkedAccount.username,
+    iconURL: linkedAccount.avatarURL() ?? '',
+    url: `https://zeepkist.wopian.me/user/${steamId}`
+  })
+  embed.setThumbnail(linkedAccount.avatarURL() ?? '')
+}
 
 export const user: Command = {
   name: 'user',
@@ -64,12 +78,14 @@ export const user: Command = {
 
     try {
       const user = await getUser({ steamId, id })
+      /*
       const allValidRecords = await getRecords({
         UserSteamId: steamId,
         UserId: id,
         Sort: '-id',
         Limit: 5
       })
+      */
       const allInvalidRecords = await getRecords({
         UserSteamId: steamId,
         UserId: id,
@@ -92,8 +108,8 @@ export const user: Command = {
         Limit: 5
       })
 
-      const totalRuns =
-        allValidRecords.totalAmount + allInvalidRecords.totalAmount
+      const totalRuns = allInvalidRecords.totalAmount
+      // allValidRecords.totalAmount + allInvalidRecords.totalAmount
 
       const embed = new EmbedBuilder()
         .setColor(0xff_92_00)
@@ -137,27 +153,22 @@ export const user: Command = {
         linkedAccount &&
         linkedAccount[0].steamId === user.steamId
       ) {
-        embed.setAuthor({
-          name: interaction.user.username,
-          iconURL: interaction.user.avatarURL() ?? ''
-        })
+        addDiscordAuthor(embed, interaction.user, user.steamId)
       } else {
         const findLinkedAccount = await database('linked_accounts')
           .select('discordId')
           .where({
             steamId: user.steamId
           })
-        if (!findLinkedAccount || findLinkedAccount.length === 0)
+        if (!findLinkedAccount || findLinkedAccount.length === 0) {
           break setAuthor
+        }
 
         const linkedUser = await interaction.client.users.fetch(
           findLinkedAccount[0].discordId
         )
 
-        embed.setAuthor({
-          name: linkedUser.username,
-          iconURL: linkedUser.avatarURL() ?? ''
-        })
+        addDiscordAuthor(embed, linkedUser, user.steamId)
       }
 
       const worldRecordsList = listRecords({

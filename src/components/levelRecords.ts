@@ -12,8 +12,10 @@ import { Level } from '../models/level.js'
 import { database } from '../services/database.js'
 import { getRecords } from '../services/records.js'
 import {
+  bestMedal,
   formatRelativeDate,
   formatResultTime,
+  MEDAL,
   providedBy
 } from '../utils/index.js'
 import { listRecords } from './lists/listRecords.js'
@@ -54,21 +56,13 @@ export const levelRecords = async (
 
   const medalTimes = [
     level.timeAuthor &&
-      `<:zeepkist_author:1008786679173234688> ${inlineCode(
-        formatResultTime(level.timeAuthor)
-      )}`,
+      `${MEDAL.AUTHOR} ${inlineCode(formatResultTime(level.timeAuthor))}`,
     level.timeGold &&
-      `<:zeepkist_gold:1008786743706783826> ${inlineCode(
-        formatResultTime(level.timeGold)
-      )}`,
+      `${MEDAL.GOLD} ${inlineCode(formatResultTime(level.timeGold))}`,
     level.timeSilver &&
-      `<:zeepkist_silver:1008786769380130959> ${inlineCode(
-        formatResultTime(level.timeSilver)
-      )}`,
+      `${MEDAL.SILVER} ${inlineCode(formatResultTime(level.timeSilver))}`,
     level.timeBronze &&
-      `<:zeepkist_bronze:1008786713688166400> ${inlineCode(
-        formatResultTime(level.timeBronze)
-      )}`
+      `${MEDAL.BRONZE} ${inlineCode(formatResultTime(level.timeBronze))}`
   ].join('\n')
 
   embed.addFields({
@@ -90,18 +84,7 @@ export const levelRecords = async (
 
     const record = userRecord.records[0]
 
-    let bestMedal
-    if (record.isWorldRecord) bestMedal = 'WR '
-    else if (record.time < level.timeAuthor)
-      bestMedal = '<:zeepkist_author:1008786679173234688> '
-    else if (record.time < level.timeGold)
-      bestMedal = '<:zeepkist_gold:1008786743706783826> '
-    else if (record.time < level.timeSilver)
-      bestMedal = '<:zeepkist_silver:1008786769380130959> '
-    else if (record.time < level.timeBronze)
-      bestMedal = '<:zeepkist_bronze:1008786713688166400> '
-
-    const personalBest = `${bestMedal}${inlineCode(
+    const personalBest = `${bestMedal(record)} ${inlineCode(
       formatResultTime(record.time)
     )}\n${formatRelativeDate(record.dateCreated)} with ${
       userRecord.totalAmount
@@ -133,7 +116,10 @@ export const levelRecords = async (
           const steamName = user.steamName.toLowerCase().replaceAll(/\[.*]/, '')
           return distance(discordName, steamName)
         })
-        .reduce((a, b) => Math.min(a, b), Number.POSITIVE_INFINITY)
+        .reduce(
+          (minimum, value) => Math.min(minimum, value),
+          Number.POSITIVE_INFINITY
+        )
       if (userSimilarity > 3) {
         bestRecords += `\n\nLink your Steam ID with ${inlineCode(
           '/verify'

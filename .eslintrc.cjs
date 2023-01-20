@@ -38,6 +38,7 @@ module.exports = {
     ],
     'unicorn/prefer-module': 'off',
     'unicorn/no-array-callback-reference': 'off',
+    'unicorn/no-array-reduce': 'off',
     'unicorn/no-unused-properties': 'warn',
     'unicorn/prefer-string-replace-all': 'warn',
     'unicorn/no-unsafe-regex': 'error',

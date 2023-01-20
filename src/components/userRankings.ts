@@ -2,12 +2,11 @@ import {
   bold,
   ButtonInteraction,
   CommandInteraction,
-  EmbedBuilder,
-  hyperlink
+  EmbedBuilder
 } from 'discord.js'
 
 import { getUserRankings } from '../services/users.js'
-import { providedBy } from '../utils/providedBy.js'
+import { formatRank, formatUser, providedBy } from '../utils/index.js'
 // import { paginationButtons } from './paginationButtons.js'
 
 export const userRankings = async (
@@ -26,11 +25,8 @@ export const userRankings = async (
 
   const rankingsList = rankings.rankings
     .map(ranking => {
-      const rankingNumber = bold(`${ranking.position}.`)
-      const rankingUser = hyperlink(
-        ranking.user.steamName,
-        `https://zeepkist.wopian.me/user/${ranking.user.steamId}`
-      )
+      const rankingNumber = formatRank(ranking.position)
+      const rankingUser = formatUser(ranking.user)
       const rankingWRs = bold(String(ranking.amountOfWorldRecords))
       return `${rankingNumber} ${rankingUser} has ${rankingWRs} world records`
     })
