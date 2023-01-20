@@ -2,8 +2,8 @@ import { ApplicationCommandOptionType, ApplicationCommandType, EmbedBuilder, inl
 import { listRecords } from '../components/lists/listRecords.js';
 import { database } from '../services/database.js';
 import { getRecords } from '../services/records.js';
-import { getUser } from '../services/users.js';
-import { userSimilarity } from '../utils/index.js';
+import { getUser, getUserRanking } from '../services/users.js';
+import { formatOrdinal, userSimilarity } from '../utils/index.js';
 const addDiscordAuthor = (embed, linkedAccount, steamId) => {
     embed.setAuthor({
         name: linkedAccount.username,
@@ -11,6 +11,9 @@ const addDiscordAuthor = (embed, linkedAccount, steamId) => {
         url: `https://zeepkist.wopian.me/user/${steamId}`
     });
     embed.setThumbnail(linkedAccount.avatarURL() ?? '');
+    if (linkedAccount.hexAccentColor) {
+        embed.setColor(linkedAccount.hexAccentColor);
+    }
 };
 export const user = {
     name: 'user',
@@ -53,11 +56,19 @@ export const user = {
             steamId = linkedAccount[0].steamId;
         }
         try {
-            const user = await getUser({ steamId, id });
+            const user = await getUser({ SteamId: steamId, Id: id });
+            const userRanking = await getUserRanking({ SteamId: user.steamId });
+            const allValidRecords = await getRecords({
+                UserSteamId: steamId,
+                UserId: id,
+                InvalidOnly: true,
+                Sort: '-id',
+                Limit: 5
+            });
             const allInvalidRecords = await getRecords({
                 UserSteamId: steamId,
                 UserId: id,
-                ValidOnly: false,
+                InvalidOnly: true,
                 Sort: '-id',
                 Limit: 5
             });
@@ -75,18 +86,22 @@ export const user = {
                 Sort: '-id',
                 Limit: 5
             });
-            const totalRuns = allInvalidRecords.totalAmount;
+            const totalRuns = allValidRecords.totalAmount + allInvalidRecords.totalAmount;
             const embed = new EmbedBuilder()
                 .setColor(0xff_92_00)
                 .setTitle(`${user.steamName}'s Stats`)
                 .setURL(`https://zeepkist.wopian.me/user/${user.steamId}`)
                 .addFields({
                 name: 'World Records',
-                value: String(worldRecords.totalAmount),
+                value: `${worldRecords.totalAmount} (${formatOrdinal(userRanking.position)})`,
                 inline: true
             }, {
                 name: 'Best Times',
                 value: String(bestRecords.totalAmount),
+                inline: true
+            }, {
+                name: 'any% Times',
+                value: String(allValidRecords.totalAmount),
                 inline: true
             }, {
                 name: 'Total Runs',

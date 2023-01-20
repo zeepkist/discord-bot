@@ -23,3 +23,8 @@ export const formatResultTime = (input, precision = 4) => {
         string += `${pad(hours, 2)}:`;
     return (string += `${pad(minutes, 2)}:${pad(seconds, 2)}.${pad(milliseconds, precision)}`);
 };
+export const formatOrdinal = (number) => {
+    const ordinals = ['th', 'st', 'nd', 'rd'];
+    const modulo = number % 100;
+    return (number + (ordinals[(modulo - 20) % 10] || ordinals[modulo] || ordinals[0]));
+};
