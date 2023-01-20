@@ -117,7 +117,7 @@ export const user = {
                 inline: true
             }, {
                 name: 'any% Times',
-                value: String(allValidRecords.totalAmount),
+                value: String(allInvalidRecords.totalAmount),
                 inline: true
             }, {
                 name: 'Total Runs',
