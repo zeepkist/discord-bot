@@ -146,7 +146,7 @@ export const user: Command = {
           },
           {
             name: 'any% Times',
-            value: String(allValidRecords.totalAmount),
+            value: String(allInvalidRecords.totalAmount),
             inline: true
           },
           {
