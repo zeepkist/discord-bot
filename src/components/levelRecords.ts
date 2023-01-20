@@ -1,9 +1,7 @@
 import {
-  bold,
   ButtonInteraction,
   CommandInteraction,
   EmbedBuilder,
-  hyperlink,
   inlineCode,
   italic
 } from 'discord.js'
@@ -17,6 +15,7 @@ import {
   formatResultTime,
   providedBy
 } from '../utils/index.js'
+import { listRecords } from './lists/listRecords.js'
 // import { paginationButtons } from './paginationButtons.js'
 
 export const levelRecords = async (
@@ -77,63 +76,57 @@ export const levelRecords = async (
     inline: true
   })
 
-  if (user && user.length > 0) {
+  handleUserRecords: if (user && user.length > 0) {
     const userRecord = await getRecords({
       LevelId: level.id,
       UserSteamId: user[0].steamId,
       BestOnly: true
     })
 
-    console.log(userRecord)
-
-    if (userRecord && userRecord.records.length > 0) {
-      const record = userRecord.records[0]
-
-      let bestMedal
-      if (record.isWorldRecord) bestMedal = 'WR '
-      else if (record.time < level.timeAuthor)
-        bestMedal = '<:zeepkist_author:1008786679173234688> '
-      else if (record.time < level.timeGold)
-        bestMedal = '<:zeepkist_gold:1008786743706783826> '
-      else if (record.time < level.timeSilver)
-        bestMedal = '<:zeepkist_silver:1008786769380130959> '
-      else if (record.time < level.timeBronze)
-        bestMedal = '<:zeepkist_bronze:1008786713688166400> '
-
-      const personalBest = `${bestMedal}${inlineCode(
-        formatResultTime(record.time)
-      )}\n${formatRelativeDate(record.dateCreated)} with ${
-        userRecord.totalAmount
-      } total runs`
-
-      embed.addFields({
-        name: 'Your Personal Best',
-        value: personalBest,
-        inline: true
-      })
+    if (!userRecord || userRecord.records.length === 0) {
+      break handleUserRecords
     }
+
+    const record = userRecord.records[0]
+
+    let bestMedal
+    if (record.isWorldRecord) bestMedal = 'WR '
+    else if (record.time < level.timeAuthor)
+      bestMedal = '<:zeepkist_author:1008786679173234688> '
+    else if (record.time < level.timeGold)
+      bestMedal = '<:zeepkist_gold:1008786743706783826> '
+    else if (record.time < level.timeSilver)
+      bestMedal = '<:zeepkist_silver:1008786769380130959> '
+    else if (record.time < level.timeBronze)
+      bestMedal = '<:zeepkist_bronze:1008786713688166400> '
+
+    const personalBest = `${bestMedal}${inlineCode(
+      formatResultTime(record.time)
+    )}\n${formatRelativeDate(record.dateCreated)} with ${
+      userRecord.totalAmount
+    } total runs`
+
+    embed.addFields({
+      name: 'Your Personal Best',
+      value: personalBest,
+      inline: true
+    })
   }
 
-  let recordsList = records.records
-    .map((record, index) => {
-      const recordNumber = bold(`${index + 1}.`)
-      const recordTime = inlineCode(formatResultTime(record.time))
-      const recordUser = hyperlink(
-        record.user.steamName,
-        `https://zeepkist.wopian.me/user/${record.user.steamId}`
-      )
-      const recordDate = formatRelativeDate(record.dateCreated)
-      return `${recordNumber} ${recordTime} by ${recordUser} (${recordDate})`
-    })
-    .join('\n')
+  let bestRecords = listRecords({
+    records: records.records,
+    showRank: true,
+    showUser: true,
+    showMedal: true
+  })
 
   if (records.totalAmount > limit) {
-    recordsList += `\n\n${italic('Only the first 10 levels are shown.')}`
+    bestRecords += `\n\n${italic('Only the first 10 levels are shown.')}`
   }
 
   embed.addFields({
     name: 'Best Times',
-    value: recordsList ?? 'No records recorded.'
+    value: bestRecords ?? 'No records recorded.'
   })
 
   if (level.thumbnailUrl) {

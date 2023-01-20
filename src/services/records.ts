@@ -10,6 +10,7 @@ interface GetRecordsParameters {
   BestOnly?: boolean
   ValidOnly?: boolean
   WorldRecordOnly?: boolean
+  Sort?: string
   Limit?: number
   Offset?: number
 }
@@ -23,6 +24,7 @@ export const getRecords = async ({
   BestOnly,
   ValidOnly,
   WorldRecordOnly,
+  Sort,
   Limit,
   Offset
 }: GetRecordsParameters = {}) => {
@@ -35,6 +37,7 @@ export const getRecords = async ({
     BestOnly,
     ValidOnly,
     WorldRecordOnly,
+    Sort,
     Limit,
     Offset
   }

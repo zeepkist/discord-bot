@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AxiosError } from 'axios'
 import {
   ApplicationCommandOptionType,
@@ -8,10 +9,10 @@ import {
 } from 'discord.js'
 
 import { Command } from '../command.js'
+import { listRecords } from '../components/lists/listRecords.js'
 import { database } from '../services/database.js'
 import { getRecords } from '../services/records.js'
 import { getUser } from '../services/users.js'
-import { formatResultTime } from '../utils/index.js'
 
 export const user: Command = {
   name: 'user',
@@ -63,41 +64,33 @@ export const user: Command = {
       const allValidRecords = await getRecords({
         UserSteamId: steamId,
         UserId: id,
-        Limit: 0
+        Sort: '-id',
+        Limit: 5
       })
       const allInvalidRecords = await getRecords({
         UserSteamId: steamId,
         UserId: id,
         ValidOnly: false,
-        Limit: 0
+        Sort: '-id',
+        Limit: 5
       })
       const bestRecords = await getRecords({
         UserSteamId: steamId,
         UserId: id,
         BestOnly: true,
-        Limit: 0
+        Sort: '-id',
+        Limit: 5
       })
       const worldRecords = await getRecords({
         UserSteamId: steamId,
         UserId: id,
         WorldRecordOnly: true,
+        Sort: '-id',
         Limit: 5
       })
 
       const totalRuns =
         allValidRecords.totalAmount + allInvalidRecords.totalAmount
-
-      const worldRecordsList = worldRecords.records
-        .map(record => {
-          return `${record.level.name} by ${record.level.author}`
-        })
-        .join('\n')
-
-      const worldRecordsTimeList = worldRecords.records
-        .map(record => {
-          return inlineCode(formatResultTime(record.time))
-        })
-        .join('\n')
 
       const embed = new EmbedBuilder()
         .setColor(0xff_92_00)
@@ -123,24 +116,48 @@ export const user: Command = {
         .setTimestamp()
         .setFooter({ text: 'Data provided by Zeepkist GTR' })
 
-      if (worldRecords.records.length > 0) {
-        embed.addFields(
-          {
-            name: 'Recent World Records',
-            value: worldRecordsList,
-            inline: true
-          },
-          {
-            name: 'Time',
-            value: worldRecordsTimeList,
-            inline: true
-          }
-        )
+      const worldRecordsList = listRecords({
+        records: worldRecords.records,
+        showLevel: true,
+        showMedal: true
+      })
+
+      if (worldRecordsList.length > 0) {
+        embed.addFields({
+          name: 'Recent World Records',
+          value: worldRecordsList
+        })
+      }
+
+      const bestRecordsList = listRecords({
+        records: bestRecords.records,
+        showLevel: true,
+        showMedal: true
+      })
+
+      if (bestRecordsList.length > 0) {
+        embed.addFields({
+          name: 'Recent Bests',
+          value: bestRecordsList
+        })
+      }
+
+      const anyPercentRecordsList = listRecords({
+        records: allInvalidRecords.records,
+        showLevel: true
+      })
+
+      if (anyPercentRecordsList.length > 0) {
+        embed.addFields({
+          name: 'Recent any% Runs',
+          value: anyPercentRecordsList
+        })
       }
 
       await interaction.reply({
         embeds: [embed]
       })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: AxiosError | any) {
       console.error(String(error))
       await (error.response?.status === 404

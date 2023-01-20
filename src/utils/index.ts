@@ -1,3 +1,4 @@
+export * from './bestMedal.js'
 export * from './extractPages.js'
 export * from './formatRelativeDate.js'
 export * from './formatResultTime.js'
