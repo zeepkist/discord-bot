@@ -78,6 +78,8 @@ jobs:
           BRANCH: production
           FOLDER: dist
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SKIP_EMPTY_COMMITS: true
+          MESSAGE: ${{ github.ref_name }}
 
       - name: Announce Deployment
         if: success() && github.ref == 'refs/heads/develop'
