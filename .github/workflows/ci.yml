@@ -9,7 +9,7 @@ on:
 
 env:
   FORCE_COLOR: true
-  NODE_VERSION: 18 # Used by semantic-release
+  NODE_VERSION: 18
 
 jobs:
   build:
@@ -44,57 +44,14 @@ jobs:
       - name: Install Dependencies
         run: yarn install --immutable
 
-      - name: Build Bot
-        run: yarn build
+      - name: Run Linter
+        run: yarn lint
 
       - name: Run Tests
         run: yarn test
-
-      - name: Run Linter
-        run: yarn lint
 
       - name: Create Release
         if: success() && github.ref == 'refs/heads/develop'
         run: yarn semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Copy Files
-        if: success() && github.ref == 'refs/heads/develop'
-        run: |
-          cp package.json dist/package.json
-          cp yarn.lock dist/yarn.lock
-          cp .yarnrc.yml dist/.yarnrc.yml
-          mkdir -p dist/.yarn/releases
-          cp -r .yarn/releases/ dist/.yarn/
-          mkdir -p dist/.yarn/plugins
-          cp -r .yarn/plugins/ dist/.yarn/
-
-      - id: releases
-        name: Get Latest Release
-        uses: pozetroninc/github-action-get-latest-release@v0.5.0
-        with:
-          repository: ${{ github.repository }}
-
-      - name: Deploy Changes
-        if: success() && github.ref == 'refs/heads/develop'
-        uses: wopian/git-publish-subdir-action@develop
-        env:
-          REPO: self
-          BRANCH: production
-          FOLDER: dist
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SKIP_EMPTY_COMMITS: true
-          MESSAGE: ${{ steps.releases.outputs.release }} $(date +'%Y-%m-%dT%H:%M:%S')
-
-      - name: Announce Deployment
-        if: success() && github.ref == 'refs/heads/develop'
-        run: |
-          curl "https://control.sparkedhost.us/api/client/servers/${{ vars.SPARKEDHOST_SERVER }}/power" \
-          -H 'Accept: application/json' \
-          -H 'Content-Type: application/json' \
-          -H 'Authorization: Bearer ${{ secrets.SPARKEDHOST_TOKEN }}' \
-          -X POST \
-          -d '{
-          "signal": "restart"
-          }'
