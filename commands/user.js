@@ -1,16 +1,17 @@
-import { ApplicationCommandOptionType, ApplicationCommandType, EmbedBuilder, inlineCode } from 'discord.js';
+import { ActionRowBuilder, ApplicationCommandOptionType, ApplicationCommandType, ButtonBuilder, ButtonStyle, EmbedBuilder, inlineCode } from 'discord.js';
 import { listRecords } from '../components/lists/listRecords.js';
 import { database } from '../services/database.js';
+import { getLevels } from '../services/levels.js';
 import { getRecords } from '../services/records.js';
+import { getPlayerSummaries } from '../services/steam.js';
 import { getUser, getUserRanking } from '../services/users.js';
-import { formatOrdinal, userSimilarity } from '../utils/index.js';
+import { formatFlagEmoji, formatOrdinal, userSimilarity } from '../utils/index.js';
 const addDiscordAuthor = (embed, linkedAccount, steamId) => {
     embed.setAuthor({
         name: linkedAccount.username,
         iconURL: linkedAccount.avatarURL() ?? '',
         url: `https://zeepkist.wopian.me/user/${steamId}`
     });
-    embed.setThumbnail(linkedAccount.avatarURL() ?? '');
     if (linkedAccount.hexAccentColor) {
         embed.setColor(linkedAccount.hexAccentColor);
     }
@@ -57,6 +58,11 @@ export const user = {
         }
         try {
             const user = await getUser({ SteamId: steamId, Id: id });
+            const steamPlayerSummary = await getPlayerSummaries([user.steamId]);
+            const levelsCreated = await getLevels({
+                Author: user.steamName,
+                Limit: 0
+            });
             let userRanking;
             try {
                 userRanking = await getUserRanking({ SteamId: user.steamId });
@@ -107,21 +113,30 @@ export const user = {
                 .setColor(0xff_92_00)
                 .setTitle(`${user.steamName}'s Stats`)
                 .setURL(`https://zeepkist.wopian.me/user/${user.steamId}`)
+                .setThumbnail(steamPlayerSummary.response.players[0].avatarfull)
                 .addFields({
                 name: 'World Records',
                 value: `${worldRecords.totalAmount} ${userRankingPosition}`.trim(),
                 inline: true
             }, {
                 name: 'Best Times',
-                value: String(bestRecords.totalAmount),
+                value: `${bestRecords.totalAmount}`,
                 inline: true
             }, {
                 name: 'any% Times',
-                value: String(allInvalidRecords.totalAmount),
+                value: `${allInvalidRecords.totalAmount}`,
                 inline: true
             }, {
                 name: 'Total Runs',
-                value: String(totalRuns),
+                value: `${totalRuns}`,
+                inline: true
+            }, {
+                name: 'Levels Created',
+                value: `${levelsCreated.totalAmount}+`,
+                inline: true
+            }, {
+                name: 'Country',
+                value: formatFlagEmoji(steamPlayerSummary.response.players[0].loccountrycode),
                 inline: true
             })
                 .setTimestamp()
@@ -180,8 +195,19 @@ export const user = {
                     value: anyPercentRecordsList
                 });
             }
+            const buttons = new ActionRowBuilder().addComponents([
+                new ButtonBuilder()
+                    .setStyle(ButtonStyle.Link)
+                    .setLabel('More Stats')
+                    .setURL(`https://zeepkist.wopian.me/user/${user.steamId}`),
+                new ButtonBuilder()
+                    .setStyle(ButtonStyle.Link)
+                    .setLabel('Steam Profile')
+                    .setURL(`https://steamcommunity.com/profiles/${user.steamId}`)
+            ]);
             await interaction.reply({
-                embeds: [embed]
+                embeds: [embed],
+                components: [buttons]
             });
         }
         catch (error) {
