@@ -2,6 +2,7 @@ import { buttons } from '../buttons.js';
 import { commands } from '../commands.js';
 import { trackCommandUsage } from '../components/trackCommandUsage.js';
 import { modalSubmissions } from '../modalSubmissions.js';
+import { log } from '../utils/index.js';
 export default (client) => {
     client.on('interactionCreate', async (interaction) => {
         if (interaction.isCommand() || interaction.isContextMenuCommand()) {
@@ -16,7 +17,7 @@ export default (client) => {
     });
 };
 const handleSlashCommand = async (interaction) => {
-    console.log(`[${interaction.commandName}]: Handling request from "${interaction.guild?.name}"`);
+    log.info(interaction, 'Handling request');
     const slashCommand = commands.find(command => command.name === interaction.commandName);
     if (!slashCommand) {
         interaction.reply({ content: 'Unknown command', ephemeral: true });
@@ -26,7 +27,7 @@ const handleSlashCommand = async (interaction) => {
     slashCommand.run(interaction);
 };
 const handleButton = async (interaction) => {
-    console.log(`[button]: Handling request from "${interaction.guild?.name}"`);
+    log.info(interaction, 'Handling request');
     const button = buttons.find(button => button.name === interaction.customId);
     if (!button) {
         console.log('Unknown button interaction', interaction.customId);
@@ -39,7 +40,7 @@ const handleButton = async (interaction) => {
     button?.run(interaction);
 };
 const handleModalSubmit = async (interaction) => {
-    console.log(`[modal]: Handling request from "${interaction.guild?.name}"`);
+    log.info(interaction, 'Handling request');
     const modal = modalSubmissions.find(modal => modal.name === interaction.customId);
     if (!modal) {
         console.log('Unknown button interaction', interaction.customId);
