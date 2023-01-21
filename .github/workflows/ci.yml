@@ -85,7 +85,7 @@ jobs:
           FOLDER: dist
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SKIP_EMPTY_COMMITS: true
-          MESSAGE: ${{ steps.releases.outputs.release }} ${{ date +'%Y-%m-%dT%H:%M:%S' }}
+          MESSAGE: ${{ steps.releases.outputs.release }} $(date +'%Y-%m-%dT%H:%M:%S')
 
       - name: Announce Deployment
         if: success() && github.ref == 'refs/heads/develop'
