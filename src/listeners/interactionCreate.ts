@@ -10,6 +10,7 @@ import { buttons } from '../buttons.js'
 import { commands } from '../commands.js'
 import { trackCommandUsage } from '../components/trackCommandUsage.js'
 import { modalSubmissions } from '../modalSubmissions.js'
+import { log } from '../utils/index.js'
 
 export default (client: Client): void => {
   client.on('interactionCreate', async (interaction: Interaction) => {
@@ -28,9 +29,7 @@ export default (client: Client): void => {
 const handleSlashCommand = async (
   interaction: CommandInteraction
 ): Promise<void> => {
-  console.log(
-    `[${interaction.commandName}]: Handling request from "${interaction.guild?.name}"`
-  )
+  log.info(interaction, 'Handling request')
 
   const slashCommand = commands.find(
     command => command.name === interaction.commandName
@@ -46,7 +45,7 @@ const handleSlashCommand = async (
 }
 
 const handleButton = async (interaction: ButtonInteraction): Promise<void> => {
-  console.log(`[button]: Handling request from "${interaction.guild?.name}"`)
+  log.info(interaction, 'Handling request')
 
   const button = buttons.find(button => button.name === interaction.customId)
 
@@ -65,7 +64,7 @@ const handleButton = async (interaction: ButtonInteraction): Promise<void> => {
 const handleModalSubmit = async (
   interaction: ModalSubmitInteraction
 ): Promise<void> => {
-  console.log(`[modal]: Handling request from "${interaction.guild?.name}"`)
+  log.info(interaction, 'Handling request')
 
   const modal = modalSubmissions.find(
     modal => modal.name === interaction.customId
