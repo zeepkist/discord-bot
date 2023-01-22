@@ -6,9 +6,9 @@ import {
   PaginatedMessageQuery
 } from '../../models/database/paginatedMessage.js'
 import { database } from '../../services/database.js'
-import { getRecords } from '../../services/records.js'
+import { getLevels } from '../../services/levels.js'
 import { extractPages, log, providedBy } from '../../utils/index.js'
-import { listRecords } from '../lists/listRecords.js'
+import { listLevels } from '../lists/listLevels.js'
 import { paginationButtons } from '../paginationButtons.js'
 
 const setCurrentPage = (
@@ -39,7 +39,7 @@ interface PaginatedProperties {
   limit?: number
 }
 
-export const paginatedRecent = async (properties: PaginatedProperties) => {
+export const paginatedLevels = async (properties: PaginatedProperties) => {
   const { interaction, action, query, limit = 10 } = properties
 
   const isUpdate = interaction.isMessageComponent()
@@ -51,9 +51,9 @@ export const paginatedRecent = async (properties: PaginatedProperties) => {
         .select('query')
     : undefined
 
-  const worldRecordOnly = messageData
-    ? JSON.parse(messageData[0].query as string).worldRecordsOnly
-    : query?.worldRecordsOnly ?? false
+  const activeQuery = messageData
+    ? (JSON.parse(messageData[0].query as string) as PaginatedMessageQuery)
+    : query ?? {}
 
   let { totalPages, currentPage } = extractPages(
     isUpdate ? interaction.message.embeds[0].footer?.text : undefined
@@ -62,34 +62,32 @@ export const paginatedRecent = async (properties: PaginatedProperties) => {
   currentPage = setCurrentPage(action, currentPage, totalPages)
   const offset = (currentPage - 1) * limit
 
-  const { records, totalAmount } = await getRecords({
+  const { levels, totalAmount } = await getLevels({
+    Id: activeQuery.id,
+    WorkshopId: activeQuery.workshopId,
+    Author: activeQuery.author,
+    Name: activeQuery.name,
     Limit: 10,
-    Offset: offset,
-    BestOnly: true,
-    WorldRecordOnly: worldRecordOnly,
-    Sort: '-id'
+    Offset: offset
   })
 
   totalPages = Math.ceil(totalAmount / limit)
 
   log.info(
     interaction,
-    `Obtained ${totalAmount} recent records. Showing page ${currentPage} of ${totalPages}`
+    `Obtained ${totalAmount} levels. Showing page ${currentPage} of ${totalPages}`
   )
 
-  const recentRecords = listRecords({
-    records: records,
+  const foundLevels = listLevels({
+    levels: levels,
     offset,
-    showRank: true,
-    showUser: true,
-    showLevel: true,
-    showMedal: true
+    showRank: true
   })
 
   const embed = new EmbedBuilder()
     .setColor(0xff_92_00)
-    .setTitle(`Recent ${worldRecordOnly ? 'World Records' : 'Personal Bests'}`)
-    .setDescription(recentRecords ?? 'No recent records.')
+    .setTitle('Level Search Results')
+    .setDescription(foundLevels ?? 'No levels found')
     .setFooter({
       text: `Page ${currentPage} of ${totalPages}. ${providedBy}`
     })
@@ -97,7 +95,7 @@ export const paginatedRecent = async (properties: PaginatedProperties) => {
 
   const pagination = paginationButtons(
     interaction,
-    'recent',
+    'levels',
     currentPage,
     totalPages
   )

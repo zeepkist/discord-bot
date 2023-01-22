@@ -1,5 +1,9 @@
 export interface PaginatedMessageQuery {
   worldRecordsOnly?: boolean
+  id?: number
+  workshopId?: string
+  author?: string
+  name?: string
 }
 
 export interface PaginatedMessage {

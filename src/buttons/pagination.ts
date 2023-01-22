@@ -1,6 +1,7 @@
 import { ButtonInteraction } from 'discord.js'
 
 import { PaginatedButton, PaginatedButtonAction } from '../button.js'
+import { paginatedLevels } from '../components/paginated/paginatedLevels.js'
 import { paginatedRecent } from '../components/paginated/paginatedRecent.js'
 
 export const pagination: PaginatedButton = {
@@ -14,6 +15,11 @@ export const pagination: PaginatedButton = {
     switch (command) {
       case 'recent': {
         await paginatedRecent({ interaction, action })
+        break
+      }
+      case 'levels': {
+        await paginatedLevels({ interaction, action })
+        break
       }
     }
   }

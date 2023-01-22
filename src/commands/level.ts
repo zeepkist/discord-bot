@@ -8,7 +8,7 @@ import {
 import { Command } from '../command.js'
 import { errorReply } from '../components/errorReply.js'
 import { levelRecords } from '../components/levelRecords.js'
-import { levelsList } from '../components/levelsList.js'
+import { paginatedLevels } from '../components/paginated/paginatedLevels.js'
 import { getLevels } from '../services/levels.js'
 
 const getOptions = (interaction: CommandInteraction) => {
@@ -89,7 +89,7 @@ export const level: Command = {
         WorkshopId: workshopId,
         Author: author,
         Name: name,
-        Limit: 10
+        Limit: 0
       })
 
       if (levels.totalAmount === 0) {
@@ -100,12 +100,11 @@ export const level: Command = {
 
       if (levels.totalAmount > 1) {
         console.log('[level]:', 'Found multiple levels', levels)
-        const { embeds } = await levelsList(
+        await paginatedLevels({
           interaction,
-          levels.levels,
-          levels.totalAmount
-        )
-        await interaction.reply({ embeds })
+          action: 'first',
+          query: { id, workshopId, author, name }
+        })
         return
       }
 
