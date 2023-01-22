@@ -7,5 +7,5 @@ const getLink = (clientId: string) =>
   `https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=0&scope=bot%20applications.commands`
 
 export const inviteUrl = getLink(
-  process.env.CANARY ? clientIdCanary : clientIdProduction
+  process.env.ZEEPKIST_BOT_PRODUCTION ? clientIdProduction : clientIdCanary
 )
