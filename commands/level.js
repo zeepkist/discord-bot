@@ -2,7 +2,7 @@ import { ApplicationCommandOptionType, ApplicationCommandType, EmbedBuilder } fr
 import { errorReply } from '../components/errorReply.js';
 import { paginatedLevel } from '../components/paginated/paginatedLevel.js';
 import { paginatedLevels } from '../components/paginated/paginatedLevels.js';
-import { getLevels } from '../services/levels.js';
+import { getLevels, searchLevels } from '../services/levels.js';
 import { log } from '../utils/log.js';
 const getOptions = (interaction) => {
     const id = interaction.options.data.find(option => option.name === 'id')
@@ -11,7 +11,8 @@ const getOptions = (interaction) => {
     const author = interaction.options.data.find(option => option.name === 'author')?.value;
     const name = interaction.options.data.find(option => option.name === 'name')
         ?.value;
-    return { id, workshopId, author, name };
+    const search = interaction.options.data.find(option => option.name === 'search')?.value;
+    return { id, workshopId, author, name, search };
 };
 const replyNoLevels = async (interaction, invalidArguments = false) => {
     const embed = new EmbedBuilder()
@@ -29,6 +30,12 @@ export const level = {
     type: ApplicationCommandType.ChatInput,
     options: [
         {
+            name: 'search',
+            description: 'Search for a level by name or author',
+            type: ApplicationCommandOptionType.String,
+            required: false
+        },
+        {
             name: 'id',
             description: 'The id of the level',
             type: ApplicationCommandOptionType.String,
@@ -42,40 +49,42 @@ export const level = {
         },
         {
             name: 'author',
-            description: 'The author of the level(s)',
+            description: 'The exact author of the level(s)',
             type: ApplicationCommandOptionType.String,
             required: false
         },
         {
             name: 'name',
-            description: 'The name of the level(s)',
+            description: 'The exact name of the level(s)',
             type: ApplicationCommandOptionType.String,
             required: false
         }
     ],
     run: async (interaction) => {
-        const { id, workshopId, author, name } = getOptions(interaction);
-        log.info(interaction, `${id} ${workshopId} ${author} ${name}`);
-        if (!id && !workshopId && !author && !name) {
+        const { id, workshopId, author, name, search } = getOptions(interaction);
+        log.info(interaction, `${id} ${workshopId} ${author} ${name} ${search}`);
+        if (!id && !workshopId && !author && !name && !search) {
             log.info(interaction, 'No arguments provided');
             await replyNoLevels(interaction, true);
             return;
         }
         try {
-            const levels = await getLevels({
-                Id: id,
-                WorkshopId: workshopId,
-                Author: author,
-                Name: name,
-                Limit: 1
-            });
+            const levels = await (search
+                ? searchLevels({ Query: search, Limit: 1 })
+                : getLevels({
+                    Id: id,
+                    WorkshopId: workshopId,
+                    Author: author,
+                    Name: name,
+                    Limit: 1
+                }));
             if (levels.totalAmount === 0) {
                 log.info(interaction, 'No levels found');
                 await replyNoLevels(interaction);
                 return;
             }
             log.info(interaction, `Found ${levels.totalAmount} levels`);
-            if (levels.totalAmount > 1) {
+            if (levels.totalAmount > 1 && !search) {
                 await paginatedLevels({
                     interaction,
                     action: 'first',
@@ -83,7 +92,7 @@ export const level = {
                 });
                 return;
             }
-            if (levels.totalAmount === 1) {
+            if (levels.totalAmount === 1 || search) {
                 await paginatedLevel({
                     interaction,
                     action: 'first',
