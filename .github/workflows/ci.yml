@@ -40,57 +40,8 @@ jobs:
       - name: Run Linter
         run: yarn lint
 
-      - name: Save State
-        uses: actions/cache@v3
-        with:
-          path: ./
-          key: ${{ runner.os }}-state-${{ github.sha }}
-  test:
-    needs: [setup]
-    name: Test Bot
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        node_index: [0, 1, 2, 3]
-        total_nodes: [4]
-
-    steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Restore State
-        id: state-cache
-        uses: actions/cache@v3
-        with:
-          path: ./
-          key: ${{ runner.os }}-state-${{ github.sha }}
-
       - name: Run Tests
         run: yarn coverage
-        env:
-          CI_NODE_INDEX: ${{ matrix.node_index }}
-          CI_NODE_TOTAL: ${{ matrix.total_nodes }}
-
-  release:
-    needs: [setup, test]
-    name: Release Bot
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Restore State
-        id: state-cache
-        uses: actions/cache@v3
-        with:
-          path: ./
-          key: ${{ runner.os }}-state-${{ github.sha }}
 
       - name: Create Release
         if: success() && github.ref == 'refs/heads/develop'
