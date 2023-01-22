@@ -41,7 +41,7 @@ jobs:
         run: yarn build
 
       - name: Copy Files
-        if: success() && github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop'
         run: |
           cp package.json dist/package.json
           cp yarn.lock dist/yarn.lock
@@ -52,7 +52,7 @@ jobs:
           cp -r .yarn/plugins/ dist/.yarn/
 
       - name: Deploy Changes
-        if: success() && github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop'
         uses: wopian/git-publish-subdir-action@develop
         env:
           REPO: self
