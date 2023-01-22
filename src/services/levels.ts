@@ -19,3 +19,18 @@ export const getLevels = async (query: GetLevelsParameters = {}) => {
     throw response.data.error
   }
 }
+
+interface SearchLevelsParameters {
+  Query: string
+  Limit?: number
+  Offset?: number
+}
+
+export const searchLevels = async (query: SearchLevelsParameters) => {
+  const response = await api.get('levels/search', { params: query })
+
+  if (response.status === 200) return response.data as LevelResponse
+  else {
+    throw response.data.error
+  }
+}
