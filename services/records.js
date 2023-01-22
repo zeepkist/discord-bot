@@ -1,6 +1,6 @@
 import { api } from './api.js';
 export const getRecords = async (query = {}) => {
-    const response = await api.get('record', { params: query });
+    const response = await api.get('records', { params: query });
     if (response.status === 200)
         return response.data;
     else {

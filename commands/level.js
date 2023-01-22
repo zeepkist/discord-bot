@@ -1,8 +1,9 @@
 import { ApplicationCommandOptionType, ApplicationCommandType, EmbedBuilder } from 'discord.js';
 import { errorReply } from '../components/errorReply.js';
-import { levelRecords } from '../components/levelRecords.js';
-import { levelsList } from '../components/levelsList.js';
+import { paginatedLevel } from '../components/paginated/paginatedLevel.js';
+import { paginatedLevels } from '../components/paginated/paginatedLevels.js';
 import { getLevels } from '../services/levels.js';
+import { log } from '../utils/log.js';
 const getOptions = (interaction) => {
     const id = interaction.options.data.find(option => option.name === 'id')
         ?.value;
@@ -54,9 +55,9 @@ export const level = {
     ],
     run: async (interaction) => {
         const { id, workshopId, author, name } = getOptions(interaction);
-        console.log('[level]:', id, workshopId, author, name);
+        log.info(interaction, `${id} ${workshopId} ${author} ${name}`);
         if (!id && !workshopId && !author && !name) {
-            console.log('[level]:', 'No arguments provided');
+            log.info(interaction, 'No arguments provided');
             await replyNoLevels(interaction, true);
             return;
         }
@@ -66,23 +67,28 @@ export const level = {
                 WorkshopId: workshopId,
                 Author: author,
                 Name: name,
-                Limit: 10
+                Limit: 1
             });
             if (levels.totalAmount === 0) {
-                console.log('[level]:', 'No level found', levels);
+                log.info(interaction, 'No levels found');
                 await replyNoLevels(interaction);
                 return;
             }
+            log.info(interaction, `Found ${levels.totalAmount} levels`);
             if (levels.totalAmount > 1) {
-                console.log('[level]:', 'Found multiple levels', levels);
-                const { embeds } = await levelsList(interaction, levels.levels, levels.totalAmount);
-                await interaction.reply({ embeds });
+                await paginatedLevels({
+                    interaction,
+                    action: 'first',
+                    query: { id, workshopId, author, name }
+                });
                 return;
             }
             if (levels.totalAmount === 1) {
-                console.log('[level]:', 'Found 1 level', levels);
-                const { embeds, components } = await levelRecords(interaction, levels.levels[0]);
-                await interaction.reply({ embeds, components });
+                await paginatedLevel({
+                    interaction,
+                    action: 'first',
+                    query: { id: levels.levels[0].id }
+                });
             }
         }
         catch (error) {

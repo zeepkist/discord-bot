@@ -1,0 +1,46 @@
+import { inlineCode } from 'discord.js';
+import { database } from '../../services/database.js';
+import { getRecords } from '../../services/records.js';
+import { bestMedal, formatRelativeDate, formatResultTime, log, userSimilarity } from '../../utils/index.js';
+const verifyPrompt = async ({ embed }) => {
+    embed.addFields({
+        name: 'Verify your Steam account',
+        value: `with ${inlineCode('/verify')} to see your personal best here`,
+        inline: true
+    });
+    return;
+};
+export const addPersonalBest = async ({ interaction, embed, levelId, discordName, steamNames }) => {
+    const user = await database('linked_accounts')
+        .where({ discordId: interaction.user.id })
+        .select('steamId')
+        .first();
+    if (!user &&
+        steamNames.length >= 5 &&
+        userSimilarity(discordName, steamNames) > 3) {
+        log.info(interaction, `No linked user and a similar user isn't on page 1. Showing verify prompt`);
+        return verifyPrompt({
+            embed,
+            discordName,
+            steamNames
+        });
+    }
+    else if (!user)
+        return;
+    log.info(interaction, `Getting user records for ${user.steamId} on level ${levelId}`);
+    const userRecords = await getRecords({
+        LevelId: levelId,
+        UserSteamId: user.steamId,
+        BestOnly: true
+    });
+    if (!userRecords || userRecords.records.length === 0)
+        return;
+    log.info(interaction, `Found personal best for ${user.steamId} on level ${levelId}`);
+    const userRecord = userRecords.records[0];
+    const formattedUserRecord = `${bestMedal(userRecord)} ${inlineCode(formatResultTime(userRecord.time))}\n${formatRelativeDate(userRecord.dateCreated)} with ${userRecords.totalAmount} run${userRecords.totalAmount === 1 ? '' : 's'} so far`;
+    embed.addFields({
+        name: 'Your Personal Best',
+        value: formattedUserRecord,
+        inline: true
+    });
+};
