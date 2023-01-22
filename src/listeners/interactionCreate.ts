@@ -33,7 +33,7 @@ export default (client: Client): void => {
 const handleSlashCommand = async (
   interaction: CommandInteraction
 ): Promise<void> => {
-  log.info(interaction, 'Handling request')
+  log.info(interaction, 'Handling request as command')
 
   const slashCommand = commands.find(
     command => command.name === interaction.commandName
@@ -51,6 +51,7 @@ const handleSlashCommand = async (
 const handlePaginatedButton = async (
   interaction: ButtonInteraction
 ): Promise<void> => {
+  log.info(interaction, 'Handling request as pagination button')
   const [buttonName, action, type] = interaction.customId.split('-')
 
   const button = buttons.find(
@@ -70,7 +71,7 @@ const handlePaginatedButton = async (
 }
 
 const handleButton = async (interaction: ButtonInteraction): Promise<void> => {
-  log.info(interaction, 'Handling request')
+  log.info(interaction, 'Handling request as button')
 
   const button = buttons.find(
     button => button.name === interaction.customId
@@ -91,7 +92,7 @@ const handleButton = async (interaction: ButtonInteraction): Promise<void> => {
 const handleModalSubmit = async (
   interaction: ModalSubmitInteraction
 ): Promise<void> => {
-  log.info(interaction, 'Handling request')
+  log.info(interaction, 'Handling request as modal submission')
 
   const modal = modalSubmissions.find(
     modal => modal.name === interaction.customId

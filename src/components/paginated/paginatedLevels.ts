@@ -25,7 +25,8 @@ export const paginatedLevels = async (properties: PaginatedData) => {
   const levelsList = listLevels({
     levels: levels,
     offset: data.offset,
-    showRank: true
+    showRank: true,
+    showId: true
   })
 
   const embed = new EmbedBuilder()

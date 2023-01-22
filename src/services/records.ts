@@ -17,7 +17,7 @@ interface GetRecordsParameters {
 }
 
 export const getRecords = async (query: GetRecordsParameters = {}) => {
-  const response = await api.get('record', { params: query })
+  const response = await api.get('records', { params: query })
 
   if (response.status === 200) return response.data as RecordResponse
   else {

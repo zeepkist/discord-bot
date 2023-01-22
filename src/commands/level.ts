@@ -7,9 +7,10 @@ import {
 
 import { Command } from '../command.js'
 import { errorReply } from '../components/errorReply.js'
-import { levelRecords } from '../components/levelRecords.js'
+import { paginatedLevel } from '../components/paginated/paginatedLevel.js'
 import { paginatedLevels } from '../components/paginated/paginatedLevels.js'
 import { getLevels } from '../services/levels.js'
+import { log } from '../utils/log.js'
 
 const getOptions = (interaction: CommandInteraction) => {
   const id = interaction.options.data.find(option => option.name === 'id')
@@ -75,10 +76,10 @@ export const level: Command = {
   ],
   run: async (interaction: CommandInteraction) => {
     const { id, workshopId, author, name } = getOptions(interaction)
-    console.log('[level]:', id, workshopId, author, name)
+    log.info(interaction, `${id} ${workshopId} ${author} ${name}`)
 
     if (!id && !workshopId && !author && !name) {
-      console.log('[level]:', 'No arguments provided')
+      log.info(interaction, 'No arguments provided')
       await replyNoLevels(interaction, true)
       return
     }
@@ -89,17 +90,18 @@ export const level: Command = {
         WorkshopId: workshopId,
         Author: author,
         Name: name,
-        Limit: 0
+        Limit: 1
       })
 
       if (levels.totalAmount === 0) {
-        console.log('[level]:', 'No level found', levels)
+        log.info(interaction, 'No levels found')
         await replyNoLevels(interaction)
         return
       }
 
+      log.info(interaction, `Found ${levels.totalAmount} levels`)
+
       if (levels.totalAmount > 1) {
-        console.log('[level]:', 'Found multiple levels', levels)
         await paginatedLevels({
           interaction,
           action: 'first',
@@ -109,12 +111,11 @@ export const level: Command = {
       }
 
       if (levels.totalAmount === 1) {
-        console.log('[level]:', 'Found 1 level', levels)
-        const { embeds, components } = await levelRecords(
+        await paginatedLevel({
           interaction,
-          levels.levels[0]
-        )
-        await interaction.reply({ embeds, components })
+          action: 'first',
+          query: { id: levels.levels[0].id }
+        })
       }
     } catch (error: unknown) {
       errorReply(interaction, level.name, error)

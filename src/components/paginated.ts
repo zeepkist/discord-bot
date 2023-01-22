@@ -1,4 +1,10 @@
-import { ButtonInteraction, CommandInteraction, EmbedBuilder } from 'discord.js'
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonInteraction,
+  CommandInteraction,
+  EmbedBuilder
+} from 'discord.js'
 
 import { PaginatedButtonAction } from '../button.js'
 import { PAGINATION_LIMIT } from '../constants.js'
@@ -14,6 +20,7 @@ export interface PaginatedData {
   interaction: CommandInteraction | ButtonInteraction
   action: PaginatedButtonAction
   query?: PaginatedMessageQuery
+  limit?: number
 }
 
 const setCurrentPage = (
@@ -41,7 +48,7 @@ const setCurrentPage = (
 }
 
 export const getPaginatedData = async (properties: PaginatedData) => {
-  const { interaction, action, query } = properties
+  const { interaction, action, query, limit } = properties
 
   const isUpdatingMessage = interaction.isMessageComponent()
 
@@ -51,13 +58,12 @@ export const getPaginatedData = async (properties: PaginatedData) => {
           messageId: interaction.message.interaction?.id
         })
         .select('query')
-    : [{ query: {} }]
-  const activeQuery =
-    paginatedMessage.length > 0
-      ? (JSON.parse(
-          paginatedMessage[0].query as string
-        ) as PaginatedMessageQuery)
-      : query ?? {}
+        .first()
+    : undefined
+
+  const activeQuery = paginatedMessage
+    ? (JSON.parse(paginatedMessage.query as string) as PaginatedMessageQuery)
+    : query ?? {}
 
   const pages = extractPages(
     isUpdatingMessage ? interaction.message.embeds[0].footer?.text : undefined
@@ -68,7 +74,7 @@ export const getPaginatedData = async (properties: PaginatedData) => {
     pages.currentPage,
     pages.totalPages
   )
-  const offset = (currentPage - 1) * PAGINATION_LIMIT
+  const offset = (currentPage - 1) * (limit ?? PAGINATION_LIMIT)
 
   return {
     interactionId: interaction.id,
@@ -83,20 +89,24 @@ interface SendPaginatedMessage {
   customId: string
   interaction: CommandInteraction | ButtonInteraction
   embed: EmbedBuilder
+  components?: ActionRowBuilder<ButtonBuilder>[]
   query: PaginatedMessageQuery
   currentPage: number
   totalAmount: number
+  limit?: number
 }
 
 export const sendPaginatedMessage = async ({
   customId,
   interaction,
   embed,
+  components,
   currentPage,
   totalAmount,
-  query
+  query,
+  limit
 }: SendPaginatedMessage) => {
-  const totalPages = Math.ceil(totalAmount / PAGINATION_LIMIT)
+  const totalPages = Math.ceil(totalAmount / (limit ?? PAGINATION_LIMIT))
 
   log.info(
     interaction,
@@ -120,7 +130,10 @@ export const sendPaginatedMessage = async ({
   const isUpdatingMessage = interaction.isMessageComponent()
   const messageContent = {
     embeds: [embed],
-    components: pagination ? [pagination] : []
+    components: [
+      ...(pagination ? [pagination] : []),
+      ...(components && components?.length > 0 ? components : [])
+    ]
   }
 
   if (isUpdatingMessage) {
