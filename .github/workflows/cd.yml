@@ -41,7 +41,6 @@ jobs:
         run: yarn build
 
       - name: Copy Files
-        if: success()
         run: |
           cp package.json dist/package.json
           cp yarn.lock dist/yarn.lock
@@ -52,7 +51,6 @@ jobs:
           cp -r .yarn/plugins/ dist/.yarn/
 
       - name: Deploy Changes
-        if: success()
         uses: wopian/git-publish-subdir-action@develop
         env:
           REPO: self
@@ -63,7 +61,6 @@ jobs:
           MESSAGE: ${{ github.event.release.tag_name }} $(date +'%Y-%m-%dT%H:%M:%S')
 
       - name: Announce Deployment
-        if: success()
         run: |
           curl "https://control.sparkedhost.us/api/client/servers/${{ vars.SPARKEDHOST_SERVER }}/power" \
           -H 'Accept: application/json' \
