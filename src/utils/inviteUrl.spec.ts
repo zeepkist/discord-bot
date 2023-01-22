@@ -10,5 +10,5 @@ test(
   'returns canary invite url',
   macro,
   inviteUrl,
-  'https://discord.com/oauth2/authorize?client_id=1064354910612762674&permissions=0&scope=bot%20applications.commands'
+  'https://discord.com/oauth2/authorize?client_id=1014233853147230308&permissions=0&scope=bot%20applications.commands'
 )

@@ -1,8 +1,4 @@
-import { config } from 'dotenv'
-
-config()
-
-const IS_PRODUCTION = process.env.ZEEPKIST_BOT_PRODUCTION === 'true'
+import { IS_PRODUCTION } from '../constants.js'
 
 export const MEDAL = {
   WR: '<:wr:1065822034090799135>',
