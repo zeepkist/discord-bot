@@ -7,7 +7,6 @@ import {
 
 import { getUserRankings } from '../services/users.js'
 import { formatRank, formatUser, providedBy } from '../utils/index.js'
-// import { paginationButtons } from './paginationButtons.js'
 
 export const userRankings = async (
   interaction: CommandInteraction | ButtonInteraction,
@@ -41,10 +40,8 @@ export const userRankings = async (
     })
     .setTimestamp()
 
-  //const pagination = paginationButtons(interaction, 'ranking', page, totalPages)
-
   return {
     embeds: [embed],
-    components: [] //pagination ? [pagination] : []
+    components: []
   }
 }

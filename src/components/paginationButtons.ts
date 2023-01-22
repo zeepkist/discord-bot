@@ -10,30 +10,31 @@ import { CollectorFilterValue } from '../models/collector.js'
 
 export const paginationButtons = (
   interaction: CommandInteraction | ButtonInteraction,
-  customIdPrefix: string,
+  customId: string,
   page: number,
   maxPages: number
 ) => {
   if (maxPages === 1) return
+  const prefix = 'paginationButton-'
 
   const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents([
     new ButtonBuilder()
-      .setCustomId(`${customIdPrefix}FirstButton`)
+      .setCustomId(`${prefix}first-${customId}`)
       .setLabel('First')
       .setStyle(ButtonStyle.Primary)
       .setDisabled(page === 1),
     new ButtonBuilder()
-      .setCustomId(`${customIdPrefix}PreviousButton`)
+      .setCustomId(`${prefix}previous-${customId}`)
       .setLabel('Previous')
       .setStyle(ButtonStyle.Primary)
       .setDisabled(page === 1),
     new ButtonBuilder()
-      .setCustomId(`${customIdPrefix}NextButton`)
+      .setCustomId(`${prefix}next-${customId}`)
       .setLabel('Next')
       .setStyle(ButtonStyle.Primary)
       .setDisabled(page === maxPages),
     new ButtonBuilder()
-      .setCustomId(`${customIdPrefix}LastButton`)
+      .setCustomId(`${prefix}last-${customId}`)
       .setLabel('Last')
       .setStyle(ButtonStyle.Primary)
       .setDisabled(page === maxPages)
@@ -41,7 +42,9 @@ export const paginationButtons = (
 
   const collector = interaction.channel?.createMessageComponentCollector({
     filter: (m: CollectorFilterValue) =>
-      ['first', 'previous', 'next', 'last'].includes(m.customId),
+      ['first', 'previous', 'next', 'last'].includes(
+        m.customId.split(prefix)[1].split('-')[0]
+      ),
     time: 3 * 1000 * 60 // 3 minutes
   })
 

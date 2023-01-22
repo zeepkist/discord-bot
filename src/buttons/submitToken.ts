@@ -18,7 +18,7 @@ export const submitToken = {
       .setCustomId('token')
       .setLabel('Enter the code from thezeepkistpodium.com')
       .setPlaceholder(
-        'eyJzdGVhbWlkIjoiMDAwMDAwMDAwMDAwMDAwMDAifQ.oUVEWIWAk16oc9w81IrZOv0XDEaSYf7Dpo1xLehDzys' // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGVhbWlkIjoiMDAwMDAwMDAwMDAwMDAwMDAifQ.oUVEWIWAk16oc9w81IrZOv0XDEaSYf7Dpo1xLehDzys
+        'eyJzdGVhbWlkIjoiMDAwMDAwMDAwMDAwMDAwMDAifQ.oUVEWIWAk16oc9w81IrZOv0XDEaSYf7Dpo1xLehDzys'
       )
       .setStyle(TextInputStyle.Short)
 

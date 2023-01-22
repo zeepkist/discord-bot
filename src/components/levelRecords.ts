@@ -6,7 +6,7 @@ import {
   italic
 } from 'discord.js'
 
-import { LinkedAccount } from '../models/database/linkedAccounts.js'
+import { LinkedAccount } from '../models/database/linkedAccount.js'
 import { Level } from '../models/level.js'
 import { database } from '../services/database.js'
 import { getRecords } from '../services/records.js'
@@ -19,7 +19,6 @@ import {
   userSimilarity
 } from '../utils/index.js'
 import { listRecords } from './lists/listRecords.js'
-// import { paginationButtons } from './paginationButtons.js'
 
 export const levelRecords = async (
   interaction: CommandInteraction | ButtonInteraction,
@@ -129,7 +128,5 @@ export const levelRecords = async (
     embed.setThumbnail(level.thumbnailUrl.replace(' ', '%20'))
   }
 
-  // const pagination = paginationButtons(interaction, 'level', page, totalPages)
-
-  return { embeds: [embed], components: [] } // components: pagination ? [pagination] : [] }
+  return { embeds: [embed], components: [] }
 }

@@ -6,6 +6,7 @@ import {
   ModalSubmitInteraction
 } from 'discord.js'
 
+import { Button, PaginatedButton, PaginatedButtonAction } from '../button.js'
 import { buttons } from '../buttons.js'
 import { commands } from '../commands.js'
 import { trackCommandUsage } from '../components/trackCommandUsage.js'
@@ -16,11 +17,14 @@ export default (client: Client): void => {
   client.on('interactionCreate', async (interaction: Interaction) => {
     if (interaction.isCommand() || interaction.isContextMenuCommand()) {
       await handleSlashCommand(interaction)
-    }
-    if (interaction.isButton()) {
+    } else if (
+      interaction.isButton() &&
+      interaction.customId.startsWith('pagination')
+    ) {
+      await handlePaginatedButton(interaction)
+    } else if (interaction.isButton()) {
       await handleButton(interaction)
-    }
-    if (interaction.isModalSubmit()) {
+    } else if (interaction.isModalSubmit()) {
       await handleModalSubmit(interaction)
     }
   })
@@ -44,10 +48,33 @@ const handleSlashCommand = async (
   slashCommand.run(interaction)
 }
 
+const handlePaginatedButton = async (
+  interaction: ButtonInteraction
+): Promise<void> => {
+  const [buttonName, action, type] = interaction.customId.split('-')
+
+  const button = buttons.find(
+    button => button.name === buttonName
+  ) as PaginatedButton
+
+  if (!button) {
+    console.log('Unknown button interaction', interaction.customId)
+    interaction.reply({
+      content: 'Unknown button interaction',
+      ephemeral: true
+    })
+    return
+  }
+
+  button.run(interaction, type, action as PaginatedButtonAction)
+}
+
 const handleButton = async (interaction: ButtonInteraction): Promise<void> => {
   log.info(interaction, 'Handling request')
 
-  const button = buttons.find(button => button.name === interaction.customId)
+  const button = buttons.find(
+    button => button.name === interaction.customId
+  ) as Button
 
   if (!button) {
     console.log('Unknown button interaction', interaction.customId)
