@@ -3,6 +3,8 @@ name: CD
 on:
   release:
     types: [released]
+  workflow_dispatch:
+    branches: [v*]
 
 env:
   FORCE_COLOR: true
