@@ -1,15 +1,26 @@
-import { ApplicationCommandType } from 'discord.js';
+import { ApplicationCommandOptionType, ApplicationCommandType } from 'discord.js';
 import { errorReply } from '../components/errorReply.js';
-import { recentRecords } from '../components/recentRecords.js';
+import { paginatedRecent } from '../components/paginated/paginatedRecent.js';
 export const recent = {
     name: 'recent',
     description: 'Get recent personal bests and world records',
     type: ApplicationCommandType.ChatInput,
-    options: [],
+    options: [
+        {
+            name: 'world_records_only',
+            description: 'Only show world records',
+            type: ApplicationCommandOptionType.Boolean
+        }
+    ],
     run: async (interaction) => {
         try {
-            const { embeds, components } = await recentRecords(interaction);
-            interaction.reply({ embeds, components });
+            await paginatedRecent({
+                interaction,
+                action: 'first',
+                query: {
+                    worldRecordsOnly: interaction.options.data.find(option => option.name === 'world_records_only')?.value
+                }
+            });
         }
         catch (error) {
             errorReply(interaction, recent.name, error);

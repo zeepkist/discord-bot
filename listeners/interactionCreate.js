@@ -8,10 +8,14 @@ export default (client) => {
         if (interaction.isCommand() || interaction.isContextMenuCommand()) {
             await handleSlashCommand(interaction);
         }
-        if (interaction.isButton()) {
+        else if (interaction.isButton() &&
+            interaction.customId.startsWith('pagination')) {
+            await handlePaginatedButton(interaction);
+        }
+        else if (interaction.isButton()) {
             await handleButton(interaction);
         }
-        if (interaction.isModalSubmit()) {
+        else if (interaction.isModalSubmit()) {
             await handleModalSubmit(interaction);
         }
     });
@@ -25,6 +29,19 @@ const handleSlashCommand = async (interaction) => {
     }
     await trackCommandUsage(interaction.commandName);
     slashCommand.run(interaction);
+};
+const handlePaginatedButton = async (interaction) => {
+    const [buttonName, action, type] = interaction.customId.split('-');
+    const button = buttons.find(button => button.name === buttonName);
+    if (!button) {
+        console.log('Unknown button interaction', interaction.customId);
+        interaction.reply({
+            content: 'Unknown button interaction',
+            ephemeral: true
+        });
+        return;
+    }
+    button.run(interaction, type, action);
 };
 const handleButton = async (interaction) => {
     log.info(interaction, 'Handling request');

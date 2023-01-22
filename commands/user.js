@@ -153,7 +153,7 @@ export const user = {
                 .setTimestamp()
                 .setFooter({ text: 'Data provided by Zeepkist GTR' });
             log.info(interaction, 'Created embed.');
-            if (steamUser.communityvisibilitystate !== 1) {
+            if (steamUser.loccountrycode) {
                 log.info(interaction, `Adding ${steamUser.loccountrycode} country flag to embed.`);
                 embed.addFields({
                     name: 'Country',
