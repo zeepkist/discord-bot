@@ -58,7 +58,7 @@ jobs:
           FOLDER: dist
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SKIP_EMPTY_COMMITS: true
-          MESSAGE: ${{ github.event.release.tag_name }} $(date +'%Y-%m-%dT%H:%M:%S')
+          MESSAGE: ${{ github.event.release.tag_name }} {sha} $(date +'%Y-%m-%dT%H:%M:%S')
 
       - name: Announce Deployment
         run: |
