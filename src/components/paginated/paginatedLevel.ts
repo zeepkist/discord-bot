@@ -9,16 +9,14 @@ import {
   sendPaginatedMessage
 } from '../paginated.js'
 
-export const paginatedRecent = async (properties: PaginatedData) => {
+export const paginatedLevel = async (properties: PaginatedData) => {
   const { interaction } = properties
   const data = await getPaginatedData(properties)
 
   const { records, totalAmount } = await getRecords({
     Limit: PAGINATION_LIMIT,
     Offset: data.offset,
-    BestOnly: true,
-    WorldRecordOnly: data.query?.worldRecordsOnly,
-    Sort: '-id'
+    BestOnly: true
   })
 
   const recordsList = listRecords({

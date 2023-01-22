@@ -40,7 +40,7 @@ const initialiseDatabase = async () => {
     console.log('[server] Creating table: paginated_messages')
     await database.schema.createTable('paginated_messages', table => {
       table.string('messageId', 19).notNullable().primary().unique().index()
-      table.integer('currentPage').notNullable().defaultTo(0)
+      table.integer('currentPage').notNullable().defaultTo(1)
       table.json('query').notNullable().defaultTo({})
       table.timestamp('createdAt').notNullable().defaultTo(database.fn.now())
       table.timestamp('updatedAt').notNullable().defaultTo(database.fn.now())
