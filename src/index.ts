@@ -16,3 +16,8 @@ client.once(Events.ClientReady, ready)
 interactionCreate(client)
 
 client.login(process.env.DISCORD_TOKEN)
+
+client.on('disconnect', () => {
+  console.log('Bot is disconnecting...')
+  client.login(process.env.DISCORD_TOKEN)
+})
