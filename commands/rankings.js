@@ -1,18 +1,20 @@
 import { ApplicationCommandType } from 'discord.js';
 import { errorReply } from '../components/errorReply.js';
-import { userRankings } from '../components/userRankings.js';
-export const ranking = {
-    name: 'ranking',
+import { paginatedRankings } from '../components/paginated/paginatedRankings.js';
+export const rankings = {
+    name: 'rankings',
     description: 'Get user rankings',
     type: ApplicationCommandType.ChatInput,
     options: [],
     run: async (interaction) => {
         try {
-            const { embeds, components } = await userRankings(interaction);
-            interaction.reply({ embeds, components });
+            await paginatedRankings({
+                interaction,
+                action: 'first'
+            });
         }
         catch (error) {
-            errorReply(interaction, ranking.name, error);
+            errorReply(interaction, rankings.name, error);
         }
     }
 };
