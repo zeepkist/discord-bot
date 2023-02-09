@@ -131,7 +131,7 @@ export const level: Command = {
         })
       }
     } catch (error: unknown) {
-      errorReply(interaction, level.name, error)
+      errorReply(interaction, level ? level.name : 'Unknown level', error)
     }
   }
 }

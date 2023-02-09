@@ -65,10 +65,9 @@ export const verify: Command = {
       interaction.editReply({ components: [row] })
     })
 
-    await interaction.reply({
+    await interaction.editReply({
       embeds: [embed],
-      components: [row],
-      ephemeral: true
+      components: [row]
     })
   }
 }

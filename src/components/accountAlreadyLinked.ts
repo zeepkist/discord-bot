@@ -20,5 +20,5 @@ export const alreadyLinkedReply = (
     .setColor('#00ff00')
     .setTimestamp()
 
-  interaction.reply({ embeds: [embed], ephemeral: true })
+  interaction.editReply({ embeds: [embed] })
 }

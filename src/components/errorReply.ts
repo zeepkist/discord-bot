@@ -13,7 +13,7 @@ export const errorReply = async (
     interaction
   )
 
-  log.error(error as string, interaction)
+  log.error(JSON.stringify(error, undefined, 2), interaction)
 
   await interaction.editReply({
     content:
