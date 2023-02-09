@@ -106,7 +106,8 @@ export const sendPaginatedMessage = async ({
   query,
   limit
 }: SendPaginatedMessage) => {
-  const totalPages = Math.ceil(totalAmount / (limit ?? PAGINATION_LIMIT))
+  let totalPages = Math.ceil(totalAmount / (limit ?? PAGINATION_LIMIT))
+  if (totalPages === 0) totalPages = 1
 
   log.info(
     `Obtained ${totalAmount} ${customId}. Showing page ${currentPage} of ${totalPages}`,

@@ -5,7 +5,9 @@ import {
   EmbedBuilder
 } from 'discord.js'
 
+import { getLevels } from '../../services/levels.js'
 import { getRecords } from '../../services/records.js'
+import { log } from '../../utils/index.js'
 import { addMedalTimes } from '../fields/addMedalTimes.js'
 import { addPersonalBest } from '../fields/addPersonalBest.js'
 import { listRecords } from '../lists/listRecords.js'
@@ -27,7 +29,26 @@ export const paginatedLevel = async (properties: PaginatedData) => {
     LevelId: data.query?.id
   })
 
-  const level = records[0]?.level
+  let level = records[0]?.level
+  if (!level) {
+    log.info(
+      `No records found for level. Fetching level data for ${JSON.stringify(
+        data.query,
+        undefined,
+        2
+      )}`,
+      interaction
+    )
+    const { levels } = await getLevels({
+      Id: data.query?.id,
+      Author: data.query?.author,
+      Name: data.query?.name,
+      WorkshopId: data.query?.workshopId
+    })
+    if (levels.length === 1) {
+      level = levels[0]
+    }
+  }
 
   const recordsList = listRecords({
     records: records,
@@ -37,11 +58,13 @@ export const paginatedLevel = async (properties: PaginatedData) => {
     showMedal: true
   })
 
+  log.info('Creating embed', interaction)
   const embed = new EmbedBuilder().setTitle(`${level.name}`).setAuthor({
     name: level.author
   })
 
   if (level.thumbnailUrl) {
+    log.info('Adding thumbnail', interaction)
     embed.setThumbnail(level.thumbnailUrl.replaceAll(' ', '%20'))
   }
 
@@ -55,9 +78,10 @@ export const paginatedLevel = async (properties: PaginatedData) => {
     steamNames: records.map(({ user }) => user.steamName)
   })
 
+  log.info('Adding best times', interaction)
   embed.addFields({
     name: 'Best Times',
-    value: recordsList ?? 'No recent records.'
+    value: recordsList || 'No recent records.'
   })
 
   const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents([
@@ -89,6 +113,7 @@ export const paginatedLevel = async (properties: PaginatedData) => {
     ])
   }
 
+  log.info('Sending paginated message', interaction)
   await sendPaginatedMessage({
     customId: 'level',
     interaction,
