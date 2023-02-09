@@ -19,7 +19,7 @@ export const addMedalTimes = async ({
   embed,
   level
 }: MedalTimes) => {
-  log.info(interaction, `Adding medal times to ${level.id}`)
+  log.info(`Adding medal times to ${level.id}`, interaction)
   const medalTimes = [
     level.timeAuthor &&
       `${MEDAL.AUTHOR} ${inlineCode(formatResultTime(level.timeAuthor))}`,

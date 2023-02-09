@@ -86,10 +86,10 @@ export const level: Command = {
   ],
   run: async (interaction: CommandInteraction) => {
     const { id, workshopId, author, name, search } = getOptions(interaction)
-    log.info(interaction, `${id} ${workshopId} ${author} ${name} ${search}`)
+    log.info(`${id} ${workshopId} ${author} ${name} ${search}`, interaction)
 
     if (!id && !workshopId && !author && !name && !search) {
-      log.info(interaction, 'No arguments provided')
+      log.info('No arguments provided', interaction)
       await replyNoLevels(interaction, true)
       return
     }
@@ -106,12 +106,12 @@ export const level: Command = {
           }))
 
       if (levels.totalAmount === 0) {
-        log.info(interaction, 'No levels found')
+        log.info('No levels found', interaction)
         await replyNoLevels(interaction)
         return
       }
 
-      log.info(interaction, `Found ${levels.totalAmount} levels`)
+      log.info(`Found ${levels.totalAmount} levels`, interaction)
 
       if (levels.totalAmount > 1 && !search) {
         await paginatedLevels({

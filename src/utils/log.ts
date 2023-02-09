@@ -1,9 +1,25 @@
-import { format } from 'date-fns'
+//import { format } from 'date-fns'
 import {
   ButtonInteraction,
   CommandInteraction,
   ModalSubmitInteraction
 } from 'discord.js'
+import { createLogger, format, transports } from 'winston'
+
+const logFormat = format.printf(({ level, message, label, timestamp }) => {
+  return label
+    ? `${timestamp} ${label} ${level}: ${message}`
+    : `${timestamp} ${level}: ${message}`
+})
+
+const logger = createLogger({
+  level: 'info',
+  format: format.combine(format.timestamp(), logFormat),
+  transports: [
+    new transports.File({ filename: 'logs/error.log', level: 'error' }),
+    new transports.File({ filename: 'logs/combined.log' })
+  ]
+})
 
 interface LogProperties {
   interaction: CommandInteraction | ButtonInteraction | ModalSubmitInteraction
@@ -17,17 +33,29 @@ const interactionName = (interaction: LogProperties['interaction']) =>
     ? interaction.commandName
     : interaction.customId
 
-const date = format(Date.now(), 'yyyy-MM-dd HH:mm:ss')
-
 export const log = {
-  info: (interaction: LogProperties['interaction'], message: string) => {
-    const guild = guildName(interaction)
-    const name = interactionName(interaction)
-    console.log(`[${date}][${name}][${guild}]: ${message}`)
+  info: (message: string, interaction?: LogProperties['interaction']) => {
+    if (interaction) {
+      const guild = guildName(interaction)
+      const name = interactionName(interaction)
+
+      logger.info(message, {
+        label: `[${name}] [${guild}]`
+      })
+    } else {
+      logger.info(message)
+    }
   },
-  error: (interaction: LogProperties['interaction'], message: string) => {
-    const guild = guildName(interaction)
-    const name = interactionName(interaction)
-    console.log(`[${date}][${name}][${guild}]: ${message}`)
+  error: (message: string, interaction?: LogProperties['interaction']) => {
+    if (interaction) {
+      const guild = guildName(interaction)
+      const name = interactionName(interaction)
+
+      logger.error(message, {
+        label: `[${name}] [${guild}]`
+      })
+    } else {
+      logger.error(message)
+    }
   }
 }

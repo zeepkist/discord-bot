@@ -1,6 +1,8 @@
 import { config } from 'dotenv'
 import knex from 'knex'
 
+import { log } from '../utils/index.js'
+
 config()
 
 export const database = knex.knex({
@@ -17,7 +19,7 @@ export const database = knex.knex({
 const initialiseDatabase = async () => {
   const commandUsage = await database.schema.hasTable('command_usage')
   if (!commandUsage) {
-    console.log('[server] Creating table: command_usage')
+    log.info('Creating table: command_usage')
     await database.schema.createTable('command_usage', table => {
       table.string('commandName', 64).notNullable().primary().unique().index()
       table.integer('invocations').notNullable().defaultTo(0)
@@ -27,7 +29,7 @@ const initialiseDatabase = async () => {
 
   const linkedAccounts = await database.schema.hasTable('linked_accounts')
   if (!linkedAccounts) {
-    console.log('[server] Creating table: linked_accounts')
+    log.info('Creating table: linked_accounts')
     await database.schema.createTable('linked_accounts', table => {
       table.string('discordId', 18).notNullable().primary().unique().index()
       table.string('steamId', 17).notNullable().unique().index()
@@ -37,7 +39,7 @@ const initialiseDatabase = async () => {
 
   const paginatedMessages = await database.schema.hasTable('paginated_messages')
   if (!paginatedMessages) {
-    console.log('[server] Creating table: paginated_messages')
+    log.info('Creating table: paginated_messages')
     await database.schema.createTable('paginated_messages', table => {
       table.string('messageId', 19).notNullable().primary().unique().index()
       table.integer('currentPage').notNullable().defaultTo(1)

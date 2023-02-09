@@ -3,10 +3,11 @@ import { config } from 'dotenv'
 
 import interactionCreate from './listeners/interactionCreate.js'
 import ready from './listeners/ready.js'
+import { log } from './utils/index.js'
 
 config()
 
-console.log('Bot is starting...')
+log.info('Bot is starting')
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds]
@@ -18,6 +19,7 @@ interactionCreate(client)
 client.login(process.env.DISCORD_TOKEN)
 
 client.on('disconnect', () => {
-  console.log('Bot is disconnecting...')
+  log.info('Bot has disconnected, logging back in')
   client.login(process.env.DISCORD_TOKEN)
+  log.info('Bot has reconnected')
 })

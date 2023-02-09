@@ -57,8 +57,8 @@ export const addPersonalBest = async ({
     userSimilarity(discordName, steamNames) > 3
   ) {
     log.info(
-      interaction,
-      `No linked user and a similar user isn't on page 1. Showing verify prompt`
+      `No linked user and a similar user isn't on page 1. Showing verify prompt`,
+      interaction
     )
     return verifyPrompt({
       embed,
@@ -68,8 +68,8 @@ export const addPersonalBest = async ({
   } else if (!user) return
 
   log.info(
-    interaction,
-    `Getting user records for ${user.steamId} on level ${levelId}`
+    `Getting user records for ${user.steamId} on level ${levelId}`,
+    interaction
   )
 
   const userRecords = await getRecords({
@@ -81,8 +81,8 @@ export const addPersonalBest = async ({
   if (!userRecords || userRecords.records.length === 0) return
 
   log.info(
-    interaction,
-    `Found personal best for ${user.steamId} on level ${levelId}`
+    `Found personal best for ${user.steamId} on level ${levelId}`,
+    interaction
   )
 
   const userRecord = userRecords.records[0]
