@@ -47,7 +47,9 @@ export const getPaginatedData = async (properties) => {
     };
 };
 export const sendPaginatedMessage = async ({ customId, interaction, embed, components, currentPage, totalAmount, query, limit }) => {
-    const totalPages = Math.ceil(totalAmount / (limit ?? PAGINATION_LIMIT));
+    let totalPages = Math.ceil(totalAmount / (limit ?? PAGINATION_LIMIT));
+    if (totalPages === 0)
+        totalPages = 1;
     log.info(`Obtained ${totalAmount} ${customId}. Showing page ${currentPage} of ${totalPages}`, interaction);
     embed
         .setColor(0xff_92_00)
@@ -78,9 +80,9 @@ export const sendPaginatedMessage = async ({ customId, interaction, embed, compo
     }
     else {
         log.info(`Sending new message`, interaction);
-        const response = await interaction.reply(messageContent);
+        const response = await interaction.editReply(messageContent);
         await database('paginated_messages').insert({
-            messageId: response.interaction.id,
+            messageId: response.interaction?.id,
             query: JSON.stringify(query)
         });
     }

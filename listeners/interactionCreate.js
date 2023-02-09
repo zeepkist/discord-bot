@@ -28,6 +28,9 @@ const handleSlashCommand = async (interaction) => {
         return;
     }
     await trackCommandUsage(interaction.commandName);
+    await interaction.deferReply({
+        ephemeral: slashCommand.ephemeral
+    });
     slashCommand.run(interaction);
 };
 const handlePaginatedButton = async (interaction) => {

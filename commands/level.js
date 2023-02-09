@@ -60,6 +60,7 @@ export const level = {
             required: false
         }
     ],
+    ephemeral: false,
     run: async (interaction) => {
         const { id, workshopId, author, name, search } = getOptions(interaction);
         log.info(`${id} ${workshopId} ${author} ${name} ${search}`, interaction);
@@ -101,7 +102,7 @@ export const level = {
             }
         }
         catch (error) {
-            errorReply(interaction, level.name, error);
+            errorReply(interaction, level ? level.name : 'Unknown level', error);
         }
     }
 };

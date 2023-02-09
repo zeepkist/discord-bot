@@ -6,6 +6,7 @@ export const rankings = {
     description: 'Get user rankings',
     type: ApplicationCommandType.ChatInput,
     options: [],
+    ephemeral: false,
     run: async (interaction) => {
         try {
             await paginatedRankings({

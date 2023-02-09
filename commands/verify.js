@@ -5,6 +5,7 @@ export const verify = {
     name: 'verify',
     description: 'Link your Steam and Discord accounts',
     type: ApplicationCommandType.ChatInput,
+    ephemeral: true,
     run: async (interaction) => {
         const linkedAccount = await database('linked_accounts').where({
             discordId: interaction.user.id
@@ -36,10 +37,9 @@ export const verify = {
             row.components[1].setDisabled(true);
             interaction.editReply({ components: [row] });
         });
-        await interaction.reply({
+        await interaction.editReply({
             embeds: [embed],
-            components: [row],
-            ephemeral: true
+            components: [row]
         });
     }
 };

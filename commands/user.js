@@ -38,6 +38,7 @@ export const user = {
             minLength: 0
         }
     ],
+    ephemeral: false,
     run: async (interaction) => {
         const linkedAccount = await database('linked_accounts')
             .select('steamId')
@@ -184,6 +185,7 @@ export const user = {
                 const linkedUser = await interaction.client.users.fetch(findLinkedAccount[0].discordId);
                 addDiscordAuthor(interaction, embed, linkedUser, user.steamId);
             }
+            log.info(`Getting world records for ${user.steamId}`, interaction);
             const worldRecordsList = listRecords({
                 records: worldRecords.records,
                 showLevel: true,
@@ -195,6 +197,7 @@ export const user = {
                     value: worldRecordsList
                 });
             }
+            log.info(`Getting best records for ${user.steamId}`, interaction);
             const bestRecordsList = listRecords({
                 records: bestRecords.records,
                 showLevel: true,
@@ -206,6 +209,7 @@ export const user = {
                     value: bestRecordsList
                 });
             }
+            log.info(`Getting any% records for ${user.steamId}`, interaction);
             const anyPercentRecordsList = listRecords({
                 records: allInvalidRecords.records.filter(record => !record.isValid),
                 showLevel: true
@@ -226,7 +230,8 @@ export const user = {
                     .setLabel('Steam Profile')
                     .setURL(`https://steamcommunity.com/profiles/${user.steamId}`)
             ]);
-            await interaction.reply({
+            log.info(`Sending message`, interaction);
+            await interaction.editReply({
                 embeds: [embed],
                 components: [buttons]
             });
@@ -234,12 +239,10 @@ export const user = {
         catch (error) {
             log.error(error.response?.status === 404 ? String(error) : error);
             await (error.response?.status === 404
-                ? interaction.reply({
-                    ephemeral: true,
+                ? interaction.editReply({
                     content: 'User not found.'
                 })
-                : interaction.reply({
-                    ephemeral: true,
+                : interaction.editReply({
                     content: 'An error occurred while fetching user data. Please try again later.'
                 }));
         }
