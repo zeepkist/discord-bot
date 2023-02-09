@@ -16,6 +16,8 @@ const rotatingTransport: DailyRotateFile = new DailyRotateFile({
   filename: '%DATE%.log',
   dirname: 'logs',
   datePattern: 'YYYY-MM-DD',
+  handleExceptions: true,
+  handleRejections: true,
   // zippedArchive: true,
   maxSize: '5m',
   maxFiles: '14d'
@@ -29,10 +31,12 @@ const logger = createLogger({
     new transports.File({
       filename: 'logs/error.log',
       handleExceptions: true,
+      handleRejections: true,
       level: 'error'
     }),
     new transports.Console({
       handleExceptions: true,
+      handleRejections: true,
       format: format.combine(format.colorize(), format.timestamp(), logFormat)
     })
   ]
