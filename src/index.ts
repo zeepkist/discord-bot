@@ -23,3 +23,7 @@ client.on('disconnect', () => {
   client.login(process.env.DISCORD_TOKEN)
   log.info('Bot has reconnected')
 })
+
+client.on('error', (error: Error) => {
+  log.error(`discord.js encountered an error: ${String(error)}`)
+})
