@@ -7,6 +7,7 @@ import {
 import { Command } from '../command.js'
 import { errorReply } from '../components/errorReply.js'
 import { paginatedRecent } from '../components/paginated/paginatedRecent.js'
+import { log } from '../utils/index.js'
 
 export const recent: Command = {
   name: 'recent',
@@ -19,6 +20,7 @@ export const recent: Command = {
       type: ApplicationCommandOptionType.Boolean
     }
   ],
+  ephemeral: false,
   run: async (interaction: CommandInteraction) => {
     try {
       await paginatedRecent({
@@ -31,6 +33,7 @@ export const recent: Command = {
         }
       })
     } catch (error: unknown) {
+      log.error(error as string)
       errorReply(interaction, recent.name, error)
     }
   }

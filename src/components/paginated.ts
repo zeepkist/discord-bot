@@ -152,9 +152,9 @@ export const sendPaginatedMessage = async ({
       })
   } else {
     log.info(`Sending new message`, interaction)
-    const response = await interaction.reply(messageContent)
+    const response = await interaction.editReply(messageContent)
     await database<PaginatedMessage>('paginated_messages').insert({
-      messageId: response.interaction.id,
+      messageId: response.interaction?.id,
       query: JSON.stringify(query)
     })
   }

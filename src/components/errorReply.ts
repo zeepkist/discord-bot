@@ -15,8 +15,7 @@ export const errorReply = async (
 
   log.error(error as string, interaction)
 
-  await interaction.reply({
-    ephemeral: true,
+  await interaction.editReply({
     content:
       'An unexpected error occured while processing your request. Please try again later.'
   })

@@ -45,6 +45,10 @@ const handleSlashCommand = async (
 
   await trackCommandUsage(interaction.commandName)
 
+  interaction.deferReply({
+    ephemeral: slashCommand.ephemeral
+  })
+
   slashCommand.run(interaction)
 }
 

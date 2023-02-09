@@ -17,6 +17,7 @@ export const about: Command = {
   name: 'about',
   description: 'Useful information and how to support development',
   type: ApplicationCommandType.ChatInput,
+  ephemeral: false,
   run: async interaction => {
     const commands = [
       `${bold(inlineCode('/about'))} to see this message again`,
@@ -98,7 +99,7 @@ export const about: Command = {
         .setURL('https://ko-fi.com/thundernerd')
     ])
 
-    await interaction.reply({
+    await interaction.editReply({
       embeds: [embed],
       components: [buttons]
     })

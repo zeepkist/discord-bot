@@ -17,6 +17,7 @@ export const verify: Command = {
   name: 'verify',
   description: 'Link your Steam and Discord accounts',
   type: ApplicationCommandType.ChatInput,
+  ephemeral: true,
   run: async interaction => {
     const linkedAccount = await database('linked_accounts').where({
       discordId: interaction.user.id

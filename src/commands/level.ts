@@ -84,6 +84,7 @@ export const level: Command = {
       required: false
     }
   ],
+  ephemeral: false,
   run: async (interaction: CommandInteraction) => {
     const { id, workshopId, author, name, search } = getOptions(interaction)
     log.info(`${id} ${workshopId} ${author} ${name} ${search}`, interaction)
