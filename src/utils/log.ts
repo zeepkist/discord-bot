@@ -1,23 +1,40 @@
-//import { format } from 'date-fns'
 import {
   ButtonInteraction,
   CommandInteraction,
   ModalSubmitInteraction
 } from 'discord.js'
 import { createLogger, format, transports } from 'winston'
+import DailyRotateFile from 'winston-daily-rotate-file'
 
 const logFormat = format.printf(({ level, message, label, timestamp }) => {
   return label
-    ? `${timestamp} ${label} ${level}: ${message}`
+    ? `${timestamp} ${level}: ${label} ${message}`
     : `${timestamp} ${level}: ${message}`
+})
+
+const rotatingTransport: DailyRotateFile = new DailyRotateFile({
+  filename: '%DATE%.log',
+  dirname: 'logs',
+  datePattern: 'YYYY-MM-DD',
+  // zippedArchive: true,
+  maxSize: '5m',
+  maxFiles: '14d'
 })
 
 const logger = createLogger({
   level: 'info',
   format: format.combine(format.timestamp(), logFormat),
   transports: [
-    new transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new transports.File({ filename: 'logs/combined.log' })
+    rotatingTransport,
+    new transports.File({
+      filename: 'logs/error.log',
+      handleExceptions: true,
+      level: 'error'
+    }),
+    new transports.Console({
+      handleExceptions: true,
+      format: format.combine(format.colorize(), format.timestamp(), logFormat)
+    })
   ]
 })
 
@@ -40,7 +57,7 @@ export const log = {
       const name = interactionName(interaction)
 
       logger.info(message, {
-        label: `[${name}] [${guild}]`
+        label: `[${guild}][${name}]`
       })
     } else {
       logger.info(message)
@@ -52,7 +69,7 @@ export const log = {
       const name = interactionName(interaction)
 
       logger.error(message, {
-        label: `[${name}] [${guild}]`
+        label: `[${guild}][${name}]`
       })
     } else {
       logger.error(message)

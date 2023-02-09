@@ -9,10 +9,11 @@ export const errorReply = async (
   error: AxiosError | unknown
 ) => {
   log.error(
-    `An error occured processing the "${command}" command.\n\n${String(error)}`
+    `An error occured processing the "${command}" command.\n\n${String(error)}`,
+    interaction
   )
 
-  log.error(error as string)
+  log.error(error as string, interaction)
 
   await interaction.reply({
     ephemeral: true,
