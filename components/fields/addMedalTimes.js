@@ -1,7 +1,7 @@
 import { inlineCode } from 'discord.js';
 import { formatResultTime, log, MEDAL } from '../../utils/index.js';
 export const addMedalTimes = async ({ interaction, embed, level }) => {
-    log.info(interaction, `Adding medal times to ${level.id}`);
+    log.info(`Adding medal times to ${level.id}`, interaction);
     const medalTimes = [
         level.timeAuthor &&
             `${MEDAL.AUTHOR} ${inlineCode(formatResultTime(level.timeAuthor))}`,

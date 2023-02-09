@@ -21,7 +21,7 @@ export default (client) => {
     });
 };
 const handleSlashCommand = async (interaction) => {
-    log.info(interaction, 'Handling request as command');
+    log.info('Handling request as command', interaction);
     const slashCommand = commands.find(command => command.name === interaction.commandName);
     if (!slashCommand) {
         interaction.reply({ content: 'Unknown command', ephemeral: true });
@@ -31,11 +31,11 @@ const handleSlashCommand = async (interaction) => {
     slashCommand.run(interaction);
 };
 const handlePaginatedButton = async (interaction) => {
-    log.info(interaction, 'Handling request as pagination button');
+    log.info('Handling request as pagination button', interaction);
     const [buttonName, action, type] = interaction.customId.split('-');
     const button = buttons.find(button => button.name === buttonName);
     if (!button) {
-        console.log('Unknown button interaction', interaction.customId);
+        log.error(`Unknown button interaction "${interaction.customId}"`, interaction);
         interaction.reply({
             content: 'Unknown button interaction',
             ephemeral: true
@@ -45,10 +45,10 @@ const handlePaginatedButton = async (interaction) => {
     button.run(interaction, type, action);
 };
 const handleButton = async (interaction) => {
-    log.info(interaction, 'Handling request as button');
+    log.info('Handling request as button', interaction);
     const button = buttons.find(button => button.name === interaction.customId);
     if (!button) {
-        console.log('Unknown button interaction', interaction.customId);
+        log.error(`Unknown button interaction "${interaction.customId}"`, interaction);
         interaction.reply({
             content: 'Unknown button interaction',
             ephemeral: true
@@ -58,10 +58,10 @@ const handleButton = async (interaction) => {
     button?.run(interaction);
 };
 const handleModalSubmit = async (interaction) => {
-    log.info(interaction, 'Handling request as modal submission');
+    log.info('Handling request as modal submission', interaction);
     const modal = modalSubmissions.find(modal => modal.name === interaction.customId);
     if (!modal) {
-        console.log('Unknown button interaction', interaction.customId);
+        log.error(`Unknown modal submission "${interaction.customId}"`, interaction);
         interaction.reply({ content: 'Unknown modal submission', ephemeral: true });
         return;
     }

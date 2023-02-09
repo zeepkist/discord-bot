@@ -18,7 +18,7 @@ export const addPersonalBest = async ({ interaction, embed, levelId, discordName
     if (!user &&
         steamNames.length >= 5 &&
         userSimilarity(discordName, steamNames) > 3) {
-        log.info(interaction, `No linked user and a similar user isn't on page 1. Showing verify prompt`);
+        log.info(`No linked user and a similar user isn't on page 1. Showing verify prompt`, interaction);
         return verifyPrompt({
             embed,
             discordName,
@@ -27,7 +27,7 @@ export const addPersonalBest = async ({ interaction, embed, levelId, discordName
     }
     else if (!user)
         return;
-    log.info(interaction, `Getting user records for ${user.steamId} on level ${levelId}`);
+    log.info(`Getting user records for ${user.steamId} on level ${levelId}`, interaction);
     const userRecords = await getRecords({
         LevelId: levelId,
         UserSteamId: user.steamId,
@@ -35,7 +35,7 @@ export const addPersonalBest = async ({ interaction, embed, levelId, discordName
     });
     if (!userRecords || userRecords.records.length === 0)
         return;
-    log.info(interaction, `Found personal best for ${user.steamId} on level ${levelId}`);
+    log.info(`Found personal best for ${user.steamId} on level ${levelId}`, interaction);
     const userRecord = userRecords.records[0];
     const formattedUserRecord = `${bestMedal(userRecord)} ${inlineCode(formatResultTime(userRecord.time))}\n${formatRelativeDate(userRecord.dateCreated)} with ${userRecords.totalAmount} run${userRecords.totalAmount === 1 ? '' : 's'} so far`;
     embed.addFields({
