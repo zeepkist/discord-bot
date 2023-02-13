@@ -2,9 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [develop]
   workflow_dispatch:
-    branches: [develop]
 
 env:
   FORCE_COLOR: true
