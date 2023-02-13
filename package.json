@@ -40,7 +40,7 @@
     "dotenv": "~16.0.3",
     "fastest-levenshtein": "~1.0.16",
     "knex": "~2.4.1",
-    "mysql2": "~3.0.1",
+    "mysql2": "~3.1.0",
     "pbkdf2": "~3.1.2",
     "winston": "~3.8.2",
     "winston-daily-rotate-file": "~4.7.1"
