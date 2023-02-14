@@ -45,6 +45,8 @@ jobs:
           cp package.json dist/package.json
           cp yarn.lock dist/yarn.lock
           cp .yarnrc.yml dist/.yarnrc.yml
+          cp .pnp.cjs dist/.pnp.cjs
+          cp .pnp.loader.mjs dist/.pnp.loader.mjs
           mkdir -p dist/.yarn/releases
           cp -r .yarn/releases/ dist/.yarn/
           mkdir -p dist/.yarn/plugins
@@ -58,7 +60,7 @@ jobs:
           FOLDER: dist
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SKIP_EMPTY_COMMITS: true
-          MESSAGE: ${{ github.event.release.tag_name }} {sha} $(date +'%Y-%m-%dT%H:%M:%S')
+          MESSAGE: ${{ github.event.release.tag_name }} {sha}
 
       - name: Announce Deployment
         if: success()
