@@ -2448,6 +2448,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"discord-api-types@npm:0.37.20":
+  version: 0.37.20
+  resolution: "discord-api-types@npm:0.37.20"
+  checksum: 88ebed85aada3483e83ac46a1b4574c0d59948060ac72f451d658fa646b20d62bd6f21792043621dcc5a9e9353d95c25de70646b8d2a93f0022154345800b26c
+  languageName: node
+  linkType: hard
+
 "discord-api-types@npm:^0.37.20, discord-api-types@npm:^0.37.23":
   version: 0.37.35
   resolution: "discord-api-types@npm:0.37.35"
