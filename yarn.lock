@@ -5277,9 +5277,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mysql2@npm:3.1.0":
-  version: 3.1.0
-  resolution: "mysql2@npm:3.1.0"
+"mysql2@npm:3.1.2":
+  version: 3.1.2
+  resolution: "mysql2@npm:3.1.2"
   dependencies:
     denque: ^2.1.0
     generate-function: ^2.3.1
@@ -5289,7 +5289,7 @@ __metadata:
     named-placeholders: ^1.1.3
     seq-queue: ^0.0.5
     sqlstring: ^2.3.2
-  checksum: cec9a1027539b7b30900e2ae63f49c46bb53abe9f49178ffd0daecc008493643eb8a88395900b9d03e02d493f30d78e57930b76f60d57c37458c9539bf6b7cb5
+  checksum: 6268d0ba3e5056fe574685a0692460b506d9a9c83e9c162b3bca6f279fa8da841d1d2b7dc4a363873b8cec47234ea66a054a2b067d6af4416900889384df4162
   languageName: node
   linkType: hard
 
@@ -6675,7 +6675,7 @@ __metadata:
     eslint-plugin-unicorn: ~45.0.2
     fastest-levenshtein: 1.0.16
     knex: 2.4.2
-    mysql2: 3.1.0
+    mysql2: 3.1.2
     pbkdf2: 3.1.2
     prettier: ~2.8.3
     semantic-release: ~20.1.0
