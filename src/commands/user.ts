@@ -1,5 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { AxiosError } from 'axios'
+import {
+  getLevels,
+  getRecords,
+  getUser,
+  getUserRanking
+} from '@zeepkist/gtr-api'
 import {
   ActionRowBuilder,
   ApplicationCommandOptionType,
@@ -11,14 +15,12 @@ import {
   inlineCode,
   User
 } from 'discord.js'
+import { HTTPError } from 'ky-universal'
 
 import { Command } from '../command.js'
 import { listRecords } from '../components/lists/listRecords.js'
 import { database } from '../services/database.js'
-import { getLevels } from '../services/levels.js'
-import { getRecords } from '../services/records.js'
 import { getPlayerSummaries } from '../services/steam.js'
-import { getUser, getUserRanking } from '../services/users.js'
 import {
   formatFlagEmoji,
   formatOrdinal,
@@ -126,7 +128,7 @@ export const user: Command = {
         userRanking = await getUserRanking({ SteamId: user.steamId })
         log.info(`Found user ranking: ${userRanking.position}`, interaction)
       } catch (error) {
-        if ((error as AxiosError).response?.status === 404) {
+        if (error instanceof HTTPError && error.response.status === 404) {
           userRanking = {
             position: 0,
             totalAmount: 0
@@ -331,17 +333,31 @@ export const user: Command = {
         embeds: [embed],
         components: [buttons]
       })
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: AxiosError | any) {
-      log.error(error.response?.status === 404 ? String(error) : error)
-      await (error.response?.status === 404
-        ? interaction.editReply({
-            content: 'User not found.'
-          })
-        : interaction.editReply({
-            content:
-              'An error occurred while fetching user data. Please try again later.'
-          }))
+    } catch (error) {
+      const embed = new EmbedBuilder()
+        .setColor(0xff_00_00)
+        .setTitle('Error')
+        .setDescription(
+          'An error occurred while fetching user data. Please try again later.'
+        )
+
+      if (error instanceof HTTPError) {
+        log.error(`${error.response.status} - ${error.response.statusText}`)
+        if ([404, 422].includes(error.response?.status)) {
+          embed
+            .setColor(0xff_92_00)
+            .setTitle('User not found')
+            .setDescription(
+              'The user you are trying to find does not have the Zeepkist GTR mod installed.'
+            )
+        }
+      } else {
+        log.error(String(error))
+      }
+
+      interaction.editReply({
+        embeds: [embed]
+      })
     }
   }
 }

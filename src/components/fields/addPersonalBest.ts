@@ -1,3 +1,4 @@
+import { getRecords } from '@zeepkist/gtr-api'
 import {
   ButtonInteraction,
   CommandInteraction,
@@ -7,7 +8,6 @@ import {
 
 import { LinkedAccount } from '../../models/database/linkedAccount.js'
 import { database } from '../../services/database.js'
-import { getRecords } from '../../services/records.js'
 import {
   bestMedal,
   formatRelativeDate,

@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios'
 import { CommandInteraction } from 'discord.js'
 
 import { log } from '../utils/index.js'
@@ -6,7 +5,7 @@ import { log } from '../utils/index.js'
 export const errorReply = async (
   interaction: CommandInteraction,
   command: string,
-  error: AxiosError | unknown
+  error: unknown
 ) => {
   log.error(
     `An error occured processing the "${command}" command.\n\n${String(error)}`,
