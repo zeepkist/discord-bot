@@ -1,6 +1,6 @@
+import { getLevels } from '@zeepkist/gtr-api';
 import { EmbedBuilder } from 'discord.js';
 import { PAGINATION_LIMIT } from '../../constants.js';
-import { getLevels } from '../../services/levels.js';
 import { listLevels } from '../lists/listLevels.js';
 import { getPaginatedData, sendPaginatedMessage } from '../paginated.js';
 export const paginatedLevels = async (properties) => {

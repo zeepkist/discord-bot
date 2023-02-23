@@ -1,6 +1,5 @@
+import { getLevels, getRecords } from '@zeepkist/gtr-api';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
-import { getLevels } from '../../services/levels.js';
-import { getRecords } from '../../services/records.js';
 import { log } from '../../utils/index.js';
 import { addMedalTimes } from '../fields/addMedalTimes.js';
 import { addPersonalBest } from '../fields/addPersonalBest.js';

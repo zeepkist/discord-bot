@@ -1,8 +1,8 @@
+import { getLevels, searchLevels } from '@zeepkist/gtr-api';
 import { ApplicationCommandOptionType, ApplicationCommandType, EmbedBuilder } from 'discord.js';
 import { errorReply } from '../components/errorReply.js';
 import { paginatedLevel } from '../components/paginated/paginatedLevel.js';
 import { paginatedLevels } from '../components/paginated/paginatedLevels.js';
-import { getLevels, searchLevels } from '../services/levels.js';
 import { log } from '../utils/log.js';
 const getOptions = (interaction) => {
     const id = interaction.options.data.find(option => option.name === 'id')

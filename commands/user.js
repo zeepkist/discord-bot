@@ -1,10 +1,9 @@
+import { getLevels, getRecords, getUser, getUserRanking } from '@zeepkist/gtr-api';
 import { ActionRowBuilder, ApplicationCommandOptionType, ApplicationCommandType, ButtonBuilder, ButtonStyle, EmbedBuilder, inlineCode } from 'discord.js';
+import { HTTPError } from 'ky-universal';
 import { listRecords } from '../components/lists/listRecords.js';
 import { database } from '../services/database.js';
-import { getLevels } from '../services/levels.js';
-import { getRecords } from '../services/records.js';
 import { getPlayerSummaries } from '../services/steam.js';
-import { getUser, getUserRanking } from '../services/users.js';
 import { formatFlagEmoji, formatOrdinal, log, userSimilarity } from '../utils/index.js';
 const addDiscordAuthor = (interaction, embed, linkedAccount, steamId) => {
     log.info(`Adding Discord author: ${linkedAccount.tag}`, interaction);
@@ -79,7 +78,7 @@ export const user = {
                 log.info(`Found user ranking: ${userRanking.position}`, interaction);
             }
             catch (error) {
-                if (error.response?.status === 404) {
+                if (error instanceof HTTPError && error.response.status === 404) {
                     userRanking = {
                         position: 0,
                         totalAmount: 0
@@ -237,14 +236,25 @@ export const user = {
             });
         }
         catch (error) {
-            log.error(error.response?.status === 404 ? String(error) : error);
-            await (error.response?.status === 404
-                ? interaction.editReply({
-                    content: 'User not found.'
-                })
-                : interaction.editReply({
-                    content: 'An error occurred while fetching user data. Please try again later.'
-                }));
+            const embed = new EmbedBuilder()
+                .setColor(0xff_00_00)
+                .setTitle('Error')
+                .setDescription('An error occurred while fetching user data. Please try again later.');
+            if (error instanceof HTTPError) {
+                log.error(`${error.response.status} - ${error.response.statusText}`);
+                if ([404, 422].includes(error.response?.status)) {
+                    embed
+                        .setColor(0xff_92_00)
+                        .setTitle('User not found')
+                        .setDescription('The user you are trying to find does not have the Zeepkist GTR mod installed.');
+                }
+            }
+            else {
+                log.error(String(error));
+            }
+            interaction.editReply({
+                embeds: [embed]
+            });
         }
     }
 };

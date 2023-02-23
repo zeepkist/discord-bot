@@ -1,6 +1,6 @@
+import { getRecords } from '@zeepkist/gtr-api';
 import { EmbedBuilder } from 'discord.js';
 import { PAGINATION_LIMIT } from '../../constants.js';
-import { getRecords } from '../../services/records.js';
 import { listRecords } from '../lists/listRecords.js';
 import { getPaginatedData, sendPaginatedMessage } from '../paginated.js';
 export const paginatedRecent = async (properties) => {

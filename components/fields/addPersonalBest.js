@@ -1,6 +1,6 @@
+import { getRecords } from '@zeepkist/gtr-api';
 import { inlineCode } from 'discord.js';
 import { database } from '../../services/database.js';
-import { getRecords } from '../../services/records.js';
 import { bestMedal, formatRelativeDate, formatResultTime, log, userSimilarity } from '../../utils/index.js';
 const verifyPrompt = async ({ embed }) => {
     embed.addFields({
