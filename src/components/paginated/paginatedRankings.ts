@@ -1,7 +1,7 @@
+import { getUserRankings } from '@zeepkist/gtr-api'
 import { EmbedBuilder } from 'discord.js'
 
 import { PAGINATION_LIMIT } from '../../constants.js'
-import { getUserRankings } from '../../services/users.js'
 import { listRankings } from '../lists/listRankings.js'
 import {
   getPaginatedData,

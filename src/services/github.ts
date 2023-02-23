@@ -1,10 +1,10 @@
-import axios from 'axios'
+import ky from 'ky-universal'
 
 import { GITHUB_API_URL } from '../constants.js'
 import { GitHubRelease } from '../models/github.js'
 
-const api = axios.create({
-  baseURL: `${GITHUB_API_URL}repos/wopian/zeepkist-bot/`,
+const api = ky.create({
+  prefixUrl: `${GITHUB_API_URL}repos/zeepkist/discord-bot/`,
   headers: {
     Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
     'X-GitHub-Api-Version': '2022-11-28'
@@ -12,14 +12,16 @@ const api = axios.create({
 })
 
 export const getReleases = async () => {
-  const response = await api.get('releases', {
-    params: {
-      per_page: 1
-    }
+  const searchParameters = new URLSearchParams({
+    per_page: '1'
   })
 
-  if (response.status === 200) return response.data as GitHubRelease[]
+  const response = await api.get('releases', {
+    searchParams: searchParameters
+  })
+
+  if (response.ok) return response.json() as Promise<GitHubRelease[]>
   else {
-    throw response.data.error
+    throw response.json()
   }
 }
