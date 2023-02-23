@@ -34,7 +34,7 @@
     "typescript": "~4.9.4"
   },
   "dependencies": {
-    "@zeepkist/gtr-api": "2.0.7",
+    "@zeepkist/gtr-api": "2.0.9",
     "date-fns": "2.29.3",
     "discord.js": "14.7.1",
     "dotenv": "16.0.3",
