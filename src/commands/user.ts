@@ -87,11 +87,10 @@ export const user: Command = {
         'No linked account or option arguments provided. Ending interaction.',
         interaction
       )
-      await interaction.reply({
+      await interaction.editReply({
         content: `You must provide either a Steam ID or a user ID.\n\nIf you link your Steam account with ${inlineCode(
           '/verify'
-        )}, you can use this command without providing a Steam ID or user ID.`,
-        ephemeral: true
+        )}, you can use this command without providing a Steam ID or user ID.`
       })
       return
     }
