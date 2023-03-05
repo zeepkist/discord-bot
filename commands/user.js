@@ -51,8 +51,13 @@ export const user = {
         log.info(`Steam ID: ${steamId}, ID: ${id}`, interaction);
         if ((!linkedAccount || linkedAccount.length === 0) && !steamId && !id) {
             log.info('No linked account or option arguments provided. Ending interaction.', interaction);
+            const embed = new EmbedBuilder()
+                .setColor(0xff_92_00)
+                .setTitle('User not linked')
+                .setDescription(`You must provide either a Steam ID or a user ID.\n\nIf you link your Steam account with ${inlineCode('/verify')}, you can use this command without providing a Steam ID or user ID.`)
+                .setTimestamp();
             await interaction.editReply({
-                content: `You must provide either a Steam ID or a user ID.\n\nIf you link your Steam account with ${inlineCode('/verify')}, you can use this command without providing a Steam ID or user ID.`
+                embeds: [embed]
             });
             return;
         }
