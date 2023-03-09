@@ -2,6 +2,7 @@ import { Client, Events, GatewayIntentBits } from 'discord.js';
 import { config } from 'dotenv';
 import interactionCreate from './listeners/interactionCreate.js';
 import ready from './listeners/ready.js';
+import { twitch } from './services/twitch.js';
 import { log } from './utils/index.js';
 config();
 log.info('Bot is starting');
@@ -19,3 +20,4 @@ client.on('disconnect', () => {
 client.on('error', (error) => {
     log.error(`discord.js encountered an error: ${String(error)}`);
 });
+twitch(client);
