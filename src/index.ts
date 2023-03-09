@@ -3,6 +3,7 @@ import { config } from 'dotenv'
 
 import interactionCreate from './listeners/interactionCreate.js'
 import ready from './listeners/ready.js'
+import { twitch } from './services/twitch.js'
 import { log } from './utils/index.js'
 
 config()
@@ -27,3 +28,5 @@ client.on('disconnect', () => {
 client.on('error', (error: Error) => {
   log.error(`discord.js encountered an error: ${String(error)}`)
 })
+
+twitch(client)

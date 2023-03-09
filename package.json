@@ -17,7 +17,7 @@
     "@semantic-release/commit-analyzer": "~9.0.2",
     "@semantic-release/github": "~8.0.7",
     "@semantic-release/release-notes-generator": "~10.0.3",
-    "@types/node": "~18.14.0",
+    "@types/node": "~18.15.0",
     "@typescript-eslint/eslint-plugin": "~5.54.0",
     "@typescript-eslint/parser": "~5.54.0",
     "ava": "~5.2.0",
@@ -34,9 +34,12 @@
     "typescript": "~4.9.4"
   },
   "dependencies": {
+    "@twurple/api": "6.0.6",
+    "@twurple/auth": "6.0.6",
     "@zeepkist/gtr-api": "2.0.9",
     "date-fns": "2.29.3",
     "discord.js": "14.7.1",
+    "discord.ts": "npm:discord.js@14.7.1",
     "dotenv": "16.0.3",
     "fastest-levenshtein": "1.0.16",
     "knex": "2.4.2",
