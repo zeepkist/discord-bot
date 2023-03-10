@@ -66,19 +66,19 @@ const getMonthlyStreams = async (userId) => {
         .where('createdAt', '>', subMonths(Date.now(), 1))
         .count({ count: 'userId' })
         .first();
-    return Number(response?.count ?? 0) + 1;
+    return Number(response?.count ?? 0);
 };
 async function announceStreams(channel) {
     const games = await getGames();
     for (const stream of games) {
         const streamsThisMonth = await getMonthlyStreams(stream.userId);
-        const embed = twitchEmbed(stream, streamsThisMonth);
         const component = twitchComponent(stream);
         if (knownStreams.some(item => item.userName === stream.userName)) {
             const data = knownStreams.find(item => item.userName === stream.userName);
             if (data === undefined)
                 return;
             if (data.messageId != undefined && data.viewers != stream.viewers) {
+                const embed = twitchEmbed(stream, streamsThisMonth);
                 const message = await channel.messages.fetch(data.messageId);
                 if (message == undefined) {
                     console.log('Message not found: ' + data.messageId);
@@ -96,6 +96,7 @@ async function announceStreams(channel) {
                 stream.viewers +
                 ' viewers on https://twitch.tv/' +
                 stream.userName);
+            const embed = twitchEmbed(stream, streamsThisMonth + 1);
             const message = await channel.send({
                 embeds: [embed],
                 components: [component]
