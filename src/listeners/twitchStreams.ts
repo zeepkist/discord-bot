@@ -2,18 +2,22 @@ import 'dotenv/config'
 
 import { ApiClient } from '@twurple/api'
 import { AppTokenAuthProvider } from '@twurple/auth'
+import { subHours } from 'date-fns'
 import { Client, Message, TextChannel } from 'discord.js'
 
 import { twitchComponent } from '../components/twitch/component.js'
 import { twitchEmbed } from '../components/twitch/embed.js'
+import { database } from '../services/database.js'
 
 interface KnownStream {
-  userName: string
+  messageId: Message['id']
+  streamId: string
   userId: string
-  id: string
-  time: Date
+  userName: string
   viewers: number
-  message?: Message
+  createdAt: Date
+  updatedAt: Date
+  isLive: boolean
 }
 
 const CLIENT_ID = process.env.TWITCH_ID as string
@@ -23,7 +27,13 @@ const CHANNEL = process.env.DISCORD_ZEEPKIST_CHANNEL as string
 
 const authProvider = new AppTokenAuthProvider(CLIENT_ID, CLIENT_SECRET)
 const apiClient = new ApiClient({ authProvider })
-const knownStreams: KnownStream[] = []
+
+// Get all known live streams from the database that are younger than 6 hours
+const knownStreams: KnownStream[] = await database('twitch_streams')
+  .where('isLive', true)
+  .where('createdAt', '>', subHours(Date.now(), 6))
+
+console.log(knownStreams)
 
 async function getGames() {
   const game = await apiClient.games.getGameByName('Zeepkist')
@@ -50,25 +60,31 @@ async function isStreamLive(userName: string) {
 }
 
 async function cleanupOldStreams() {
-  for await (const stream of knownStreams) {
-    const seconds = (Date.now() - stream.time.getTime()) / 1000
+  for await (const knownStream of knownStreams) {
+    const seconds = (Date.now() - knownStream.createdAt.getTime()) / 1000
     if (
-      (!(await isStreamLive(stream.userName)) && seconds > 60 * 60) || // 1 hour
+      (!(await isStreamLive(knownStream.userName)) && seconds > 60 * 60) || // 1 hour
       seconds > 60 * 60 * 12 // 12 hours
     ) {
       //remove when offline or 12 hours old
-      console.log('Trying to remove stream from ' + stream.userName)
+      console.log('Trying to remove stream from ' + knownStream.userName)
       for (let index = knownStreams.length - 1; index >= 0; index--) {
-        if (knownStreams[index].id == stream.id) {
+        if (knownStreams[index].userId == knownStream.userId) {
           knownStreams.splice(index, 1)
-          console.log('Removed stream from ' + stream.userName)
+
+          // Update the database
+          await database('twitch_streams')
+            .where('messageId', knownStream.messageId)
+            .update('isLive', false)
+
+          console.log('Removed stream from ' + knownStream.userName)
         }
       }
     }
   }
 }
 
-async function announceStreams(client: Client, firstTime = false) {
+async function announceStreams(client: Client) {
   const guild = await client.guilds.fetch(GUILD) // Zeepkist
   const channel = await guild.channels.fetch(CHANNEL) // zeep-streams
 
@@ -82,13 +98,13 @@ async function announceStreams(client: Client, firstTime = false) {
       const data = knownStreams.find(item => item.userName === stream.userName)
       if (data === undefined) return
 
-      if (data.message != undefined && data.viewers != stream.viewers) {
+      if (data.messageId != undefined && data.viewers != stream.viewers) {
         const embed = twitchEmbed(stream)
         const component = twitchComponent(stream)
 
-        const message = await channel.messages.fetch(data.message.id)
+        const message = await channel.messages.fetch(data.messageId)
         if (message == undefined) {
-          console.log('Message not found: ' + data.message)
+          console.log('Message not found: ' + data.messageId)
         } else {
           message.edit({ embeds: [embed], components: [component] })
         }
@@ -103,37 +119,38 @@ async function announceStreams(client: Client, firstTime = false) {
           ' viewers on https://twitch.tv/' +
           stream.userName
       )
+
+      const embed = twitchEmbed(stream)
+      const component = twitchComponent(stream)
+
+      const message = await channel.send({
+        embeds: [embed],
+        components: [component]
+      })
+
       const streamdata: KnownStream = {
-        id: stream.id,
-        time: new Date(),
+        isLive: true,
+        streamId: stream.id,
+        messageId: message.id,
+        createdAt: stream.startDate,
+        updatedAt: new Date(Date.now()),
         userId: stream.userId,
         userName: stream.userName,
         viewers: stream.viewers
       }
 
-      if (!firstTime) {
-        const embed = twitchEmbed(stream)
-        const component = twitchComponent(stream)
-
-        streamdata.viewers = stream.viewers
-        streamdata.message = await channel.send({
-          embeds: [embed],
-          components: [component]
-        })
-      }
-
+      await database('twitch_streams').insert(streamdata)
       knownStreams.push(streamdata)
+      console.log('Added ' + stream.userName + ' to known streams')
     }
   }
 }
 
-export const twitch = async (client: Client) => {
-  await announceStreams(client, true)
+export const twitchStreams = async (client: Client) => {
+  await announceStreams(client)
 
   setInterval(async () => {
     await announceStreams(client)
     cleanupOldStreams()
   }, 1000 * 60 * 5) // 5 minutes
 }
-
-60 * 5 // 5 minutes
