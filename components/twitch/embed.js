@@ -1,11 +1,14 @@
 import { formatDistanceToNowStrict } from 'date-fns';
 import { EmbedBuilder } from 'discord.js';
-export const twitchEmbed = (stream) => {
+import { formatOrdinal } from '../../utils/index.js';
+export const twitchEmbed = (stream, streamsThisMonth) => {
+    const ordinalStreams = formatOrdinal(streamsThisMonth);
     const streamingFor = formatDistanceToNowStrict(new Date(stream.startDate));
     const title = `${stream.userDisplayName} is streaming ${stream.gameName}!`;
-    const description = stream.viewers > 0
-        ? `Streaming for ${streamingFor} with ${stream.viewers} viewers.\nCome say hi!`
-        : `Just started streaming.\nCome say hi!`;
+    let description = stream.viewers > 0
+        ? `Streaming for ${streamingFor} with ${stream.viewers} viewers.`
+        : `Just started streaming.`;
+    description += `\nCome say hi in their ${ordinalStreams} stream this month!!`;
     const embed = new EmbedBuilder()
         .setTitle(title)
         .setDescription(description)
