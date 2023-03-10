@@ -91,7 +91,7 @@ const getMonthlyStreams = async (userId: string) => {
     .count({ count: 'userId' })
     .first()
 
-  return Number(response?.count ?? 0)
+  return Number(response?.count ?? 0) + 1
 }
 
 async function announceStreams(client: Client) {
