@@ -42,5 +42,19 @@ const initialiseDatabase = async () => {
             table.timestamp('updatedAt').notNullable().defaultTo(database.fn.now());
         });
     }
+    const twitchStreams = await database.schema.hasTable('twitch_streams');
+    if (!twitchStreams) {
+        log.info('Creating table: twitch_streams');
+        await database.schema.createTable('twitch_streams', table => {
+            table.string('messageId').notNullable().unique().index().primary();
+            table.string('streamId', 36).notNullable().index();
+            table.string('userId', 36).notNullable().index();
+            table.string('userName', 64).notNullable().index();
+            table.boolean('isLive').notNullable().defaultTo(true);
+            table.integer('viewers').notNullable().defaultTo(0);
+            table.timestamp('createdAt').notNullable().defaultTo(database.fn.now());
+            table.timestamp('updatedAt').notNullable().defaultTo(database.fn.now());
+        });
+    }
 };
 initialiseDatabase();
