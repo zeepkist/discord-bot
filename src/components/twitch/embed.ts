@@ -2,13 +2,19 @@ import { HelixStream } from '@twurple/api'
 import { formatDistanceToNowStrict } from 'date-fns'
 import { EmbedBuilder } from 'discord.js'
 
-export const twitchEmbed = (stream: HelixStream) => {
+import { formatOrdinal } from '../../utils/index.js'
+
+export const twitchEmbed = (stream: HelixStream, streamsThisMonth: number) => {
+  const ordinalStreams = formatOrdinal(streamsThisMonth)
   const streamingFor = formatDistanceToNowStrict(new Date(stream.startDate))
   const title = `${stream.userDisplayName} is streaming ${stream.gameName}!`
-  const description =
+
+  let description =
     stream.viewers > 0
-      ? `Streaming for ${streamingFor} with ${stream.viewers} viewers.\nCome say hi!`
-      : `Just started streaming.\nCome say hi!`
+      ? `Streaming for ${streamingFor} with ${stream.viewers} viewers.`
+      : `Just started streaming.`
+
+  description += `\nCome say hi in their ${ordinalStreams} stream this month!!`
 
   const embed = new EmbedBuilder()
     .setTitle(title)
