@@ -2,7 +2,7 @@ import 'dotenv/config'
 
 import { ApiClient } from '@twurple/api'
 import { AppTokenAuthProvider } from '@twurple/auth'
-import { subHours } from 'date-fns'
+import { subHours, subMonths } from 'date-fns'
 import { Client, Message, TextChannel } from 'discord.js'
 
 import { twitchComponent } from '../components/twitch/component.js'
@@ -84,6 +84,16 @@ async function cleanupOldStreams() {
   }
 }
 
+const getMonthlyStreams = async (userId: string) => {
+  const response = await database('twitch_streams')
+    .where('userId', userId)
+    .where('createdAt', '>', subMonths(Date.now(), 1))
+    .count({ count: 'userId' })
+    .first()
+
+  return Number(response?.count ?? 0)
+}
+
 async function announceStreams(client: Client) {
   const guild = await client.guilds.fetch(GUILD) // Zeepkist
   const channel = await guild.channels.fetch(CHANNEL) // zeep-streams
@@ -94,14 +104,15 @@ async function announceStreams(client: Client) {
   const games = await getGames()
 
   for (const stream of games) {
+    const streamsThisMonth = await getMonthlyStreams(stream.userId)
+    const embed = twitchEmbed(stream, streamsThisMonth)
+    const component = twitchComponent(stream)
+
     if (knownStreams.some(item => item.userName === stream.userName)) {
       const data = knownStreams.find(item => item.userName === stream.userName)
       if (data === undefined) return
 
       if (data.messageId != undefined && data.viewers != stream.viewers) {
-        const embed = twitchEmbed(stream)
-        const component = twitchComponent(stream)
-
         const message = await channel.messages.fetch(data.messageId)
         if (message == undefined) {
           console.log('Message not found: ' + data.messageId)
@@ -120,15 +131,12 @@ async function announceStreams(client: Client) {
           stream.userName
       )
 
-      const embed = twitchEmbed(stream)
-      const component = twitchComponent(stream)
-
       const message = await channel.send({
         embeds: [embed],
         components: [component]
       })
 
-      const streamdata: KnownStream = {
+      const streamData: KnownStream = {
         isLive: true,
         streamId: stream.id,
         messageId: message.id,
@@ -139,8 +147,8 @@ async function announceStreams(client: Client) {
         viewers: stream.viewers
       }
 
-      await database('twitch_streams').insert(streamdata)
-      knownStreams.push(streamdata)
+      await database('twitch_streams').insert(streamData)
+      knownStreams.push(streamData)
       console.log('Added ' + stream.userName + ' to known streams')
     }
   }
