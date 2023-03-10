@@ -99,7 +99,7 @@ const getMonthlyStreams = async (userId: string) => {
     .count({ count: 'userId' })
     .first()
 
-  return Number(response?.count ?? 0) + 1
+  return Number(response?.count ?? 0)
 }
 
 async function announceStreams(channel: TextChannel) {
@@ -107,7 +107,6 @@ async function announceStreams(channel: TextChannel) {
 
   for (const stream of games) {
     const streamsThisMonth = await getMonthlyStreams(stream.userId)
-    const embed = twitchEmbed(stream, streamsThisMonth)
     const component = twitchComponent(stream)
 
     if (knownStreams.some(item => item.userName === stream.userName)) {
@@ -115,6 +114,7 @@ async function announceStreams(channel: TextChannel) {
       if (data === undefined) return
 
       if (data.messageId != undefined && data.viewers != stream.viewers) {
+        const embed = twitchEmbed(stream, streamsThisMonth)
         const message = await channel.messages.fetch(data.messageId)
         if (message == undefined) {
           console.log('Message not found: ' + data.messageId)
@@ -133,6 +133,7 @@ async function announceStreams(channel: TextChannel) {
           stream.userName
       )
 
+      const embed = twitchEmbed(stream, streamsThisMonth + 1) // +1 because this is a stream that is not yet in the database
       const message = await channel.send({
         embeds: [embed],
         components: [component]
