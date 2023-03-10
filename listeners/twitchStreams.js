@@ -35,7 +35,7 @@ async function isStreamLive(userName) {
     const stream = await apiClient.streams.getStreamByUserId(user.id);
     return !!stream;
 }
-async function cleanupOldStreams() {
+async function cleanupOldStreams(channel) {
     for await (const knownStream of knownStreams) {
         const seconds = (Date.now() - knownStream.createdAt.getTime()) / 1000;
         if ((!(await isStreamLive(knownStream.userName)) && seconds > 60 * 60) ||
@@ -47,6 +47,13 @@ async function cleanupOldStreams() {
                     await database('twitch_streams')
                         .where('messageId', knownStream.messageId)
                         .update('isLive', false);
+                    const message = await channel.messages.fetch(knownStream.messageId);
+                    if (message == undefined) {
+                        console.log('Message not found: ' + knownStream.messageId);
+                    }
+                    else {
+                        message.edit({ components: [] });
+                    }
                     console.log('Removed stream from ' + knownStream.userName);
                 }
             }
@@ -59,15 +66,9 @@ const getMonthlyStreams = async (userId) => {
         .where('createdAt', '>', subMonths(Date.now(), 1))
         .count({ count: 'userId' })
         .first();
-    return Number(response?.count ?? 0);
+    return Number(response?.count ?? 0) + 1;
 };
-async function announceStreams(client) {
-    const guild = await client.guilds.fetch(GUILD);
-    const channel = await guild.channels.fetch(CHANNEL);
-    if (!guild || !channel)
-        return;
-    if (!(channel instanceof TextChannel))
-        return;
+async function announceStreams(channel) {
     const games = await getGames();
     for (const stream of games) {
         const streamsThisMonth = await getMonthlyStreams(stream.userId);
@@ -116,9 +117,15 @@ async function announceStreams(client) {
     }
 }
 export const twitchStreams = async (client) => {
-    await announceStreams(client);
+    const guild = await client.guilds.fetch(GUILD);
+    const channel = await guild.channels.fetch(CHANNEL);
+    if (!guild || !channel)
+        return;
+    if (!(channel instanceof TextChannel))
+        return;
+    await announceStreams(channel);
     setInterval(async () => {
-        await announceStreams(client);
-        cleanupOldStreams();
+        await announceStreams(channel);
+        cleanupOldStreams(channel);
     }, 1000 * 60 * 5);
 };
