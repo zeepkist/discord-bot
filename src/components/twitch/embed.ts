@@ -14,7 +14,7 @@ export const twitchEmbed = (stream: HelixStream, streamsThisMonth: number) => {
       ? `Streaming for ${streamingFor} with ${stream.viewers} viewers.`
       : `Just started streaming.`
 
-  description += `\nCome say hi in their ${ordinalStreams} stream this month!!`
+  description += `\n\nCome say hi in their ${ordinalStreams} stream this month!!`
 
   const embed = new EmbedBuilder()
     .setTitle(title)
