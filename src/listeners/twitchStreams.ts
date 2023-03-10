@@ -59,7 +59,7 @@ async function isStreamLive(userName: string) {
   return !!stream
 }
 
-async function cleanupOldStreams() {
+async function cleanupOldStreams(channel: TextChannel) {
   for await (const knownStream of knownStreams) {
     const seconds = (Date.now() - knownStream.createdAt.getTime()) / 1000
     if (
@@ -76,6 +76,14 @@ async function cleanupOldStreams() {
           await database('twitch_streams')
             .where('messageId', knownStream.messageId)
             .update('isLive', false)
+
+          // Remove button
+          const message = await channel.messages.fetch(knownStream.messageId)
+          if (message == undefined) {
+            console.log('Message not found: ' + knownStream.messageId)
+          } else {
+            message.edit({ components: [] })
+          }
 
           console.log('Removed stream from ' + knownStream.userName)
         }
@@ -94,13 +102,7 @@ const getMonthlyStreams = async (userId: string) => {
   return Number(response?.count ?? 0) + 1
 }
 
-async function announceStreams(client: Client) {
-  const guild = await client.guilds.fetch(GUILD) // Zeepkist
-  const channel = await guild.channels.fetch(CHANNEL) // zeep-streams
-
-  if (!guild || !channel) return // Bot is not in the server
-  if (!(channel instanceof TextChannel)) return // Channel is not a text channel
-
+async function announceStreams(channel: TextChannel) {
   const games = await getGames()
 
   for (const stream of games) {
@@ -155,10 +157,16 @@ async function announceStreams(client: Client) {
 }
 
 export const twitchStreams = async (client: Client) => {
-  await announceStreams(client)
+  const guild = await client.guilds.fetch(GUILD) // Zeepkist
+  const channel = await guild.channels.fetch(CHANNEL) // zeep-streams
+
+  if (!guild || !channel) return // Bot is not in the server
+  if (!(channel instanceof TextChannel)) return // Channel is not a text channel
+
+  await announceStreams(channel)
 
   setInterval(async () => {
-    await announceStreams(client)
-    cleanupOldStreams()
+    await announceStreams(channel)
+    cleanupOldStreams(channel)
   }, 1000 * 60 * 5) // 5 minutes
 }
