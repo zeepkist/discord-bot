@@ -34,7 +34,7 @@
     "typescript": "~4.9.4"
   },
   "dependencies": {
-    "@twurple/api": "6.0.6",
+    "@twurple/api": "6.0.7",
     "@twurple/auth": "6.0.6",
     "@zeepkist/gtr-api": "2.0.9",
     "date-fns": "2.29.3",

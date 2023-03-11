@@ -1041,22 +1041,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@twurple/api@npm:6.0.6":
-  version: 6.0.6
-  resolution: "@twurple/api@npm:6.0.6"
+"@twurple/api-call@npm:6.0.7":
+  version: 6.0.7
+  resolution: "@twurple/api-call@npm:6.0.7"
+  dependencies:
+    "@d-fischer/cross-fetch": ^4.0.2
+    "@d-fischer/qs": ^7.0.2
+    "@d-fischer/shared-utils": ^3.4.0
+    "@twurple/common": 6.0.7
+    "@types/node-fetch": ^2.5.7
+    tslib: ^2.0.3
+  checksum: b3e37de27bde1801958d2a2e2e40a2ea7ec7843befc2413e84a8b49745a4bfaa2593ba9b6912176fdcde9ed9528c60e8550f08a751ae8af8eaa0404bd27c1bcd
+  languageName: node
+  linkType: hard
+
+"@twurple/api@npm:6.0.7":
+  version: 6.0.7
+  resolution: "@twurple/api@npm:6.0.7"
   dependencies:
     "@d-fischer/cache-decorators": ^3.0.0
     "@d-fischer/detect-node": ^3.0.1
     "@d-fischer/logger": ^4.2.1
     "@d-fischer/rate-limiter": ^0.7.2
     "@d-fischer/shared-utils": ^3.4.0
-    "@twurple/api-call": 6.0.6
-    "@twurple/common": 6.0.6
+    "@twurple/api-call": 6.0.7
+    "@twurple/common": 6.0.7
     retry: ^0.13.1
     tslib: ^2.0.3
   peerDependencies:
-    "@twurple/auth": 6.0.6
-  checksum: bb1eb958a604d438d71eaee92b729d9686c9d83078949b2fad153107513caf888fef7ce547089ada2fbb15600ab86ced3aaa9833ea7cd6a84472d2bc38236e3c
+    "@twurple/auth": 6.0.7
+  checksum: 8472c43ea8f8255ce79daad4ab6e3cc601c9b190230e6db1b87e6fabd53cf3ebcbddad47e33883099de8bd664d50110c67db3165974d32a27f3e73c2c3a534d6
   languageName: node
   linkType: hard
 
@@ -1081,6 +1095,17 @@ __metadata:
     klona: ^2.0.4
     tslib: ^2.0.3
   checksum: b441e40fbd7fd9b6d8de33e6fdb3886ec66ff814f80b6c27c345ff6b06be71aed40318a7620a2b6876419eabd77521ebfbc66d3160d80f02efff60bf163ccc32
+  languageName: node
+  linkType: hard
+
+"@twurple/common@npm:6.0.7":
+  version: 6.0.7
+  resolution: "@twurple/common@npm:6.0.7"
+  dependencies:
+    "@d-fischer/shared-utils": ^3.4.0
+    klona: ^2.0.4
+    tslib: ^2.0.3
+  checksum: 86e2d7721acec5363d923865a0edbab403291ca8361f9745898a8dc9efdb9ce4ec43c2ac360a8653fc5c263ef63d224f8ba44d9f2d1ec65e4803e8900c819f93
   languageName: node
   linkType: hard
 
@@ -7035,7 +7060,7 @@ __metadata:
     "@semantic-release/commit-analyzer": ~9.0.2
     "@semantic-release/github": ~8.0.7
     "@semantic-release/release-notes-generator": ~10.0.3
-    "@twurple/api": 6.0.6
+    "@twurple/api": 6.0.7
     "@twurple/auth": 6.0.6
     "@types/node": ~18.15.0
     "@typescript-eslint/eslint-plugin": ~5.54.0
