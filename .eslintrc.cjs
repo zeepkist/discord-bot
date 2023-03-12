@@ -60,5 +60,13 @@ module.exports = {
       'error',
       { 'ts-ignore': 'allow-with-description' }
     ]
-  }
+  },
+  overrides: [
+    {
+      files: ['migrations/*.js'],
+      rules: {
+        'unicorn/filename-case': 'off'
+      }
+    }
+  ]
 }

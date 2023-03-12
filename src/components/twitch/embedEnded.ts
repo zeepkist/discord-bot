@@ -7,7 +7,7 @@ export const twitchEmbedEnded = (stream: DatabaseStream) => {
   const streamedFor = formatDistanceToNowStrict(stream.createdAt)
   const title = `${stream.userName} has ended their stream!`
 
-  const description = `Streamed for ${streamedFor} with ${stream.viewers} viewers.`
+  const description = `Streamed for ${streamedFor} with a peak of ${stream.peakViewers} viewers.`
 
   const embed = new EmbedBuilder()
     .setTitle(title)
