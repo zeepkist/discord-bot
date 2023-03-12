@@ -45,6 +45,7 @@ jobs:
           cp package.json dist/package.json
           cp yarn.lock dist/yarn.lock
           cp .yarnrc.yml dist/.yarnrc.yml
+          cp knexfile.js dist/knexfile.js
           mkdir -p dist/.yarn/releases
           cp -r .yarn/releases/ dist/.yarn/
           mkdir -p dist/.yarn/plugins
