@@ -6,6 +6,7 @@ export interface DatabaseStream {
   userId: string
   userName: string
   viewers: number
+  peakViewers: number
   createdAt: Date
   updatedAt: Date
   isLive: boolean
