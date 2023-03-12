@@ -2,13 +2,15 @@
   "type": "module",
   "version": "0.0.0",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "start": "tsx src/index.ts",
+    "dev": "yarn migrate && tsx watch src/index.ts",
+    "start": "yarn migrate && tsx src/index.ts",
     "build": "tsc",
     "lint": "eslint . --ext .js,.cjs,.mjs,.ts,.cts,.mts --fix --ignore-path .gitignore",
     "lint:ci": "eslint . --ext .js,.cjs,.mjs,.ts,.cts,.mts --ignore-path .gitignore",
     "test": "ava",
-    "coverage": "c8 --all --src=dist --skip-full ava"
+    "coverage": "c8 --all --src=dist --skip-full ava",
+    "migrate": "knex migrate:latest",
+    "make": "knex migrate:make"
   },
   "devDependencies": {
     "@ava/typescript": "~3.0.1",
