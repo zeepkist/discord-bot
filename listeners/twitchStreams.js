@@ -83,7 +83,7 @@ async function announceStreams(channel) {
             if (data === undefined)
                 return;
             if (data.messageId != undefined && data.viewers != stream.viewers) {
-                const embed = twitchEmbed(stream, streamsThisMonth);
+                const embed = await twitchEmbed(stream, streamsThisMonth);
                 const message = await channel.messages.fetch(data.messageId);
                 if (message == undefined) {
                     console.log('Message not found: ' + data.messageId);
@@ -108,7 +108,7 @@ async function announceStreams(channel) {
                 stream.viewers +
                 ' viewers on https://twitch.tv/' +
                 stream.userName);
-            const embed = twitchEmbed(stream, streamsThisMonth + 1);
+            const embed = await twitchEmbed(stream, streamsThisMonth + 1);
             const message = await channel.send({
                 embeds: [embed],
                 components: [component]
