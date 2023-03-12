@@ -11,7 +11,7 @@
     "coverage": "c8 --all --src=dist --skip-full ava"
   },
   "devDependencies": {
-    "@ava/typescript": "~3.0.1",
+    "@ava/typescript": "~4.0.0",
     "@rushstack/eslint-patch": "~1.2.0",
     "@semantic-release/changelog": "~6.0.2",
     "@semantic-release/commit-analyzer": "~9.0.2",
@@ -22,7 +22,7 @@
     "@typescript-eslint/parser": "~5.54.0",
     "ava": "~5.2.0",
     "c8": "~7.13.0",
-    "eslint": "~8.35.0",
+    "eslint": "~8.36.0",
     "eslint-config-prettier": "~8.7.0",
     "eslint-plugin-import": "~2.27.4",
     "eslint-plugin-prettier": "~4.2.1",
@@ -34,7 +34,7 @@
     "typescript": "~4.9.4"
   },
   "dependencies": {
-    "@twurple/api": "6.0.6",
+    "@twurple/api": "6.0.7",
     "@twurple/auth": "6.0.6",
     "@zeepkist/gtr-api": "2.0.9",
     "date-fns": "2.29.3",

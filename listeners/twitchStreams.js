@@ -5,6 +5,7 @@ import { subHours, subMonths } from 'date-fns';
 import { TextChannel } from 'discord.js';
 import { twitchComponent } from '../components/twitch/component.js';
 import { twitchEmbed } from '../components/twitch/embed.js';
+import { twitchEmbedEnded } from '../components/twitch/embedEnded.js';
 import { database } from '../services/database.js';
 const CLIENT_ID = process.env.TWITCH_ID;
 const CLIENT_SECRET = process.env.TWITCH_SECRET;
@@ -52,7 +53,8 @@ async function cleanupOldStreams(channel) {
                         console.log('Message not found: ' + knownStream.messageId);
                     }
                     else {
-                        message.edit({ components: [] });
+                        const embed = twitchEmbedEnded(knownStream);
+                        message.edit({ embeds: [embed], components: [] });
                     }
                     console.log('Removed stream from ' + knownStream.userName);
                 }
