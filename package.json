@@ -77,6 +77,12 @@
           "discord.ts"
         ],
         "groupName": "discord.js"
+      },
+      {
+        "matchPackagePrefixes": [
+          "@twurple"
+        ],
+        "groupName": "twurple"
       }
     ]
   },
