@@ -47,7 +47,10 @@ async function cleanupOldStreams(channel) {
                     knownStreams.splice(index, 1);
                     await database('twitch_streams')
                         .where('messageId', knownStream.messageId)
-                        .update('isLive', false);
+                        .update({
+                        isLive: false,
+                        updatedAt: new Date(Date.now())
+                    });
                     const message = await channel.messages.fetch(knownStream.messageId);
                     if (message == undefined) {
                         console.log('Message not found: ' + knownStream.messageId);
@@ -86,6 +89,13 @@ async function announceStreams(channel) {
                     console.log('Message not found: ' + data.messageId);
                 }
                 else {
+                    await database('twitch_streams')
+                        .where('messageId', data.messageId)
+                        .update({
+                        viewers: stream.viewers,
+                        peakViewers: Math.max(stream.viewers, data.peakViewers),
+                        updatedAt: new Date(Date.now())
+                    });
                     message.edit({ embeds: [embed], components: [component] });
                 }
             }
@@ -111,7 +121,8 @@ async function announceStreams(channel) {
                 updatedAt: new Date(Date.now()),
                 userId: stream.userId,
                 userName: stream.userName,
-                viewers: stream.viewers
+                viewers: stream.viewers,
+                peakViewers: stream.viewers
             };
             await database('twitch_streams').insert(streamData);
             knownStreams.push(streamData);
