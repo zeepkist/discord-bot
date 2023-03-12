@@ -41,7 +41,7 @@
     "@zeepkist/gtr-api": "2.0.9",
     "date-fns": "2.29.3",
     "discord.js": "14.8.0",
-    "discord.ts": "npm:discord.js@14.7.1",
+    "discord.ts": "npm:discord.js@14.8.0",
     "dotenv": "16.0.3",
     "fastest-levenshtein": "1.0.16",
     "knex": "2.4.2",
@@ -51,9 +51,6 @@
     "pbkdf2": "3.1.2",
     "winston": "3.8.2",
     "winston-daily-rotate-file": "4.7.1"
-  },
-  "resolutions": {
-    "discord.js/discord-api-types": "0.37.20"
   },
   "dependenciesMeta": {
     "esbuild": {
