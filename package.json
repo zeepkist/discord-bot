@@ -69,6 +69,15 @@
   "renovate": {
     "extends": [
       "local>wopian/renovate-config"
+    ],
+    "packageRules": [
+      {
+        "matchPackageNames": [
+          "discord.js",
+          "discord.ts"
+        ],
+        "groupName": "discord.js"
+      }
     ]
   },
   "packageManager": "yarn@3.4.1"
