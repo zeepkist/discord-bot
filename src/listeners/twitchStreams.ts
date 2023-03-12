@@ -3,23 +3,13 @@ import 'dotenv/config'
 import { ApiClient } from '@twurple/api'
 import { AppTokenAuthProvider } from '@twurple/auth'
 import { subHours, subMonths } from 'date-fns'
-import { Client, Message, TextChannel } from 'discord.js'
+import { Client, TextChannel } from 'discord.js'
 
 import { twitchComponent } from '../components/twitch/component.js'
 import { twitchEmbed } from '../components/twitch/embed.js'
+import { twitchEmbedEnded } from '../components/twitch/embedEnded.js'
+import { DatabaseStream } from '../models/twitch.js'
 import { database } from '../services/database.js'
-
-interface KnownStream {
-  messageId: Message['id']
-  streamId: string
-  userId: string
-  userName: string
-  viewers: number
-  peakViewers: number
-  createdAt: Date
-  updatedAt: Date
-  isLive: boolean
-}
 
 const CLIENT_ID = process.env.TWITCH_ID as string
 const CLIENT_SECRET = process.env.TWITCH_SECRET as string
@@ -30,7 +20,7 @@ const authProvider = new AppTokenAuthProvider(CLIENT_ID, CLIENT_SECRET)
 const apiClient = new ApiClient({ authProvider })
 
 // Get all known live streams from the database that are younger than 6 hours
-const knownStreams: KnownStream[] = await database('twitch_streams')
+const knownStreams: DatabaseStream[] = await database('twitch_streams')
   .where('isLive', true)
   .where('createdAt', '>', subHours(Date.now(), 6))
 
@@ -86,7 +76,8 @@ async function cleanupOldStreams(channel: TextChannel) {
           if (message == undefined) {
             console.log('Message not found: ' + knownStream.messageId)
           } else {
-            message.edit({ components: [] })
+            const embed = twitchEmbedEnded(knownStream)
+            message.edit({ embeds: [embed], components: [] })
           }
 
           console.log('Removed stream from ' + knownStream.userName)
@@ -151,7 +142,7 @@ async function announceStreams(channel: TextChannel) {
         components: [component]
       })
 
-      const streamData: KnownStream = {
+      const streamData: DatabaseStream = {
         isLive: true,
         streamId: stream.id,
         messageId: message.id,
