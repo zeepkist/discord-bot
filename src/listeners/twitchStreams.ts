@@ -109,7 +109,7 @@ async function announceStreams(channel: TextChannel) {
       if (data === undefined) return
 
       if (data.messageId != undefined && data.viewers != stream.viewers) {
-        const embed = twitchEmbed(stream, streamsThisMonth)
+        const embed = await twitchEmbed(stream, streamsThisMonth)
         const message = await channel.messages.fetch(data.messageId)
         if (message == undefined) {
           console.log('Message not found: ' + data.messageId)
@@ -136,7 +136,7 @@ async function announceStreams(channel: TextChannel) {
           stream.userName
       )
 
-      const embed = twitchEmbed(stream, streamsThisMonth + 1) // +1 because this is a stream that is not yet in the database
+      const embed = await twitchEmbed(stream, streamsThisMonth + 1) // +1 because this is a stream that is not yet in the database
       const message = await channel.send({
         embeds: [embed],
         components: [component]
