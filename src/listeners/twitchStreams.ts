@@ -10,6 +10,7 @@ import { twitchEmbed } from '../components/twitch/embed.js'
 import { twitchEmbedEnded } from '../components/twitch/embedEnded.js'
 import { DatabaseStream } from '../models/twitch.js'
 import { database } from '../services/database.js'
+import { log } from '../utils/index.js'
 
 const CLIENT_ID = process.env.TWITCH_ID as string
 const CLIENT_SECRET = process.env.TWITCH_SECRET as string
@@ -24,7 +25,7 @@ const knownStreams: DatabaseStream[] = await database('twitch_streams')
   .where('isLive', true)
   .where('createdAt', '>', subHours(Date.now(), 6))
 
-console.log(knownStreams)
+log.info(`${knownStreams.length} known live streams found`)
 
 async function getGames() {
   const game = await apiClient.games.getGameByName('Zeepkist')
@@ -58,7 +59,7 @@ async function cleanupOldStreams(channel: TextChannel) {
       seconds > 60 * 60 * 12 // 12 hours
     ) {
       //remove when offline or 12 hours old
-      console.log('Trying to remove stream from ' + knownStream.userName)
+      log.info(`Setting ${knownStream.userName}'s stream to offline}`)
       for (let index = knownStreams.length - 1; index >= 0; index--) {
         if (knownStreams[index].userId == knownStream.userId) {
           knownStreams.splice(index, 1)
@@ -79,13 +80,13 @@ async function cleanupOldStreams(channel: TextChannel) {
           // Remove button
           const message = await channel.messages.fetch(knownStream.messageId)
           if (message == undefined) {
-            console.log('Message not found: ' + knownStream.messageId)
+            log.error(`Message not found: ${knownStream.messageId}`)
           } else {
             const embed = twitchEmbedEnded(stream)
             message.edit({ embeds: [embed], components: [] })
           }
 
-          console.log('Removed stream from ' + knownStream.userName)
+          log.info(`Set ${knownStream.userName}'s stream to offline`)
         }
       }
     }
@@ -125,7 +126,7 @@ async function announceStreams(channel: TextChannel) {
         )
         const message = await channel.messages.fetch(data.messageId)
         if (message == undefined) {
-          console.log('Message not found: ' + data.messageId)
+          log.error(`Message not found: ${data.messageId}`)
         } else {
           await database('twitch_streams')
             .where('messageId', data.messageId)
@@ -136,6 +137,8 @@ async function announceStreams(channel: TextChannel) {
             })
 
           message.edit({ embeds: [embed], components: [component] })
+
+          log.info(`Updated ${stream.userName}'s stream`)
         }
       }
     } else {
@@ -165,7 +168,8 @@ async function announceStreams(channel: TextChannel) {
 
       await database('twitch_streams').insert(streamData)
       knownStreams.push(streamData)
-      console.log('Added ' + stream.userName + ' to known streams')
+
+      log.info(`Announced ${stream.userName}'s stream`)
     }
   }
 }
