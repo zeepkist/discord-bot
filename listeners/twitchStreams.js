@@ -7,6 +7,7 @@ import { twitchComponent } from '../components/twitch/component.js';
 import { twitchEmbed } from '../components/twitch/embed.js';
 import { twitchEmbedEnded } from '../components/twitch/embedEnded.js';
 import { database } from '../services/database.js';
+import { log } from '../utils/index.js';
 const CLIENT_ID = process.env.TWITCH_ID;
 const CLIENT_SECRET = process.env.TWITCH_SECRET;
 const GUILD = process.env.DISCORD_ZEEPKIST_GUILD;
@@ -16,7 +17,7 @@ const apiClient = new ApiClient({ authProvider });
 const knownStreams = await database('twitch_streams')
     .where('isLive', true)
     .where('createdAt', '>', subHours(Date.now(), 6));
-console.log(knownStreams);
+log.info(`${knownStreams.length} known live streams found`);
 async function getGames() {
     const game = await apiClient.games.getGameByName('Zeepkist');
     if (!game)
@@ -41,7 +42,7 @@ async function cleanupOldStreams(channel) {
         const seconds = (Date.now() - knownStream.createdAt.getTime()) / 1000;
         if ((!(await isStreamLive(knownStream.userName)) && seconds > 60 * 60) ||
             seconds > 60 * 60 * 12) {
-            console.log('Trying to remove stream from ' + knownStream.userName);
+            log.info(`Setting ${knownStream.userName}'s stream to offline}`);
             for (let index = knownStreams.length - 1; index >= 0; index--) {
                 if (knownStreams[index].userId == knownStream.userId) {
                     knownStreams.splice(index, 1);
@@ -51,15 +52,18 @@ async function cleanupOldStreams(channel) {
                         isLive: false,
                         updatedAt: new Date(Date.now())
                     });
+                    const stream = await database('twitch_streams')
+                        .where('messageId', knownStream.messageId)
+                        .first();
                     const message = await channel.messages.fetch(knownStream.messageId);
                     if (message == undefined) {
-                        console.log('Message not found: ' + knownStream.messageId);
+                        log.error(`Message not found: ${knownStream.messageId}`);
                     }
                     else {
-                        const embed = twitchEmbedEnded(knownStream);
+                        const embed = twitchEmbedEnded(stream);
                         message.edit({ embeds: [embed], components: [] });
                     }
-                    console.log('Removed stream from ' + knownStream.userName);
+                    log.info(`Set ${knownStream.userName}'s stream to offline`);
                 }
             }
         }
@@ -78,15 +82,18 @@ async function announceStreams(channel) {
     for (const stream of games) {
         const streamsThisMonth = await getMonthlyStreams(stream.userId);
         const component = twitchComponent(stream);
+        const user = await stream.getUser();
+        const profilePictureUrl = user?.profilePictureUrl ??
+            'https://res.cloudinary.com/startup-grind/image/upload/c_fill,f_auto,g_center,q_auto:good/v1/gcs/platform-data-twitch/contentbuilder/community-meetups_event-thumbnail_400x400.png';
         if (knownStreams.some(item => item.userName === stream.userName)) {
             const data = knownStreams.find(item => item.userName === stream.userName);
             if (data === undefined)
                 return;
             if (data.messageId != undefined && data.viewers != stream.viewers) {
-                const embed = await twitchEmbed(stream, streamsThisMonth);
+                const embed = await twitchEmbed(stream, streamsThisMonth, profilePictureUrl);
                 const message = await channel.messages.fetch(data.messageId);
                 if (message == undefined) {
-                    console.log('Message not found: ' + data.messageId);
+                    log.error(`Message not found: ${data.messageId}`);
                 }
                 else {
                     await database('twitch_streams')
@@ -97,18 +104,12 @@ async function announceStreams(channel) {
                         updatedAt: new Date(Date.now())
                     });
                     message.edit({ embeds: [embed], components: [component] });
+                    log.info(`Updated ${stream.userName}'s stream`);
                 }
             }
         }
         else {
-            console.log(stream.userDisplayName +
-                ' is playing ' +
-                stream.gameName +
-                ' with ' +
-                stream.viewers +
-                ' viewers on https://twitch.tv/' +
-                stream.userName);
-            const embed = await twitchEmbed(stream, streamsThisMonth + 1);
+            const embed = await twitchEmbed(stream, streamsThisMonth + 1, profilePictureUrl);
             const message = await channel.send({
                 embeds: [embed],
                 components: [component]
@@ -121,12 +122,13 @@ async function announceStreams(channel) {
                 updatedAt: new Date(Date.now()),
                 userId: stream.userId,
                 userName: stream.userName,
+                profilePictureUrl,
                 viewers: stream.viewers,
                 peakViewers: stream.viewers
             };
             await database('twitch_streams').insert(streamData);
             knownStreams.push(streamData);
-            console.log('Added ' + stream.userName + ' to known streams');
+            log.info(`Announced ${stream.userName}'s stream`);
         }
     }
 }
