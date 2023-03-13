@@ -5,6 +5,7 @@ export interface DatabaseStream {
   streamId: string
   userId: string
   userName: string
+  profilePictureUrl: string
   viewers: number
   peakViewers: number
   createdAt: Date

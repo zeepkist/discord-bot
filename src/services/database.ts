@@ -59,6 +59,13 @@ const initialiseDatabase = async () => {
       table.string('userName', 64).notNullable().index()
       table.boolean('isLive').notNullable().defaultTo(true)
       table.integer('viewers').notNullable().defaultTo(0)
+      table.integer('peakViewers').notNullable().defaultTo(0)
+      table
+        .text('profilePictureUrl')
+        .notNullable()
+        .defaultTo(
+          'https://res.cloudinary.com/startup-grind/image/upload/c_fill,f_auto,g_center,q_auto:good/v1/gcs/platform-data-twitch/contentbuilder/community-meetups_event-thumbnail_400x400.png'
+        )
       table.timestamp('createdAt').notNullable().defaultTo(database.fn.now())
       table.timestamp('updatedAt').notNullable().defaultTo(database.fn.now())
     })
