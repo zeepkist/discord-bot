@@ -71,12 +71,17 @@ async function cleanupOldStreams(channel: TextChannel) {
               updatedAt: new Date(Date.now())
             })
 
+          // Get the latest stream data from the database
+          const stream: DatabaseStream = await database('twitch_streams')
+            .where('messageId', knownStream.messageId)
+            .first()
+
           // Remove button
           const message = await channel.messages.fetch(knownStream.messageId)
           if (message == undefined) {
             console.log('Message not found: ' + knownStream.messageId)
           } else {
-            const embed = twitchEmbedEnded(knownStream)
+            const embed = twitchEmbedEnded(stream)
             message.edit({ embeds: [embed], components: [] })
           }
 
@@ -103,13 +108,21 @@ async function announceStreams(channel: TextChannel) {
   for (const stream of games) {
     const streamsThisMonth = await getMonthlyStreams(stream.userId)
     const component = twitchComponent(stream)
+    const user = await stream.getUser()
+    const profilePictureUrl =
+      user?.profilePictureUrl ??
+      'https://res.cloudinary.com/startup-grind/image/upload/c_fill,f_auto,g_center,q_auto:good/v1/gcs/platform-data-twitch/contentbuilder/community-meetups_event-thumbnail_400x400.png'
 
     if (knownStreams.some(item => item.userName === stream.userName)) {
       const data = knownStreams.find(item => item.userName === stream.userName)
       if (data === undefined) return
 
       if (data.messageId != undefined && data.viewers != stream.viewers) {
-        const embed = await twitchEmbed(stream, streamsThisMonth)
+        const embed = await twitchEmbed(
+          stream,
+          streamsThisMonth,
+          profilePictureUrl
+        )
         const message = await channel.messages.fetch(data.messageId)
         if (message == undefined) {
           console.log('Message not found: ' + data.messageId)
@@ -126,17 +139,12 @@ async function announceStreams(channel: TextChannel) {
         }
       }
     } else {
-      console.log(
-        stream.userDisplayName +
-          ' is playing ' +
-          stream.gameName +
-          ' with ' +
-          stream.viewers +
-          ' viewers on https://twitch.tv/' +
-          stream.userName
+      const embed = await twitchEmbed(
+        stream,
+        streamsThisMonth + 1, // +1 because this is a stream that is not yet in the database
+        profilePictureUrl
       )
 
-      const embed = await twitchEmbed(stream, streamsThisMonth + 1) // +1 because this is a stream that is not yet in the database
       const message = await channel.send({
         embeds: [embed],
         components: [component]
@@ -150,6 +158,7 @@ async function announceStreams(channel: TextChannel) {
         updatedAt: new Date(Date.now()),
         userId: stream.userId,
         userName: stream.userName,
+        profilePictureUrl,
         viewers: stream.viewers,
         peakViewers: stream.viewers
       }

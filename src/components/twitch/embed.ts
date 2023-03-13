@@ -6,7 +6,8 @@ import { formatOrdinal } from '../../utils/index.js'
 
 export const twitchEmbed = async (
   stream: HelixStream,
-  streamsThisMonth: number
+  streamsThisMonth: number,
+  profilePictureUrl: string
 ) => {
   const ordinalStreams = formatOrdinal(streamsThisMonth)
   const streamingFor = formatDistanceToNowStrict(new Date(stream.startDate))
@@ -19,15 +20,13 @@ export const twitchEmbed = async (
 
   description += `\n\nCome say hi in their ${ordinalStreams} stream this month!!`
 
-  const user = await stream.getUser()
-
   const embed = new EmbedBuilder()
     .setTitle(title)
     .setDescription(description)
     .setURL(`https://twitch.tv/${stream.userName}`)
     .setColor('#6441a5')
     .setTimestamp(stream.startDate)
-    .setThumbnail(user.profilePictureUrl)
+    .setThumbnail(profilePictureUrl)
     .setImage(
       `${stream.getThumbnailUrl(1280, 720)}?${stream.startDate.getTime()}`
     )
