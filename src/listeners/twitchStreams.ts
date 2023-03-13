@@ -59,7 +59,7 @@ async function cleanupOldStreams(channel: TextChannel) {
       seconds > 60 * 60 * 12 // 12 hours
     ) {
       //remove when offline or 12 hours old
-      log.info(`Setting ${knownStream.userName}'s stream to offline}`)
+      log.info(`Setting ${knownStream.userName}'s stream to offline`)
       for (let index = knownStreams.length - 1; index >= 0; index--) {
         if (knownStreams[index].userId == knownStream.userId) {
           knownStreams.splice(index, 1)
