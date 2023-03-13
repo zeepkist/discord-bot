@@ -47,7 +47,7 @@ jobs:
           cp .yarnrc.yml dist/.yarnrc.yml
           cp knexfile.js dist/knexfile.js
           mkdir -p dist/migrations
-          cp -r migrations/ dist/migrations/
+          cp -r migrations/ dist/
           mkdir -p dist/.yarn/releases
           cp -r .yarn/releases/ dist/.yarn/
           mkdir -p dist/.yarn/plugins
