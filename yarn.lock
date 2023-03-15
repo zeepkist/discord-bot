@@ -1044,60 +1044,60 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@twurple/api-call@npm:6.0.8":
-  version: 6.0.8
-  resolution: "@twurple/api-call@npm:6.0.8"
+"@twurple/api-call@npm:6.0.9":
+  version: 6.0.9
+  resolution: "@twurple/api-call@npm:6.0.9"
   dependencies:
     "@d-fischer/cross-fetch": ^4.0.2
     "@d-fischer/qs": ^7.0.2
     "@d-fischer/shared-utils": ^3.4.0
-    "@twurple/common": 6.0.8
+    "@twurple/common": 6.0.9
     "@types/node-fetch": ^2.5.7
     tslib: ^2.0.3
-  checksum: 6cd2fcca3514d4a17cbd8889211fe0318a6be94e7bda74265f9a1b3bdfd03d8dc353066d0160a60859c3430f3e3e5b5ecfbb62f0a9a0a220cbd25ab146cfdfcc
+  checksum: e6a3f9c689a476b41d9014af9aa3989ab061c5377cea041dc9e12b37268e60fab68770790c405905a45af01dbde0771a3d86e06005a5da51ccf858f749f921ab
   languageName: node
   linkType: hard
 
-"@twurple/api@npm:6.0.8":
-  version: 6.0.8
-  resolution: "@twurple/api@npm:6.0.8"
+"@twurple/api@npm:6.0.9":
+  version: 6.0.9
+  resolution: "@twurple/api@npm:6.0.9"
   dependencies:
     "@d-fischer/cache-decorators": ^3.0.0
     "@d-fischer/detect-node": ^3.0.1
     "@d-fischer/logger": ^4.2.1
     "@d-fischer/rate-limiter": ^0.7.2
     "@d-fischer/shared-utils": ^3.4.0
-    "@twurple/api-call": 6.0.8
-    "@twurple/common": 6.0.8
+    "@twurple/api-call": 6.0.9
+    "@twurple/common": 6.0.9
     retry: ^0.13.1
     tslib: ^2.0.3
   peerDependencies:
-    "@twurple/auth": 6.0.8
-  checksum: 21a51ac99547e6eb1b1c3852852fa8e0e36141143ade8aa9e00eae8bd229916903c93e6d1e0d69aebb4929f6cc53df1dec72b3e97c0b76af2cf6fb3db66ef683
+    "@twurple/auth": 6.0.9
+  checksum: b0fd0e7d5ce3ebba65c73111e22867264b907177e8a58137b89c9c92d1e06160813a4bef708d8d08c9140a300c8a5d2f47ad8f898ca78d5878d353ad4eba9115
   languageName: node
   linkType: hard
 
-"@twurple/auth@npm:6.0.8":
-  version: 6.0.8
-  resolution: "@twurple/auth@npm:6.0.8"
+"@twurple/auth@npm:6.0.9":
+  version: 6.0.9
+  resolution: "@twurple/auth@npm:6.0.9"
   dependencies:
     "@d-fischer/logger": ^4.2.1
     "@d-fischer/shared-utils": ^3.4.0
-    "@twurple/api-call": 6.0.8
-    "@twurple/common": 6.0.8
+    "@twurple/api-call": 6.0.9
+    "@twurple/common": 6.0.9
     tslib: ^2.0.3
-  checksum: f77519856f85eeda124e5d0146375b9e6754b6b48a216a7f0b47a59d49d8350e57840ed1fcd2cb2702b1d7a6e4d1f6d402f9efc7bccbbd0f298525db26bc6115
+  checksum: 81cb101d36d61a2e1c3e595a478232929f63f865c99f41cf3d8420b2763ba6277b3f31dd8aa0b73920926eda95d9780235475ed02471bc4288925399c4875112
   languageName: node
   linkType: hard
 
-"@twurple/common@npm:6.0.8":
-  version: 6.0.8
-  resolution: "@twurple/common@npm:6.0.8"
+"@twurple/common@npm:6.0.9":
+  version: 6.0.9
+  resolution: "@twurple/common@npm:6.0.9"
   dependencies:
     "@d-fischer/shared-utils": ^3.4.0
     klona: ^2.0.4
     tslib: ^2.0.3
-  checksum: 5cf8395d722d4c8c57e69ca493e035be729d375f8a8cf2b42bc5bd3aee9fdc83d1c037a6688325638a4963ae7e92d3dd1dec4da122ca656025323b3e0ab5ad4d
+  checksum: 27e957ced83c125fef67f232ae813e7c9bae2c05386db51e52b282df869b18b3a30a40e4df95c033627358c49ff48808a0b12f8289b4146dde303ed6fe79e111
   languageName: node
   linkType: hard
 
@@ -7021,8 +7021,8 @@ __metadata:
     "@semantic-release/commit-analyzer": ~9.0.2
     "@semantic-release/github": ~8.0.7
     "@semantic-release/release-notes-generator": ~10.0.3
-    "@twurple/api": 6.0.8
-    "@twurple/auth": 6.0.8
+    "@twurple/api": 6.0.9
+    "@twurple/auth": 6.0.9
     "@types/node": ~18.15.0
     "@typescript-eslint/eslint-plugin": ~5.55.0
     "@typescript-eslint/parser": ~5.55.0
