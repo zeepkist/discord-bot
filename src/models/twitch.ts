@@ -12,3 +12,24 @@ export interface DatabaseStream {
   updatedAt: Date
   isLive: boolean
 }
+
+export interface TwitchStats {
+  totalStreams: number
+  totalStreamers: number
+  totalViewers: number
+  mostDailyViewers: number
+  mostDailyViewersDay: number
+  averageViewers: number
+  averageStreamsStreamer: number
+  streamerMostStreamsUserName: string
+  streamerMostStreamsValue: number
+  streamerPeakViewersUserName: string
+  streamerPeakViewersValue: number
+  streamerAverageViewersUserName: string
+  streamerAverageViewersValue: number
+}
+
+export interface TwitchUserStats {
+  userName: string
+  value: number
+}
