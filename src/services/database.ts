@@ -54,7 +54,7 @@ const initialiseDatabase = async () => {
     log.info('Creating table: twitch_streams')
     await database.schema.createTable('twitch_streams', table => {
       table.string('messageId').notNullable().unique().index().primary()
-      table.string('streamId', 36).notNullable().index()
+      table.string('streamId', 36).notNullable().index().unique()
       table.string('userId', 36).notNullable().index()
       table.string('userName', 64).notNullable().index()
       table.boolean('isLive').notNullable().defaultTo(true)
@@ -68,6 +68,44 @@ const initialiseDatabase = async () => {
         )
       table.timestamp('createdAt').notNullable().defaultTo(database.fn.now())
       table.timestamp('updatedAt').notNullable().defaultTo(database.fn.now())
+    })
+  }
+
+  /*
+  const twitchUserStats = await database.schema.hasTable('twitch_user_stats')
+  if (!twitchUserStats) {
+    log.info('Creating table: twitch_user_stats')
+    await database.schema.createTable('twitch_stats', table => {
+      table.string('userId', 36).notNullable().index().primary()
+      table.foreign('statPeriodId').references('twitch_stats.id')
+      table.integer('averageViewers').notNullable().defaultTo(0)
+      table.integer('peakViewers').notNullable().defaultTo(0)
+      table.integer('totalViewers').notNullable().defaultTo(0)
+      table.integer('totalStreams').notNullable().defaultTo(0)
+      table.boolean('newStreamer').notNullable().defaultTo(false)
+      table.timestamp('createdAt').notNullable().defaultTo(database.fn.now())
+    })
+  }
+  */
+
+  const twitchStats = await database.schema.hasTable('twitch_stats')
+  if (!twitchStats) {
+    log.info('Creating table: twitch_stats')
+    await database.schema.createTable('twitch_stats', table => {
+      table.integer('totalStreams').notNullable()
+      table.integer('totalStreamers').notNullable()
+      table.integer('totalViewers').notNullable()
+      table.integer('mostDailyViewers').notNullable()
+      table.integer('mostDailyViewersDay').notNullable()
+      table.integer('averageViewers').notNullable()
+      table.integer('averageStreamsStreamer').notNullable()
+      table.string('streamerMostStreamsUserName').notNullable()
+      table.integer('streamerMostStreamsValue').notNullable()
+      table.string('streamerPeakViewersUserName').notNullable()
+      table.integer('streamerPeakViewersValue').notNullable()
+      table.string('streamerAverageViewersUserName').notNullable()
+      table.integer('streamerAverageViewersValue').notNullable()
+      table.timestamp('createdAt').notNullable().defaultTo(database.fn.now())
     })
   }
 }
