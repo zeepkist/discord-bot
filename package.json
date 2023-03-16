@@ -20,8 +20,8 @@
     "@semantic-release/github": "~8.0.7",
     "@semantic-release/release-notes-generator": "~10.0.3",
     "@types/node": "~18.15.0",
-    "@typescript-eslint/eslint-plugin": "~5.54.0",
-    "@typescript-eslint/parser": "~5.54.0",
+    "@typescript-eslint/eslint-plugin": "~5.55.0",
+    "@typescript-eslint/parser": "~5.55.0",
     "ava": "~5.2.0",
     "c8": "~7.13.0",
     "eslint": "~8.36.0",
@@ -36,8 +36,8 @@
     "typescript": "~4.9.4"
   },
   "dependencies": {
-    "@twurple/api": "6.0.8",
-    "@twurple/auth": "6.0.8",
+    "@twurple/api": "6.0.9",
+    "@twurple/auth": "6.0.9",
     "@zeepkist/gtr-api": "2.0.9",
     "date-fns": "2.29.3",
     "discord.js": "14.8.0",
