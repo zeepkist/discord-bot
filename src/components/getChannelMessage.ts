@@ -11,6 +11,7 @@ export const getChannelMessage = async (
   try {
     message = await channel.messages.fetch(messageId)
     return message
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any & ErrorEvent) {
     if (error.message === 'Unknown Message') {
       log.error(
