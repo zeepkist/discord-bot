@@ -28,7 +28,7 @@ export const twitchEmbed = async (
     .setTimestamp(stream.startDate)
     .setThumbnail(profilePictureUrl)
     .setImage(
-      `${stream.getThumbnailUrl(1280, 720)}?${stream.startDate.getTime()}`
+      `${stream.getThumbnailUrl(1280, 720)}?${stream.startDate.getTime()}=1`
     )
 
   return embed
