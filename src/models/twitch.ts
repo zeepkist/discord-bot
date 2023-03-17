@@ -1,4 +1,5 @@
-import { Message } from 'discord.js'
+import { HelixStream } from '@twurple/api'
+import { ActionRowBuilder, ButtonBuilder, Message } from 'discord.js'
 
 export interface DatabaseStream {
   messageId: Message['id']
@@ -32,4 +33,11 @@ export interface TwitchStats {
 export interface TwitchUserStats {
   userName: string
   value: number
+}
+
+export interface CreateUpdateStreamOptions {
+  component: ActionRowBuilder<ButtonBuilder>
+  stream: HelixStream
+  streamsThisMonth: number
+  profilePictureUrl: string
 }
