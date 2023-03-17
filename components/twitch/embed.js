@@ -16,6 +16,6 @@ export const twitchEmbed = async (stream, streamsThisMonth, profilePictureUrl) =
         .setColor('#6441a5')
         .setTimestamp(stream.startDate)
         .setThumbnail(profilePictureUrl)
-        .setImage(`${stream.getThumbnailUrl(1280, 720)}?${stream.startDate.getTime()}`);
+        .setImage(`${stream.getThumbnailUrl(1280, 720)}?${stream.startDate.getTime()}=1`);
     return embed;
 };
