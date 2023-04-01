@@ -1,4 +1,4 @@
-import { isFirstDayOfMonth, startOfMonth } from 'date-fns'
+import { isFirstDayOfMonth, startOfMonth, subDays } from 'date-fns'
 import { Message } from 'discord.js'
 
 import { DatabaseStream, TwitchStats } from '../../models/twitch.js'
@@ -44,7 +44,7 @@ export const getMonthlyUserStreams = async (userId: string) => {
 
 export const getMonthlyStats = async () => {
   const now = Date.now()
-  const firstDayOfMonth = startOfMonth(now)
+  const firstDayOfMonth = startOfMonth(subDays(now, 1))
 
   // Skip if it's not the first day of the month
   if (!isFirstDayOfMonth(now)) return
