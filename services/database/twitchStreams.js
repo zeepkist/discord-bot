@@ -1,4 +1,4 @@
-import { isFirstDayOfMonth, startOfMonth } from 'date-fns';
+import { isFirstDayOfMonth, startOfMonth, subDays } from 'date-fns';
 import { log } from '../../utils/index.js';
 import { database } from '../database.js';
 export const getLiveStreams = async () => (await database('twitch_streams').where('isLive', true));
@@ -28,7 +28,7 @@ export const getMonthlyUserStreams = async (userId) => {
 };
 export const getMonthlyStats = async () => {
     const now = Date.now();
-    const firstDayOfMonth = startOfMonth(now);
+    const firstDayOfMonth = startOfMonth(subDays(now, 1));
     if (!isFirstDayOfMonth(now))
         return;
     const result = await database('twitch_stats')
