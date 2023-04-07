@@ -1,5 +1,6 @@
 import { getLevels, getRecords } from '@zeepkist/gtr-api';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
+import { STEAM_URL, ZEEPKIST_URL } from '../../constants.js';
 import { log } from '../../utils/index.js';
 import { addMedalTimes } from '../fields/addMedalTimes.js';
 import { addPersonalBest } from '../fields/addPersonalBest.js';
@@ -60,14 +61,14 @@ export const paginatedLevel = async (properties) => {
         new ButtonBuilder()
             .setStyle(ButtonStyle.Link)
             .setLabel('More Stats')
-            .setURL(`https://zeepkist.wopian.me/level/${level.id}`)
+            .setURL(`${ZEEPKIST_URL}/level/${level.id}`)
     ]);
     if (level.workshopId !== '0') {
         buttons.addComponents([
             new ButtonBuilder()
                 .setStyle(ButtonStyle.Link)
                 .setLabel('Subscribe to Level')
-                .setURL(`https://steamcommunity.com/sharedfiles/filedetails/?id=${level.workshopId}`)
+                .setURL(`${STEAM_URL}/sharedfiles/filedetails/?id=${level.workshopId}`)
         ]);
     }
     if (level.workshopId === '0' && level.author === 'Yannic') {

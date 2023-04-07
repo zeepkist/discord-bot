@@ -17,13 +17,13 @@ const level = {
     timeBronze: 36,
     thumbnailUrl: ''
 };
-test('displays level link', macro, formatLevel(level), '[Level 1](https://zeepkist.wopian.me/level/1) by _Author Name_');
+test('displays level link', macro, formatLevel(level), '[Level 1](https://zeepki.st/level/1) by _Author Name_');
 const user = {
     id: 1,
     steamId: '2',
     steamName: 'User Name'
 };
-test('displays user link', macro, formatUser(user), '[User Name](https://zeepkist.wopian.me/user/2)');
+test('displays user link', macro, formatUser(user), '[User Name](https://zeepki.st/user/2)');
 test('displays ordinal 1', macro, formatOrdinal(1), '1st');
 test('displays ordinal 2', macro, formatOrdinal(2), '2nd');
 test('displays ordinal 3', macro, formatOrdinal(3), '3rd');

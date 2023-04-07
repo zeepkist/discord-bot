@@ -2,6 +2,7 @@ import { getLevels, getRecords, getUser, getUserRanking } from '@zeepkist/gtr-ap
 import { ActionRowBuilder, ApplicationCommandOptionType, ApplicationCommandType, ButtonBuilder, ButtonStyle, EmbedBuilder, inlineCode } from 'discord.js';
 import { HTTPError } from 'ky-universal';
 import { listRecords } from '../components/lists/listRecords.js';
+import { STEAM_URL, ZEEPKIST_URL } from '../constants.js';
 import { database } from '../services/database.js';
 import { getPlayerSummaries } from '../services/steam.js';
 import { formatFlagEmoji, formatOrdinal, log, userSimilarity } from '../utils/index.js';
@@ -10,7 +11,7 @@ const addDiscordAuthor = (interaction, embed, linkedAccount, steamId) => {
     embed.setAuthor({
         name: linkedAccount.username,
         iconURL: linkedAccount.avatarURL() ?? '',
-        url: `https://zeepkist.wopian.me/user/${steamId}`
+        url: `${ZEEPKIST_URL}/user/${steamId}`
     });
     if (linkedAccount.hexAccentColor) {
         embed.setColor(linkedAccount.hexAccentColor);
@@ -131,7 +132,7 @@ export const user = {
             const embed = new EmbedBuilder()
                 .setColor(0xff_92_00)
                 .setTitle(`${user.steamName}'s Stats`)
-                .setURL(`https://zeepkist.wopian.me/user/${user.steamId}`)
+                .setURL(`${ZEEPKIST_URL}/user/${user.steamId}`)
                 .setThumbnail(steamUser.avatarfull)
                 .addFields({
                 name: 'World Records',
@@ -227,11 +228,11 @@ export const user = {
                 new ButtonBuilder()
                     .setStyle(ButtonStyle.Link)
                     .setLabel('More Stats')
-                    .setURL(`https://zeepkist.wopian.me/user/${user.steamId}`),
+                    .setURL(`${ZEEPKIST_URL}/user/${user.steamId}`),
                 new ButtonBuilder()
                     .setStyle(ButtonStyle.Link)
                     .setLabel('Steam Profile')
-                    .setURL(`https://steamcommunity.com/profiles/${user.steamId}`)
+                    .setURL(`${STEAM_URL}/profiles/${user.steamId}`)
             ]);
             log.info(`Sending message`, interaction);
             await interaction.editReply({
