@@ -1,6 +1,7 @@
 import { formatDistanceToNowStrict } from 'date-fns'
 import { bold, hyperlink, italic } from 'discord.js'
 
+import { ZEEPKIST_URL } from '../constants.js'
 import { Level } from '../models/level.js'
 import { User } from '../models/user.js'
 import { numberToMonospace } from './index.js'
@@ -9,13 +10,12 @@ export const formatRank = (rank: number): string =>
   bold(`${numberToMonospace(rank)}`.padStart(3, ' '))
 
 export const formatLevel = (level: Level): string =>
-  `${hyperlink(
-    level.name,
-    `https://zeepkist.wopian.me/level/${level.id}`
-  )} by ${italic(level.author)}`
+  `${hyperlink(level.name, `${ZEEPKIST_URL}/level/${level.id}`)} by ${italic(
+    level.author
+  )}`
 
 export const formatUser = (user: User): string =>
-  hyperlink(user.steamName, `https://zeepkist.wopian.me/user/${user.steamId}`)
+  hyperlink(user.steamName, `${ZEEPKIST_URL}/user/${user.steamId}`)
 
 export const formatRelativeDate = (date: string) => {
   return formatDistanceToNowStrict(new Date(date), {
