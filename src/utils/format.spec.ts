@@ -39,7 +39,7 @@ test(
   'displays level link',
   macro,
   formatLevel(level),
-  '[Level 1](https://zeepkist.wopian.me/level/1) by _Author Name_'
+  '[Level 1](https://zeepki.st/level/1) by _Author Name_'
 )
 
 // formatUser
@@ -53,7 +53,7 @@ test(
   'displays user link',
   macro,
   formatUser(user),
-  '[User Name](https://zeepkist.wopian.me/user/2)'
+  '[User Name](https://zeepki.st/user/2)'
 )
 
 // formatOrdinal

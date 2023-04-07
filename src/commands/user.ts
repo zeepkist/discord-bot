@@ -19,6 +19,7 @@ import { HTTPError } from 'ky-universal'
 
 import { Command } from '../command.js'
 import { listRecords } from '../components/lists/listRecords.js'
+import { STEAM_URL, ZEEPKIST_URL } from '../constants.js'
 import { database } from '../services/database.js'
 import { getPlayerSummaries } from '../services/steam.js'
 import {
@@ -38,7 +39,7 @@ const addDiscordAuthor = (
   embed.setAuthor({
     name: linkedAccount.username,
     iconURL: linkedAccount.avatarURL() ?? '',
-    url: `https://zeepkist.wopian.me/user/${steamId}`
+    url: `${ZEEPKIST_URL}/user/${steamId}`
   })
   if (linkedAccount.hexAccentColor) {
     embed.setColor(linkedAccount.hexAccentColor)
@@ -198,7 +199,7 @@ export const user: Command = {
       const embed = new EmbedBuilder()
         .setColor(0xff_92_00)
         .setTitle(`${user.steamName}'s Stats`)
-        .setURL(`https://zeepkist.wopian.me/user/${user.steamId}`)
+        .setURL(`${ZEEPKIST_URL}/user/${user.steamId}`)
         .setThumbnail(steamUser.avatarfull)
         .addFields(
           {
@@ -328,11 +329,11 @@ export const user: Command = {
         new ButtonBuilder()
           .setStyle(ButtonStyle.Link)
           .setLabel('More Stats')
-          .setURL(`https://zeepkist.wopian.me/user/${user.steamId}`),
+          .setURL(`${ZEEPKIST_URL}/user/${user.steamId}`),
         new ButtonBuilder()
           .setStyle(ButtonStyle.Link)
           .setLabel('Steam Profile')
-          .setURL(`https://steamcommunity.com/profiles/${user.steamId}`)
+          .setURL(`${STEAM_URL}/profiles/${user.steamId}`)
       ])
 
       log.info(`Sending message`, interaction)

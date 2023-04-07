@@ -1,6 +1,7 @@
 import { ActivityType, Client } from 'discord.js'
 
 import { commands } from '../commands.js'
+import { ZEEPKIST_URL } from '../constants.js'
 import { log } from '../utils/index.js'
 
 export default async (client: Client) => {
@@ -13,7 +14,7 @@ export default async (client: Client) => {
       {
         type: ActivityType.Watching,
         name: 'Zeepkist',
-        url: 'https://zeepkist.wopian.me'
+        url: ZEEPKIST_URL
       }
     ],
     status: 'online'
