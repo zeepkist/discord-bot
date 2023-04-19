@@ -36,8 +36,8 @@
     "typescript": "~5.0.0"
   },
   "dependencies": {
-    "@twurple/api": "6.1.2",
-    "@twurple/auth": "6.1.2",
+    "@twurple/api": "6.1.3",
+    "@twurple/auth": "6.1.3",
     "@zeepkist/gtr-api": "2.0.9",
     "date-fns": "2.29.3",
     "discord.js": "14.9.0",
