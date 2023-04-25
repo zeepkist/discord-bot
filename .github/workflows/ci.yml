@@ -27,13 +27,13 @@ jobs:
         run: pnpm install --no-frozen-lockfile # For some reason, pnpm install fails with a frozen lockfile
 
       - name: Run Linter
-        run: yarn lint
+        run: pnpm lint
 
       - name: Run Tests
-        run: yarn coverage
+        run: pnpm coverage
 
       - name: Create Release
         if: success() && github.ref == 'refs/heads/develop'
-        run: yarn semantic-release
+        run: pnpm semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
