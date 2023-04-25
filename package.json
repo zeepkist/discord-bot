@@ -2,8 +2,8 @@
   "type": "module",
   "version": "0.0.0",
   "scripts": {
-    "dev": "yarn migrate && tsx watch src/index.ts",
-    "start": "yarn migrate && tsx src/index.ts",
+    "dev": "pnpm migrate && tsx watch src/index.ts",
+    "start": "pnpm migrate && tsx src/index.ts",
     "build": "tsc",
     "lint": "eslint . --ext .js,.cjs,.mjs,.ts,.cts,.mts --fix --ignore-path .gitignore",
     "lint:ci": "eslint . --ext .js,.cjs,.mjs,.ts,.cts,.mts --ignore-path .gitignore",
@@ -11,6 +11,22 @@
     "coverage": "c8 --all --src=dist --skip-full ava",
     "migrate": "knex migrate:latest",
     "make": "knex migrate:make"
+  },
+  "dependencies": {
+    "@twurple/api": "6.2.0",
+    "@twurple/auth": "6.2.0",
+    "@zeepkist/gtr-api": "3.1.5",
+    "date-fns": "2.29.3",
+    "discord.js": "14.9.0",
+    "dotenv": "16.0.3",
+    "fastest-levenshtein": "1.0.16",
+    "knex": "2.4.2",
+    "ky": "0.33.3",
+    "ky-universal": "0.11.0",
+    "mysql2": "3.2.4",
+    "pbkdf2": "3.1.2",
+    "winston": "3.8.2",
+    "winston-daily-rotate-file": "4.7.1"
   },
   "devDependencies": {
     "@ava/typescript": "~4.0.0",
@@ -34,28 +50,6 @@
     "semantic-release": "~21.0.0",
     "tsx": "~3.12.2",
     "typescript": "~5.0.0"
-  },
-  "dependencies": {
-    "@twurple/api": "6.2.0",
-    "@twurple/auth": "6.2.0",
-    "@zeepkist/gtr-api": "2.0.9",
-    "date-fns": "2.29.3",
-    "discord.js": "14.9.0",
-    "discord.ts": "npm:discord.js@14.9.0",
-    "dotenv": "16.0.3",
-    "fastest-levenshtein": "1.0.16",
-    "knex": "2.4.2",
-    "ky": "0.33.3",
-    "ky-universal": "0.11.0",
-    "mysql2": "3.2.4",
-    "pbkdf2": "3.1.2",
-    "winston": "3.8.2",
-    "winston-daily-rotate-file": "4.7.1"
-  },
-  "dependenciesMeta": {
-    "esbuild": {
-      "built": true
-    }
   },
   "ava": {
     "utilizeParallelBuilds": true,
@@ -86,5 +80,5 @@
       }
     ]
   },
-  "packageManager": "yarn@3.5.0"
+  "packageManager": "pnpm@8.3.1"
 }
