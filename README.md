@@ -9,36 +9,35 @@ A records and leaderboard bot for the [Zeepkist Discord server](https://discord.
 ## First-time Project Setup
 
 ```sh
-yarn
-yarn dlx @yarnpkg/sdks vscode
+pnpm install
 ```
 
 ### Compile and Hot-Reload for Development
 
 ```sh
-yarn dev
+pnpm dev
 ```
 
 ### Type-Check, Compile and Minify for Production
 
 ```sh
-yarn build
+pnpm build
 ```
 
 ### Lint with [ESLint](https://eslint.org/)
 
 ```sh
-yarn lint
+pnpm lint
 ```
 
 ### Run Tests
 
 ```sh
-yarn test
+pnpm test
 ```
 
 ### Run Tests with Coverage
 
 ```sh
-yarn coverage
+pnpm coverage
 ```
