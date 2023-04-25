@@ -2,6 +2,7 @@ import {
   getLevels,
   getRecords,
   getUser,
+  getUserBySteamId,
   getUserRanking
 } from '@zeepkist/gtr-api'
 import {
@@ -111,17 +112,8 @@ export const user: Command = {
     }
 
     try {
-      const user = await getUser({ SteamId: steamId, Id: id })
+      const user = steamId ? await getUserBySteamId(steamId) : await getUser(id)
       log.info(`Found user: ${user.steamName}`, interaction)
-
-      const steamPlayerSummary = await getPlayerSummaries([user.steamId])
-      const steamUser = steamPlayerSummary.response.players[0]
-      log.info(
-        `Found Steam player summary. Private: ${
-          steamUser.communityvisibilitystate === 1
-        }`,
-        interaction
-      )
 
       const levelsCreated = await getLevels({
         Author: user.steamName,
@@ -200,7 +192,6 @@ export const user: Command = {
         .setColor(0xff_92_00)
         .setTitle(`${user.steamName}'s Stats`)
         .setURL(`${ZEEPKIST_URL}/user/${user.steamId}`)
-        .setThumbnail(steamUser.avatarfull)
         .addFields(
           {
             name: 'World Records',
@@ -232,16 +223,34 @@ export const user: Command = {
         .setFooter({ text: 'Data provided by Zeepkist GTR' })
       log.info('Created embed.', interaction)
 
-      if (steamUser.loccountrycode) {
+      try {
+        const steamPlayerSummary = await getPlayerSummaries([user.steamId])
+        const steamUser = steamPlayerSummary.response.players[0]
         log.info(
-          `Adding ${steamUser.loccountrycode} country flag to embed.`,
+          `Found Steam player summary. Private: ${
+            steamUser.communityvisibilitystate === 1
+          }`,
           interaction
         )
-        embed.addFields({
-          name: 'Country',
-          value: formatFlagEmoji(steamUser.loccountrycode),
-          inline: true
-        })
+
+        embed.setThumbnail(steamUser.avatarfull)
+
+        if (steamUser.loccountrycode) {
+          log.info(
+            `Adding ${steamUser.loccountrycode} country flag to embed.`,
+            interaction
+          )
+          embed.addFields({
+            name: 'Country',
+            value: formatFlagEmoji(steamUser.loccountrycode),
+            inline: true
+          })
+        }
+      } catch (error) {
+        log.error(
+          `Failed to get Steam player summary - ${String(error)}`,
+          interaction
+        )
       }
 
       if (

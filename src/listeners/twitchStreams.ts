@@ -25,62 +25,72 @@ const knownStreams = await getLiveStreams()
 log.info(`Found ${knownStreams.length} live livestreams in the database.`)
 
 async function cleanupOldStreams(channel: TextChannel) {
-  log.info('Cleaning up old streams')
+  try {
+    log.info('Cleaning up old streams')
 
-  for (let index = knownStreams.length - 1; index >= 0; index--) {
-    const knownStream = knownStreams[index]
+    for (let index = knownStreams.length - 1; index >= 0; index--) {
+      const knownStream = knownStreams[index]
 
-    // Check if the stream is still live. If it is, skip it
-    if (await isStreamLive(knownStream.userId)) continue
+      // Check if the stream is still live. If it is, skip it
+      if (await isStreamLive(knownStream.userId)) continue
 
-    log.info(`Setting ${knownStream.userName}'s stream to offline`)
-    knownStreams.splice(index, 1)
+      log.info(`Setting ${knownStream.userName}'s stream to offline`)
+      knownStreams.splice(index, 1)
 
-    const streamData = await updateStream(
-      knownStream.messageId,
-      {
-        isLive: false
-      },
-      true
-    )
-    if (!streamData) continue
+      const streamData = await updateStream(
+        knownStream.messageId,
+        {
+          isLive: false
+        },
+        true
+      )
+      if (!streamData) continue
 
-    const message = await getChannelMessage(channel, knownStream.messageId)
-    if (!message) continue
+      const message = await getChannelMessage(channel, knownStream.messageId)
+      if (!message) continue
 
-    const embed = twitchEmbedEnded(streamData)
-    message.edit({ embeds: [embed], components: [] })
+      const embed = twitchEmbedEnded(streamData)
+      message.edit({ embeds: [embed], components: [] })
 
-    log.info(`Set ${knownStream.userName}'s stream to offline`)
+      log.info(`Set ${knownStream.userName}'s stream to offline`)
+    }
+  } catch (error) {
+    log.error(String(error))
   }
 }
 
 async function announceStreams(channel: TextChannel) {
-  const streams = await getStreams()
+  try {
+    const streams = await getStreams()
 
-  for (const stream of streams) {
-    const streamsThisMonth = await getMonthlyUserStreams(stream.userId)
-    const component = twitchComponent(stream)
-    const user = await stream.getUser()
-    const profilePictureUrl =
-      user?.profilePictureUrl ??
-      'https://res.cloudinary.com/startup-grind/image/upload/c_fill,f_auto,g_center,q_auto:good/v1/gcs/platform-data-twitch/contentbuilder/community-meetups_event-thumbnail_400x400.png'
+    for (const stream of streams) {
+      const streamsThisMonth = await getMonthlyUserStreams(stream.userId)
+      const component = twitchComponent(stream)
+      const user = await stream.getUser()
+      const profilePictureUrl =
+        user?.profilePictureUrl ??
+        'https://res.cloudinary.com/startup-grind/image/upload/c_fill,f_auto,g_center,q_auto:good/v1/gcs/platform-data-twitch/contentbuilder/community-meetups_event-thumbnail_400x400.png'
 
-    const knownStream = knownStreams.find(item => item.userId === stream.userId)
+      const knownStream = knownStreams.find(
+        item => item.userId === stream.userId
+      )
 
-    knownStream
-      ? updateMessage(channel, knownStream, {
-          component,
-          stream,
-          streamsThisMonth,
-          profilePictureUrl
-        })
-      : createMessage(channel, knownStreams, {
-          component,
-          stream,
-          streamsThisMonth: streamsThisMonth + 1,
-          profilePictureUrl
-        })
+      knownStream
+        ? updateMessage(channel, knownStream, {
+            component,
+            stream,
+            streamsThisMonth,
+            profilePictureUrl
+          })
+        : createMessage(channel, knownStreams, {
+            component,
+            stream,
+            streamsThisMonth: streamsThisMonth + 1,
+            profilePictureUrl
+          })
+    }
+  } catch (error) {
+    log.error(String(error))
   }
 }
 

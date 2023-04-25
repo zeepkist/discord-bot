@@ -1,4 +1,4 @@
-import { getLevels, searchLevels } from '@zeepkist/gtr-api'
+import { getLevel, getLevels, searchLevels } from '@zeepkist/gtr-api'
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
@@ -95,11 +95,27 @@ export const level: Command = {
       return
     }
 
+    if (id) {
+      try {
+        const level = await getLevel(id)
+        if (level) {
+          await paginatedLevel({
+            interaction,
+            action: 'first',
+            query: { id }
+          })
+          return
+        }
+      } catch (error: unknown) {
+        errorReply(interaction, level ? level.name : 'Unknown level', error)
+        return
+      }
+    }
+
     try {
       const levels = await (search
         ? searchLevels({ Query: search, Limit: 1 })
         : getLevels({
-            Id: id,
             WorkshopId: workshopId,
             Author: author,
             Name: name,
