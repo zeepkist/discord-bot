@@ -1347,16 +1347,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zeepkist/gtr-api@npm:2.0.9":
-  version: 2.0.9
-  resolution: "@zeepkist/gtr-api@npm:2.0.9"
+"@zeepkist/gtr-api@npm:3.1.5":
+  version: 3.1.5
+  resolution: "@zeepkist/gtr-api@npm:3.1.5"
   dependencies:
     ky: ~0.33.2
     ky-universal: ~0.11.0
   dependenciesMeta:
     esbuild:
       built: true
-  checksum: 0387204e77eb884cabd070f8267f2de20686e71a39847566af1ad5d81aa8258510e60c2040be7ee7edac6cf2902ed569b9d04d34cca8caf1e0b446d3318d8169
+  checksum: f507251c8f78681336e2625dd4bee423b798a6eb77bf7eba9dc2a22e49f0447c3e652c9cbb4ef11a197c786eb4b3137603ec02c37eaaa8322fdc18fd73067c8b
   languageName: node
   linkType: hard
 
@@ -7147,7 +7147,7 @@ __metadata:
     "@types/node": ~18.16.0
     "@typescript-eslint/eslint-plugin": ~5.59.0
     "@typescript-eslint/parser": ~5.59.0
-    "@zeepkist/gtr-api": 2.0.9
+    "@zeepkist/gtr-api": 3.1.5
     ava: ~5.2.0
     c8: ~7.13.0
     date-fns: 2.29.3
