@@ -1,7 +1,7 @@
 import { getLevels, getRecords } from '@zeepkist/gtr-api';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
 import { STEAM_URL, ZEEPKIST_URL } from '../../constants.js';
-import { log } from '../../utils/index.js';
+import { formatThumbnailEmbed, log } from '../../utils/index.js';
 import { addMedalTimes } from '../fields/addMedalTimes.js';
 import { addPersonalBest } from '../fields/addPersonalBest.js';
 import { listRecords } from '../lists/listRecords.js';
@@ -20,7 +20,6 @@ export const paginatedLevel = async (properties) => {
     if (!level) {
         log.info(`No records found for level. Fetching level data for ${JSON.stringify(data.query, undefined, 2)}`, interaction);
         const { levels } = await getLevels({
-            Id: data.query?.id,
             Author: data.query?.author,
             Name: data.query?.name,
             WorkshopId: data.query?.workshopId
@@ -42,7 +41,7 @@ export const paginatedLevel = async (properties) => {
     });
     if (level.thumbnailUrl) {
         log.info('Adding thumbnail', interaction);
-        embed.setThumbnail(level.thumbnailUrl.replaceAll(' ', '%20'));
+        embed.setThumbnail(formatThumbnailEmbed(level.thumbnailUrl));
     }
     await addMedalTimes({ interaction, embed, level });
     await addPersonalBest({

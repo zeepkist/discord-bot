@@ -7,7 +7,6 @@ export const paginatedLevels = async (properties) => {
     const { interaction } = properties;
     const data = await getPaginatedData(properties);
     const { levels, totalAmount } = await getLevels({
-        Id: data.query?.id,
         WorkshopId: data.query?.workshopId,
         Author: data.query?.author,
         Name: data.query?.name,

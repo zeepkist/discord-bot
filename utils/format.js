@@ -29,9 +29,3 @@ export const formatOrdinal = (number) => {
     const modulo = number % 100;
     return (number + (ordinals[(modulo - 20) % 10] || ordinals[modulo] || ordinals[0]));
 };
-export const formatFlagEmoji = (countryCode) => {
-    if (!countryCode)
-        return '';
-    const codePoints = [...countryCode.toUpperCase()].map(char => 127_397 + (char.codePointAt(0) ?? 0));
-    return String.fromCodePoint(...codePoints);
-};

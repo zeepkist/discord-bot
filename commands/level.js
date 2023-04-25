@@ -1,4 +1,4 @@
-import { getLevels, searchLevels } from '@zeepkist/gtr-api';
+import { getLevel, getLevels, searchLevels } from '@zeepkist/gtr-api';
 import { ApplicationCommandOptionType, ApplicationCommandType, EmbedBuilder } from 'discord.js';
 import { errorReply } from '../components/errorReply.js';
 import { paginatedLevel } from '../components/paginated/paginatedLevel.js';
@@ -69,11 +69,27 @@ export const level = {
             await replyNoLevels(interaction, true);
             return;
         }
+        if (id) {
+            try {
+                const level = await getLevel(id);
+                if (level) {
+                    await paginatedLevel({
+                        interaction,
+                        action: 'first',
+                        query: { id }
+                    });
+                    return;
+                }
+            }
+            catch (error) {
+                errorReply(interaction, level ? level.name : 'Unknown level', error);
+                return;
+            }
+        }
         try {
             const levels = await (search
                 ? searchLevels({ Query: search, Limit: 1 })
                 : getLevels({
-                    Id: id,
                     WorkshopId: workshopId,
                     Author: author,
                     Name: name,

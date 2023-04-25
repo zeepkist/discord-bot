@@ -1,11 +1,11 @@
-import { getLevels, getRecords, getUser, getUserRanking } from '@zeepkist/gtr-api';
+import { getLevels, getRecords, getUser, getUserBySteamId, getUserRanking } from '@zeepkist/gtr-api';
 import { ActionRowBuilder, ApplicationCommandOptionType, ApplicationCommandType, ButtonBuilder, ButtonStyle, EmbedBuilder, inlineCode } from 'discord.js';
 import { HTTPError } from 'ky-universal';
 import { listRecords } from '../components/lists/listRecords.js';
 import { STEAM_URL, ZEEPKIST_URL } from '../constants.js';
 import { database } from '../services/database.js';
 import { getPlayerSummaries } from '../services/steam.js';
-import { formatFlagEmoji, formatOrdinal, log, userSimilarity } from '../utils/index.js';
+import { formatOrdinal, log, userSimilarity } from '../utils/index.js';
 const addDiscordAuthor = (interaction, embed, linkedAccount, steamId) => {
     log.info(`Adding Discord author: ${linkedAccount.tag}`, interaction);
     embed.setAuthor({
@@ -67,11 +67,8 @@ export const user = {
             log.info(`Using linked account Steam ID: ${steamId}`, interaction);
         }
         try {
-            const user = await getUser({ SteamId: steamId, Id: id });
+            const user = steamId ? await getUserBySteamId(steamId) : await getUser(id);
             log.info(`Found user: ${user.steamName}`, interaction);
-            const steamPlayerSummary = await getPlayerSummaries([user.steamId]);
-            const steamUser = steamPlayerSummary.response.players[0];
-            log.info(`Found Steam player summary. Private: ${steamUser.communityvisibilitystate === 1}`, interaction);
             const levelsCreated = await getLevels({
                 Author: user.steamName,
                 Limit: 0
@@ -133,7 +130,6 @@ export const user = {
                 .setColor(0xff_92_00)
                 .setTitle(`${user.steamName}'s Stats`)
                 .setURL(`${ZEEPKIST_URL}/user/${user.steamId}`)
-                .setThumbnail(steamUser.avatarfull)
                 .addFields({
                 name: 'World Records',
                 value: `${worldRecords.totalAmount} ${userRankingPosition}`.trim(),
@@ -158,13 +154,14 @@ export const user = {
                 .setTimestamp()
                 .setFooter({ text: 'Data provided by Zeepkist GTR' });
             log.info('Created embed.', interaction);
-            if (steamUser.loccountrycode) {
-                log.info(`Adding ${steamUser.loccountrycode} country flag to embed.`, interaction);
-                embed.addFields({
-                    name: 'Country',
-                    value: formatFlagEmoji(steamUser.loccountrycode),
-                    inline: true
-                });
+            try {
+                const steamPlayerSummary = await getPlayerSummaries([user.steamId]);
+                const steamUser = steamPlayerSummary.response.players[0];
+                log.info(`Found Steam player summary. Private: ${steamUser.communityvisibilitystate === 1}`, interaction);
+                embed.setThumbnail(steamUser.avatarfull);
+            }
+            catch (error) {
+                log.error(`Failed to get Steam player summary - ${String(error)}`, interaction);
             }
             if ((!linkedAccount || linkedAccount?.length === 0) &&
                 userSimilarity(interaction.user.username, [user.steamName]) < 3) {
