@@ -24,7 +24,6 @@ import { STEAM_URL, ZEEPKIST_URL } from '../constants.js'
 import { database } from '../services/database.js'
 import { getPlayerSummaries } from '../services/steam.js'
 import {
-  formatFlagEmoji,
   formatOrdinal,
   log,
   userSimilarity
@@ -234,18 +233,6 @@ export const user: Command = {
         )
 
         embed.setThumbnail(steamUser.avatarfull)
-
-        if (steamUser.loccountrycode) {
-          log.info(
-            `Adding ${steamUser.loccountrycode} country flag to embed.`,
-            interaction
-          )
-          embed.addFields({
-            name: 'Country',
-            value: formatFlagEmoji(steamUser.loccountrycode),
-            inline: true
-          })
-        }
       } catch (error) {
         log.error(
           `Failed to get Steam player summary - ${String(error)}`,

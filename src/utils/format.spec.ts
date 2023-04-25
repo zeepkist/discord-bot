@@ -3,7 +3,6 @@ import test from 'ava'
 import { Level } from '../models/level.js'
 import { User } from '../models/user.js'
 import {
-  formatFlagEmoji,
   formatLevel,
   formatOrdinal,
   formatRank,
@@ -79,25 +78,3 @@ test('displays ordinal 113', macro, formatOrdinal(113), '113th')
 test('displays ordinal 121', macro, formatOrdinal(121), '121st')
 test('displays ordinal 122', macro, formatOrdinal(122), '122nd')
 test('displays ordinal 123', macro, formatOrdinal(123), '123rd')
-
-// formatFlagEmoji
-
-test('displays GB flag emoji', macro, formatFlagEmoji('gb'), '🇬🇧')
-test('displays US flag emoji', macro, formatFlagEmoji('us'), '🇺🇸')
-test('displays DE flag emoji', macro, formatFlagEmoji('de'), '🇩🇪')
-test('displays FR flag emoji', macro, formatFlagEmoji('fr'), '🇫🇷')
-test('displays ES flag emoji', macro, formatFlagEmoji('es'), '🇪🇸')
-test('displays IT flag emoji', macro, formatFlagEmoji('it'), '🇮🇹')
-test('displays NL flag emoji', macro, formatFlagEmoji('nl'), '🇳🇱')
-test('displays RU flag emoji', macro, formatFlagEmoji('ru'), '🇷🇺')
-test('displays CN flag emoji', macro, formatFlagEmoji('cn'), '🇨🇳')
-test('displays KR flag emoji', macro, formatFlagEmoji('kr'), '🇰🇷')
-test('displays JP flag emoji', macro, formatFlagEmoji('jp'), '🇯🇵')
-test('displays BR flag emoji', macro, formatFlagEmoji('br'), '🇧🇷')
-test('displays AU flag emoji', macro, formatFlagEmoji('au'), '🇦🇺')
-test('displays PL flag emoji', macro, formatFlagEmoji('pl'), '🇵🇱')
-test('displays TR flag emoji', macro, formatFlagEmoji('tr'), '🇹🇷')
-test('displays CZ flag emoji', macro, formatFlagEmoji('cz'), '🇨🇿')
-test('displays SE flag emoji', macro, formatFlagEmoji('se'), '🇸🇪')
-test('displays DK flag emoji', macro, formatFlagEmoji('dk'), '🇩🇰')
-test('displays NO flag emoji', macro, formatFlagEmoji('no'), '🇳🇴')
