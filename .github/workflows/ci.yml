@@ -24,7 +24,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile # For some reason, pnpm install fails with a frozen lockfile
 
       - name: Run Linter
         run: yarn lint

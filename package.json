@@ -31,25 +31,25 @@
   "devDependencies": {
     "@ava/typescript": "~4.0.0",
     "@rushstack/eslint-patch": "~1.2.0",
-    "@semantic-release/changelog": "~6.0.2",
+    "@semantic-release/changelog": "~6.0.3",
     "@semantic-release/commit-analyzer": "~9.0.2",
     "@semantic-release/github": "~8.0.7",
     "@semantic-release/release-notes-generator": "~10.0.3",
-    "@types/node": "~18.16.0",
-    "@typescript-eslint/eslint-plugin": "~5.59.0",
-    "@typescript-eslint/parser": "~5.59.0",
+    "@types/node": "~18.16.1",
+    "@typescript-eslint/eslint-plugin": "~5.59.1",
+    "@typescript-eslint/parser": "~5.59.1",
     "ava": "~5.2.0",
     "c8": "~7.13.0",
     "eslint": "~8.39.0",
     "eslint-config-prettier": "~8.8.0",
-    "eslint-plugin-import": "~2.27.4",
+    "eslint-plugin-import": "~2.27.5",
     "eslint-plugin-prettier": "~4.2.1",
     "eslint-plugin-simple-import-sort": "~10.0.0",
     "eslint-plugin-unicorn": "~46.0.0",
-    "prettier": "~2.8.3",
-    "semantic-release": "~21.0.0",
-    "tsx": "~3.12.2",
-    "typescript": "~5.0.0"
+    "prettier": "~2.8.8",
+    "semantic-release": "~21.0.1",
+    "tsx": "~3.12.6",
+    "typescript": "~5.0.4"
   },
   "ava": {
     "utilizeParallelBuilds": true,
@@ -65,13 +65,6 @@
       "local>wopian/renovate-config"
     ],
     "packageRules": [
-      {
-        "matchPackageNames": [
-          "discord.js",
-          "discord.ts"
-        ],
-        "groupName": "discord.js"
-      },
       {
         "matchPackagePrefixes": [
           "@twurple"
