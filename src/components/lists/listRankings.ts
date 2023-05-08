@@ -1,6 +1,6 @@
+import { UserRankings } from '@zeepkist/gtr-api'
 import { bold } from 'discord.js'
 
-import { UserRankings } from '../../models/user.js'
 import { formatRank, formatUser } from '../../utils/index.js'
 
 interface RankingProperties {
@@ -16,9 +16,14 @@ export const listRankings = ({
     .map((ranking, index) => {
       const rank = formatRank(index + 1 + offset)
       const user = formatUser(ranking.user)
+
       const wrs = bold(String(ranking.amountOfWorldRecords))
-      return `${rank} ${user} has ${wrs} world record${
-        ranking.amountOfWorldRecords === 1 ? '' : 's'
-      }`
+
+      const flooredScore = Math.floor(ranking.score)
+      const score = bold(String(flooredScore))
+
+      return `${rank} ${user} with ${score} point${
+        flooredScore === 1 ? '' : 's'
+      } (${wrs} WR${ranking.amountOfWorldRecords === 1 ? '' : 's'})`
     })
     .join('\n')
