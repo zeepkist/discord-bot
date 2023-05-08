@@ -2,12 +2,7 @@ import test from 'ava'
 
 import { Level } from '../models/level.js'
 import { User } from '../models/user.js'
-import {
-  formatLevel,
-  formatOrdinal,
-  formatRank,
-  formatUser
-} from './index.js'
+import { formatLevel, formatOrdinal, formatRank, formatUser } from './index.js'
 
 const macro = test.macro((t, input: string, expected: string) =>
   t.is(input, expected)
