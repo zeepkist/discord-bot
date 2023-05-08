@@ -5,6 +5,8 @@ export const listRankings = ({ rankings, offset = 0 }) => rankings
     const rank = formatRank(index + 1 + offset);
     const user = formatUser(ranking.user);
     const wrs = bold(String(ranking.amountOfWorldRecords));
-    return `${rank} ${user} has ${wrs} world record${ranking.amountOfWorldRecords === 1 ? '' : 's'}`;
+    const flooredScore = Math.floor(ranking.score);
+    const score = bold(String(flooredScore));
+    return `${rank} ${user} with ${score} point${flooredScore === 1 ? '' : 's'} (${wrs} WR${ranking.amountOfWorldRecords === 1 ? '' : 's'})`;
 })
     .join('\n');
