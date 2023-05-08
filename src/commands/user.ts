@@ -3,7 +3,8 @@ import {
   getRecords,
   getUser,
   getUserBySteamId,
-  getUserRanking
+  getUserRanking,
+  UserRanking
 } from '@zeepkist/gtr-api'
 import {
   ActionRowBuilder,
@@ -23,11 +24,7 @@ import { listRecords } from '../components/lists/listRecords.js'
 import { STEAM_URL, ZEEPKIST_URL } from '../constants.js'
 import { database } from '../services/database.js'
 import { getPlayerSummaries } from '../services/steam.js'
-import {
-  formatOrdinal,
-  log,
-  userSimilarity
-} from '../utils/index.js'
+import { formatOrdinal, log, userSimilarity } from '../utils/index.js'
 
 const addDiscordAuthor = (
   interaction: CommandInteraction,
@@ -123,20 +120,23 @@ export const user: Command = {
         interaction
       )
 
-      let userRanking
+      let userRanking: UserRanking
       try {
-        userRanking = await getUserRanking({ SteamId: user.steamId })
+        userRanking = await getUserRanking(user.id)
         log.info(`Found user ranking: ${userRanking.position}`, interaction)
       } catch (error) {
         if (error instanceof HTTPError && error.response.status === 404) {
           userRanking = {
             position: 0,
-            totalAmount: 0
+            score: 0,
+            amountOfWorldRecords: 0
           }
         } else {
           throw error
         }
       }
+
+      const userRankingScore = Math.floor(userRanking.score)
 
       const userRankingPosition = userRanking.position
         ? `(${formatOrdinal(userRanking.position)})`
@@ -193,8 +193,13 @@ export const user: Command = {
         .setURL(`${ZEEPKIST_URL}/user/${user.steamId}`)
         .addFields(
           {
+            name: 'Points',
+            value: `${userRankingScore} ${userRankingPosition}`.trim(),
+            inline: true
+          },
+          {
             name: 'World Records',
-            value: `${worldRecords.totalAmount} ${userRankingPosition}`.trim(),
+            value: `${worldRecords.totalAmount}`,
             inline: true
           },
           {
