@@ -76,20 +76,22 @@ export const user = {
             log.info(`Found ${levelsCreated.totalAmount} levels created by ${user.steamName}.`, interaction);
             let userRanking;
             try {
-                userRanking = await getUserRanking({ SteamId: user.steamId });
+                userRanking = await getUserRanking(user.id);
                 log.info(`Found user ranking: ${userRanking.position}`, interaction);
             }
             catch (error) {
                 if (error instanceof HTTPError && error.response.status === 404) {
                     userRanking = {
                         position: 0,
-                        totalAmount: 0
+                        score: 0,
+                        amountOfWorldRecords: 0
                     };
                 }
                 else {
                     throw error;
                 }
             }
+            const userRankingScore = Math.floor(userRanking.score);
             const userRankingPosition = userRanking.position
                 ? `(${formatOrdinal(userRanking.position)})`
                 : '';
@@ -131,8 +133,12 @@ export const user = {
                 .setTitle(`${user.steamName}'s Stats`)
                 .setURL(`${ZEEPKIST_URL}/user/${user.steamId}`)
                 .addFields({
+                name: 'Points',
+                value: `${userRankingScore} ${userRankingPosition}`.trim(),
+                inline: true
+            }, {
                 name: 'World Records',
-                value: `${worldRecords.totalAmount} ${userRankingPosition}`.trim(),
+                value: `${worldRecords.totalAmount}`,
                 inline: true
             }, {
                 name: 'Best Times',
