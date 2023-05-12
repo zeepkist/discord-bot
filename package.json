@@ -15,7 +15,7 @@
   "dependencies": {
     "@twurple/api": "6.2.0",
     "@twurple/auth": "6.2.0",
-    "@zeepkist/gtr-api": "3.2.1",
+    "@zeepkist/gtr-api": "3.4.0",
     "date-fns": "2.30.0",
     "discord.js": "14.11.0",
     "dotenv": "16.0.3",
@@ -23,7 +23,7 @@
     "knex": "2.4.2",
     "ky": "0.33.3",
     "ky-universal": "0.11.0",
-    "mysql2": "3.3.0",
+    "mysql2": "3.3.1",
     "pbkdf2": "3.1.2",
     "winston": "3.8.2",
     "winston-daily-rotate-file": "4.7.1"
@@ -73,5 +73,5 @@
       }
     ]
   },
-  "packageManager": "pnpm@8.4.0"
+  "packageManager": "pnpm@8.5.0"
 }

@@ -1,4 +1,4 @@
-import { getLevels, getRecords } from '@zeepkist/gtr-api';
+import { getLevel, getLevels, getRecords } from '@zeepkist/gtr-api';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
 import { STEAM_URL, ZEEPKIST_URL } from '../../constants.js';
 import { formatThumbnailEmbed, log } from '../../utils/index.js';
@@ -19,13 +19,18 @@ export const paginatedLevel = async (properties) => {
     let level = records[0]?.level;
     if (!level) {
         log.info(`No records found for level. Fetching level data for ${JSON.stringify(data.query, undefined, 2)}`, interaction);
-        const { levels } = await getLevels({
-            Author: data.query?.author,
-            Name: data.query?.name,
-            WorkshopId: data.query?.workshopId
-        });
-        if (levels.length === 1) {
-            level = levels[0];
+        if (data.query?.id) {
+            level = await getLevel(data.query?.id);
+        }
+        else {
+            const { levels } = await getLevels({
+                Author: data.query?.author,
+                Name: data.query?.name,
+                WorkshopId: data.query?.workshopId
+            });
+            if (levels.length === 1) {
+                level = levels[0];
+            }
         }
     }
     const recordsList = listRecords({
