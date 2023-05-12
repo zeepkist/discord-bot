@@ -1,4 +1,4 @@
-import { getLevels, getRecords } from '@zeepkist/gtr-api'
+import { getLevel, getLevels, getRecords } from '@zeepkist/gtr-api'
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -39,13 +39,17 @@ export const paginatedLevel = async (properties: PaginatedData) => {
       )}`,
       interaction
     )
-    const { levels } = await getLevels({
-      Author: data.query?.author,
-      Name: data.query?.name,
-      WorkshopId: data.query?.workshopId
-    })
-    if (levels.length === 1) {
-      level = levels[0]
+    if (data.query?.id) {
+      level = await getLevel(data.query?.id)
+    } else {
+      const { levels } = await getLevels({
+        Author: data.query?.author,
+        Name: data.query?.name,
+        WorkshopId: data.query?.workshopId
+      })
+      if (levels.length === 1) {
+        level = levels[0]
+      }
     }
   }
 
@@ -58,6 +62,7 @@ export const paginatedLevel = async (properties: PaginatedData) => {
   })
 
   log.info('Creating embed', interaction)
+
   const embed = new EmbedBuilder().setTitle(`${level.name}`).setAuthor({
     name: level.author
   })
