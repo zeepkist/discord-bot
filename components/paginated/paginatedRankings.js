@@ -16,7 +16,7 @@ export const paginatedRankings = async (properties) => {
     });
     const embed = new EmbedBuilder()
         .setColor(0xff_92_00)
-        .setTitle(`Players with the most world records`)
+        .setTitle(`Top performing Zeepkist players`)
         .setDescription(rankingsList ?? 'No users.');
     await sendPaginatedMessage({
         customId: 'rankings',
