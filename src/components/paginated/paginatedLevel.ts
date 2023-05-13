@@ -77,9 +77,7 @@ export const paginatedLevel = async (properties: PaginatedData) => {
   await addPersonalBest({
     interaction,
     embed,
-    levelId: level.id,
-    discordName: interaction.user.username,
-    steamNames: records.map(({ user }) => user.steamName)
+    levelId: level.id
   })
 
   log.info('Adding best times', interaction)
