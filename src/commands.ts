@@ -5,7 +5,6 @@ import { random } from './commands/random.js'
 import { rankings } from './commands/rankings.js'
 import { recent } from './commands/recent.js'
 import { user } from './commands/user.js'
-import { verify } from './commands/verify.js'
 
 export const commands: Command[] = [
   about,
@@ -13,6 +12,5 @@ export const commands: Command[] = [
   random,
   rankings,
   recent,
-  user,
-  verify
+  user
 ]

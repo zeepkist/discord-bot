@@ -1,4 +1,4 @@
-import { getRecords } from '@zeepkist/gtr-api'
+import { getRecords, getUserByDiscordId } from '@zeepkist/gtr-api'
 import {
   ButtonInteraction,
   CommandInteraction,
@@ -6,95 +6,60 @@ import {
   inlineCode
 } from 'discord.js'
 
-import { LinkedAccount } from '../../models/database/linkedAccount.js'
-import { database } from '../../services/database.js'
 import {
   bestMedal,
   formatRelativeDate,
   formatResultTime,
-  log,
-  userSimilarity
+  log
 } from '../../utils/index.js'
-
-interface VerifyPrompt {
-  embed: EmbedBuilder
-  discordName: string
-  steamNames: string[]
-}
-
-const verifyPrompt = async ({ embed }: VerifyPrompt) => {
-  embed.addFields({
-    name: 'Verify your Steam account',
-    value: `with ${inlineCode('/verify')} to see your personal best here`,
-    inline: true
-  })
-  return
-}
 
 interface PersonalBest {
   interaction: CommandInteraction | ButtonInteraction
   embed: EmbedBuilder
   levelId: number
-  discordName: string
-  steamNames: string[]
 }
 
 export const addPersonalBest = async ({
   interaction,
   embed,
-  levelId,
-  discordName,
-  steamNames
+  levelId
 }: PersonalBest) => {
-  const user = await database<LinkedAccount>('linked_accounts')
-    .where({ discordId: interaction.user.id })
-    .select('steamId')
-    .first()
+  try {
+    const user = await getUserByDiscordId(interaction.user.id)
 
-  if (
-    !user &&
-    steamNames.length >= 5 &&
-    userSimilarity(discordName, steamNames) > 3
-  ) {
+    if (!user) return
+
     log.info(
-      `No linked user and a similar user isn't on page 1. Showing verify prompt`,
+      `Getting user records for ${user.steamId} on level ${levelId}`,
       interaction
     )
-    return verifyPrompt({
-      embed,
-      discordName,
-      steamNames
+
+    const userRecords = await getRecords({
+      LevelId: levelId,
+      UserSteamId: user.steamId,
+      BestOnly: true
     })
-  } else if (!user) return
 
-  log.info(
-    `Getting user records for ${user.steamId} on level ${levelId}`,
-    interaction
-  )
+    if (!userRecords || userRecords.records.length === 0) return
 
-  const userRecords = await getRecords({
-    LevelId: levelId,
-    UserSteamId: user.steamId,
-    BestOnly: true
-  })
+    log.info(
+      `Found personal best for ${user.steamId} on level ${levelId}`,
+      interaction
+    )
 
-  if (!userRecords || userRecords.records.length === 0) return
+    const userRecord = userRecords.records[0]
+    const formattedUserRecord = `${bestMedal(userRecord)} ${inlineCode(
+      formatResultTime(userRecord.time)
+    )}\n${formatRelativeDate(userRecord.dateCreated)} with ${
+      userRecords.totalAmount
+    } run${userRecords.totalAmount === 1 ? '' : 's'} so far`
 
-  log.info(
-    `Found personal best for ${user.steamId} on level ${levelId}`,
-    interaction
-  )
-
-  const userRecord = userRecords.records[0]
-  const formattedUserRecord = `${bestMedal(userRecord)} ${inlineCode(
-    formatResultTime(userRecord.time)
-  )}\n${formatRelativeDate(userRecord.dateCreated)} with ${
-    userRecords.totalAmount
-  } run${userRecords.totalAmount === 1 ? '' : 's'} so far`
-
-  embed.addFields({
-    name: 'Your Personal Best',
-    value: formattedUserRecord,
-    inline: true
-  })
+    embed.addFields({
+      name: 'Your Personal Best',
+      value: formattedUserRecord,
+      inline: true
+    })
+  } catch (error) {
+    log.error(String(error), interaction)
+  }
 }
