@@ -27,16 +27,6 @@ const initialiseDatabase = async () => {
     })
   }
 
-  const linkedAccounts = await database.schema.hasTable('linked_accounts')
-  if (!linkedAccounts) {
-    log.info('Creating table: linked_accounts')
-    await database.schema.createTable('linked_accounts', table => {
-      table.string('discordId', 18).notNullable().primary().unique().index()
-      table.string('steamId', 17).notNullable().unique().index()
-      table.timestamp('createdAt').notNullable().defaultTo(database.fn.now())
-    })
-  }
-
   const paginatedMessages = await database.schema.hasTable('paginated_messages')
   if (!paginatedMessages) {
     log.info('Creating table: paginated_messages')
