@@ -22,7 +22,7 @@ const replyNoLevels = async (interaction, invalidArguments = false) => {
         ? 'You must provide either a level ID, workshop ID, author or name of a level.'
         : 'No level found with the provided arguments.')
         .setTimestamp();
-    await interaction.reply({ embeds: [embed], ephemeral: true });
+    await interaction.editReply({ embeds: [embed] });
 };
 export const level = {
     name: 'level',
@@ -117,8 +117,8 @@ export const level = {
                 });
             }
         }
-        catch (error) {
-            errorReply(interaction, level ? level.name : 'Unknown level', error);
+        catch {
+            await replyNoLevels(interaction, true);
         }
     }
 };
