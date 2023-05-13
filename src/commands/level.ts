@@ -45,7 +45,7 @@ const replyNoLevels = async (
     )
     .setTimestamp()
 
-  await interaction.reply({ embeds: [embed], ephemeral: true })
+  await interaction.editReply({ embeds: [embed] })
 }
 
 export const level: Command = {
@@ -146,8 +146,8 @@ export const level: Command = {
           query: { id: levels.levels[0].id }
         })
       }
-    } catch (error: unknown) {
-      errorReply(interaction, level ? level.name : 'Unknown level', error)
+    } catch {
+      await replyNoLevels(interaction, true)
     }
   }
 }
