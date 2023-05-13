@@ -1,3 +1,5 @@
+import { URL } from 'node:url'
+
 /**
  * Converts the following URL:
  *
@@ -11,7 +13,7 @@ export const formatThumbnailEmbed = (url: string): string => {
   if (
     url.startsWith('https://storage.googleapis.com/zeepkist-gtr/thumbnails/')
   ) {
-    return url
+    return new URL(url).toString()
   }
 
   const baseUrlRegex =
@@ -31,5 +33,5 @@ export const formatThumbnailEmbed = (url: string): string => {
       : part
   })
   const newPath = newParts.join('/')
-  return baseUrl + newPath
+  return new URL(baseUrl + newPath).toString()
 }
