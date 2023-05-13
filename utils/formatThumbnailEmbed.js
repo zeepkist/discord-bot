@@ -1,6 +1,7 @@
+import { URL } from 'node:url';
 export const formatThumbnailEmbed = (url) => {
     if (url.startsWith('https://storage.googleapis.com/zeepkist-gtr/thumbnails/')) {
-        return url;
+        return new URL(url).toString();
     }
     const baseUrlRegex = /^(https?:\/\/[^/]+)\/download\/storage\/v1\/b\/([^/]+)\/o\//;
     const queryParametersRegex = /\?.*$/;
@@ -18,5 +19,5 @@ export const formatThumbnailEmbed = (url) => {
             : part;
     });
     const newPath = newParts.join('/');
-    return baseUrl + newPath;
+    return new URL(baseUrl + newPath).toString();
 };
