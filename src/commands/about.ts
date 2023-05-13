@@ -21,15 +21,15 @@ export const about: Command = {
   run: async interaction => {
     const commands = [
       `${bold(inlineCode('/about'))} to see this message again`,
-      `${bold(inlineCode('/verify'))} to link your Steam account to Discord`,
-      `${bold(inlineCode('/user'))} to get information about a user`,
       `${bold(
         inlineCode('/level')
       )} to get information about a level (or list levels)`,
-      `${bold(inlineCode('/ranking'))} to get the world record leaderboard`,
+      `${bold(inlineCode('/random'))} to get information about a random level`,
+      `${bold(inlineCode('/rankings'))} to get the world record leaderboard`,
       `${bold(
         inlineCode('/recent')
-      )} to get the most recent personal best records`
+      )} to get the most recent personal best records`,
+      `${bold(inlineCode('/user'))} to get information about a user`
     ]
 
     const embed = new EmbedBuilder()
@@ -53,7 +53,7 @@ export const about: Command = {
           name: 'About the Bot',
           value: `The discord bot is built by <@104736549081468928> and is open-source on ${hyperlink(
             'GitHub',
-            'https://github.com/wopian/zeepkist-bot'
+            'https://github.com/zeepkist/zeepkist-bot'
           )}\n\nYou can support the development of the bot and their other open-source projects on ${hyperlink(
             'Ko-fi/wopian',
             'https://ko-fi.com/wopian'
