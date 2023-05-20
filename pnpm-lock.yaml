@@ -8,8 +8,8 @@ dependencies:
     specifier: 6.2.0
     version: 6.2.0
   '@zeepkist/gtr-api':
-    specifier: 3.4.1
-    version: 3.4.1
+    specifier: 3.5.0
+    version: 3.5.0
   date-fns:
     specifier: 2.30.0
     version: 2.30.0
@@ -1148,8 +1148,8 @@ packages:
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
     dev: false
 
-  /@zeepkist/gtr-api@3.4.1:
-    resolution: {integrity: sha512-KP5MLDZUOmgDy2l0fejZybYQ7s0pCFSoRbvGv2AyuEvd9fdcQTQuZZ3LA3QTF3zAvTyo4kwHb0txntCXHrPbkw==}
+  /@zeepkist/gtr-api@3.5.0:
+    resolution: {integrity: sha512-YRj3cOt0kj0SXA3MnsyWxLdi0hEoCtE7SS/FuJECrNP9n0OFImC71GEmtW5aYOGGFDNgQw2WXuC6R+aaGtHBsw==}
     dependencies:
       ky: 0.33.3
       ky-universal: 0.11.0(ky@0.33.3)
