@@ -830,7 +830,7 @@ packages:
       aggregate-error: 4.0.1
       debug: 4.3.4
       dir-glob: 3.0.1
-      globby: 13.1.4
+      globby: 13.2.0
       http-proxy-agent: 7.0.0
       https-proxy-agent: 7.0.0
       issue-parser: 6.0.0
@@ -1379,7 +1379,7 @@ packages:
       debug: 4.3.4
       emittery: 1.0.1
       figures: 5.0.0
-      globby: 13.1.4
+      globby: 13.2.0
       ignore-by-default: 2.1.0
       indent-string: 5.0.0
       is-error: 2.2.2
@@ -2733,8 +2733,8 @@ packages:
       slash: 3.0.0
     dev: true
 
-  /globby@13.1.4:
-    resolution: {integrity: sha512-iui/IiiW+QrJ1X1hKH5qwlMQyv34wJAYwH1vrf8b9kBA4sNiif3gKsMHa+BrdnOpEudWjpotfa7LrTzB1ERS/g==}
+  /globby@13.2.0:
+    resolution: {integrity: sha512-jWsQfayf13NvqKUIL3Ta+CIqMnvlaIDFveWE/dpOZ9+3AMEJozsxDvKA02zync9UuvOM8rOXzsD5GqKP4OnWPQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       dir-glob: 3.0.1
