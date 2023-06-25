@@ -15,7 +15,7 @@
   "dependencies": {
     "@twurple/api": "6.2.1",
     "@twurple/auth": "6.2.1",
-    "@zeepkist/gtr-api": "3.7.2",
+    "@zeepkist/gtr-api": "3.7.3",
     "date-fns": "2.30.0",
     "discord.js": "14.11.0",
     "dotenv": "16.3.1",
