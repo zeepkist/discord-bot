@@ -162,13 +162,13 @@ packages:
     resolution: {integrity: sha512-JmM9OyZY+nNRRsW+bS3i+PSjmXiR3BCBiyHjjvpTWhS373xYtNdWbzxPDtKu2SWpE2lpnGP0QwINe3Uo5BBxDw==}
     dependencies:
       '@d-fischer/shared-utils': 3.6.3
-      tslib: 2.5.3
+      tslib: 2.6.0
     dev: false
 
   /@d-fischer/cross-fetch@4.2.1:
     resolution: {integrity: sha512-/tvOWaOFBW2NyLCuJ0Tf2wFaEqZudT9osF/2A7/K4NU+g7MAQfOAEMUizKtg3TTrEfwWLjGic3oOBdbmR3WBKg==}
     dependencies:
-      node-fetch: 2.6.11
+      node-fetch: 2.6.12
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -182,7 +182,7 @@ packages:
     dependencies:
       '@d-fischer/detect-node': 3.0.1
       '@d-fischer/shared-utils': 3.6.3
-      tslib: 2.5.3
+      tslib: 2.6.0
     dev: false
 
   /@d-fischer/promise.allsettled@2.0.2:
@@ -208,19 +208,19 @@ packages:
       '@d-fischer/logger': 4.2.3
       '@d-fischer/promise.allsettled': 2.0.2
       '@d-fischer/shared-utils': 3.6.3
-      tslib: 2.5.3
+      tslib: 2.6.0
     dev: false
 
   /@d-fischer/shared-utils@3.6.3:
     resolution: {integrity: sha512-Lz+Qk1WJLVoeREOHPZcIDTHOoxecxMSG2sq+x1xWYCH1exqiMKMMx06pXdy15UzHG7ohvQRNXk2oHqZ9EOl9jQ==}
     dependencies:
-      tslib: 2.5.3
+      tslib: 2.6.0
     dev: false
 
   /@d-fischer/typed-event-emitter@3.3.2:
     resolution: {integrity: sha512-M+fZQxiAA6UTwaTNeDhNoQcQG+eg9B85cNTw4FwwmN0ZEi6IfvXS0cnLFW1Ec86TdnFkoQ1VHxGx4pTtKPVe1Q==}
     dependencies:
-      tslib: 2.5.3
+      tslib: 2.6.0
     dev: false
 
   /@dabh/diagnostics@2.0.3:
@@ -238,10 +238,10 @@ packages:
       '@discordjs/formatters': 0.3.1
       '@discordjs/util': 0.3.1
       '@sapphire/shapeshift': 3.9.2
-      discord-api-types: 0.37.46
+      discord-api-types: 0.37.47
       fast-deep-equal: 3.1.3
       ts-mixer: 6.0.3
-      tslib: 2.5.3
+      tslib: 2.6.0
     dev: false
 
   /@discordjs/collection@1.5.1:
@@ -253,7 +253,7 @@ packages:
     resolution: {integrity: sha512-M7X4IGiSeh4znwcRGcs+49B5tBkNDn4k5bmhxJDAUhRxRHTiFAOTVUNQ6yAKySu5jZTnCbSvTYHW3w0rAzV1MA==}
     engines: {node: '>=16.9.0'}
     dependencies:
-      discord-api-types: 0.37.46
+      discord-api-types: 0.37.47
     dev: false
 
   /@discordjs/rest@1.7.1:
@@ -264,9 +264,9 @@ packages:
       '@discordjs/util': 0.3.1
       '@sapphire/async-queue': 1.5.0
       '@sapphire/snowflake': 3.5.1
-      discord-api-types: 0.37.46
+      discord-api-types: 0.37.47
       file-type: 18.5.0
-      tslib: 2.5.3
+      tslib: 2.6.0
       undici: 5.22.1
     dev: false
 
@@ -285,8 +285,8 @@ packages:
       '@sapphire/async-queue': 1.5.0
       '@types/ws': 8.5.5
       '@vladfrangu/async_event_emitter': 2.2.2
-      discord-api-types: 0.37.46
-      tslib: 2.5.3
+      discord-api-types: 0.37.47
+      tslib: 2.6.0
       ws: 8.13.0
     transitivePeerDependencies:
       - bufferutil
@@ -297,7 +297,7 @@ packages:
     resolution: {integrity: sha512-BDXFbYOJzT/NBEtp71cvsrGPwGAMGRB/349rwKuoxNSiKjPraNNnlK6MIIabViCjqZugu6j+xeMDlEkWdHHJSg==}
     dependencies:
       '@esbuild-kit/core-utils': 3.1.0
-      get-tsconfig: 4.6.0
+      get-tsconfig: 4.6.2
     dev: true
 
   /@esbuild-kit/core-utils@3.1.0:
@@ -311,7 +311,7 @@ packages:
     resolution: {integrity: sha512-Qwfvj/qoPbClxCRNuac1Du01r9gvNOT+pMYtJDapfB1eoGN1YlJ1BixLyL9WVENRx5RXgNLdfYdx/CuswlGhMw==}
     dependencies:
       '@esbuild-kit/core-utils': 3.1.0
-      get-tsconfig: 4.6.0
+      get-tsconfig: 4.6.2
     dev: true
 
   /@esbuild/android-arm64@0.17.19:
@@ -715,7 +715,7 @@ packages:
       '@octokit/request-error': 3.0.3
       '@octokit/types': 9.3.2
       is-plain-object: 5.0.0
-      node-fetch: 2.6.11
+      node-fetch: 2.6.12
       universal-user-agent: 6.0.0
     transitivePeerDependencies:
       - encoding
@@ -835,7 +835,7 @@ packages:
       aggregate-error: 4.0.1
       debug: 4.3.4
       dir-glob: 3.0.1
-      globby: 13.2.0
+      globby: 13.2.1
       http-proxy-agent: 7.0.0
       https-proxy-agent: 7.0.0
       issue-parser: 6.0.0
@@ -882,7 +882,7 @@ packages:
       conventional-commits-filter: 3.0.0
       conventional-commits-parser: 4.0.0
       debug: 4.3.4
-      get-stream: 7.0.0
+      get-stream: 7.0.1
       import-from: 4.0.0
       into-stream: 7.0.0
       lodash-es: 4.17.21
@@ -904,7 +904,7 @@ packages:
       '@d-fischer/shared-utils': 3.6.3
       '@twurple/common': 6.2.1
       '@types/node-fetch': 2.6.4
-      tslib: 2.5.3
+      tslib: 2.6.0
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -924,7 +924,7 @@ packages:
       '@twurple/auth': 6.2.1
       '@twurple/common': 6.2.1
       retry: 0.13.1
-      tslib: 2.5.3
+      tslib: 2.6.0
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -936,7 +936,7 @@ packages:
       '@d-fischer/shared-utils': 3.6.3
       '@twurple/api-call': 6.2.1
       '@twurple/common': 6.2.1
-      tslib: 2.5.3
+      tslib: 2.6.0
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -946,7 +946,7 @@ packages:
     dependencies:
       '@d-fischer/shared-utils': 3.6.3
       klona: 2.0.6
-      tslib: 2.5.3
+      tslib: 2.6.0
     dev: false
 
   /@types/istanbul-lib-coverage@2.0.4:
@@ -1371,7 +1371,7 @@ packages:
       arrify: 3.0.0
       callsites: 4.0.0
       cbor: 8.1.0
-      chalk: 5.2.0
+      chalk: 5.3.0
       chokidar: 3.5.3
       chunkd: 2.0.1
       ci-info: 3.8.0
@@ -1385,7 +1385,7 @@ packages:
       debug: 4.3.4
       emittery: 1.0.1
       figures: 5.0.0
-      globby: 13.2.0
+      globby: 13.2.1
       ignore-by-default: 2.1.0
       indent-string: 5.0.0
       is-error: 2.2.2
@@ -1547,8 +1547,8 @@ packages:
       supports-color: 7.2.0
     dev: true
 
-  /chalk@5.2.0:
-    resolution: {integrity: sha512-ree3Gqw/nazQAPuJJEy+avdl7QfZMcUvmHIKgEZkGL+xOBzRvup5Hxo6LHuMceSxOabuJLJm5Yp/92R9eMmMvA==}
+  /chalk@5.3.0:
+    resolution: {integrity: sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
     dev: true
 
@@ -1917,8 +1917,8 @@ packages:
       path-type: 4.0.0
     dev: true
 
-  /discord-api-types@0.37.46:
-    resolution: {integrity: sha512-DeSi5WSWYTeXJJhdwACtpQycY3g4vLRvE2Ol5IlC0o//P2W+8jXPF447PuJn2fRH1nD7JGEJ3YMb0NB9+OQ7BQ==}
+  /discord-api-types@0.37.47:
+    resolution: {integrity: sha512-rNif8IAv6duS2z47BMXq/V9kkrLfkAoiwpFY3sLxxbyKprk065zqf3HLTg4bEoxRSmi+Lhc7yqGDrG8C3j8GFA==}
     dev: false
 
   /discord.js@14.11.0:
@@ -1933,10 +1933,10 @@ packages:
       '@discordjs/ws': 0.8.3
       '@sapphire/snowflake': 3.5.1
       '@types/ws': 8.5.5
-      discord-api-types: 0.37.46
+      discord-api-types: 0.37.47
       fast-deep-equal: 3.1.3
       lodash.snakecase: 4.1.1
-      tslib: 2.5.3
+      tslib: 2.6.0
       undici: 5.22.1
       ws: 8.13.0
     transitivePeerDependencies:
@@ -2420,8 +2420,8 @@ packages:
     resolution: {integrity: sha512-VxPP4NqbUjj6MaAOafWeUn2cXWLcCtljklUtZf0Ind4XQ+QPtmA0b18zZy0jIQx+ExRVCR/ZQpBmik5lXshNsw==}
     dev: true
 
-  /fast-glob@3.2.12:
-    resolution: {integrity: sha512-DVj4CQIYYow0BlaelwK1pHl5n5cRSJfM60UA0zK891sVInoPri2Ekj7+e1CT3/3qxXenpI+nBBmQAcJPJgaj4w==}
+  /fast-glob@3.3.0:
+    resolution: {integrity: sha512-ChDuvbOypPuNjO8yIDf36x7BlZX1smcUMTTcyoIjycexOxd6DFsKsg21qVBzEmr3G7fUKIRy2/psii+CIUt7FA==}
     engines: {node: '>=8.6.0'}
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -2656,8 +2656,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /get-stream@7.0.0:
-    resolution: {integrity: sha512-ql6FW5b8tgMYvI4UaoxG3EQN3VyZ6VeQpxNBGg5BZ4xD4u+HJeprzhMMA4OCBEGQgSR+m87pstWMpiVW64W8Fw==}
+  /get-stream@7.0.1:
+    resolution: {integrity: sha512-3M8C1EOFN6r8AMUhwUAACIoXZJEOufDU5+0gFFN5uNs6XYOralD2Pqkl7m046va6x77FwposWXbAhPPIOus7mQ==}
     engines: {node: '>=16'}
     dev: true
 
@@ -2668,8 +2668,8 @@ packages:
       call-bind: 1.0.2
       get-intrinsic: 1.2.1
 
-  /get-tsconfig@4.6.0:
-    resolution: {integrity: sha512-lgbo68hHTQnFddybKbbs/RDRJnJT5YyGy2kQzVwbq+g67X73i+5MVTval34QxGkOe9X5Ujf1UYpCaphLyltjEg==}
+  /get-tsconfig@4.6.2:
+    resolution: {integrity: sha512-E5XrT4CbbXcXWy+1jChlZmrmCwd5KGx502kDCXJJ7y898TtWW9FwoG5HfOLVRKmlmDGkWN2HM9Ho+/Y8F0sJDg==}
     dependencies:
       resolve-pkg-maps: 1.0.0
     dev: true
@@ -2733,18 +2733,18 @@ packages:
     dependencies:
       array-union: 2.1.0
       dir-glob: 3.0.1
-      fast-glob: 3.2.12
+      fast-glob: 3.3.0
       ignore: 5.2.4
       merge2: 1.4.1
       slash: 3.0.0
     dev: true
 
-  /globby@13.2.0:
-    resolution: {integrity: sha512-jWsQfayf13NvqKUIL3Ta+CIqMnvlaIDFveWE/dpOZ9+3AMEJozsxDvKA02zync9UuvOM8rOXzsD5GqKP4OnWPQ==}
+  /globby@13.2.1:
+    resolution: {integrity: sha512-DPCBxctI7dN4EeIqjW2KGqgdcUMbrhJ9AzON+PlxCtvppWhubTLD4+a0GFxiym14ZvacUydTPjLPc2DlKz7EIg==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       dir-glob: 3.0.1
-      fast-glob: 3.2.12
+      fast-glob: 3.3.0
       ignore: 5.2.4
       merge2: 1.4.1
       slash: 4.0.0
@@ -3555,7 +3555,7 @@ packages:
     dependencies:
       ansi-escapes: 6.2.0
       cardinal: 2.1.1
-      chalk: 5.2.0
+      chalk: 5.3.0
       cli-table3: 0.6.3
       marked: 5.1.0
       node-emoji: 1.11.0
@@ -3734,8 +3734,8 @@ packages:
       lodash: 4.17.21
     dev: true
 
-  /node-fetch@2.6.11:
-    resolution: {integrity: sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==}
+  /node-fetch@2.6.12:
+    resolution: {integrity: sha512-C/fGU2E8ToujUivIO0H+tpQ6HWo4eEmchoPIoXtxCrVghxdKq+QOHqEZW7tuP3KlV3bC8FRMO5nMCC7Zm1VP6g==}
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
       encoding: ^0.1.0
@@ -4944,8 +4944,8 @@ packages:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
     dev: true
 
-  /tslib@2.5.3:
-    resolution: {integrity: sha512-mSxlJJwl3BMEQCUNnxXBU9jP4JBktcEGhURcPR6VQVlnP0FdDEsIaz0C35dXNGLyRfrATNofF0F5p2KPxQgB+w==}
+  /tslib@2.6.0:
+    resolution: {integrity: sha512-7At1WUettjcSRHXCyYtTselblcHl9PJFFVKiCAy/bY97+BPZXSQ2wbq0P9s8tK2G7dFQfNnlJnPAiArVBVBsfA==}
     dev: false
 
   /tsutils@3.21.0(typescript@5.1.3):
