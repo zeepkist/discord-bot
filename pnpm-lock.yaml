@@ -24,8 +24,8 @@ dependencies:
     specifier: 16.3.1
     version: 16.3.1
   knex:
-    specifier: 2.4.2
-    version: 2.4.2(mysql2@3.5.0)
+    specifier: 2.5.0
+    version: 2.5.0(mysql2@3.5.0)
   ky:
     specifier: 0.33.3
     version: 0.33.3
@@ -1695,9 +1695,9 @@ packages:
       delayed-stream: 1.0.0
     dev: false
 
-  /commander@9.5.0:
-    resolution: {integrity: sha512-KRs7WVDKg86PWiuAqhDrAQnTXZKraVcCc6vFdL14qrZ/DcWwuRo7VoiYXalXO7S5GKpqYiVEwCbgFDfxNHKJBQ==}
-    engines: {node: ^12.20.0 || >=14}
+  /commander@10.0.1:
+    resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
+    engines: {node: '>=14'}
     dev: false
 
   /common-path-prefix@3.0.0:
@@ -3317,8 +3317,8 @@ packages:
     engines: {node: '>= 8'}
     dev: false
 
-  /knex@2.4.2(mysql2@3.5.0):
-    resolution: {integrity: sha512-tMI1M7a+xwHhPxjbl/H9K1kHX+VncEYcvCx5K00M16bWvpYPKAZd6QrCu68PtHAdIZNQPWZn0GVhqVBEthGWCg==}
+  /knex@2.5.0(mysql2@3.5.0):
+    resolution: {integrity: sha512-h6Ru3PJmZjCDUEqLgwQ/RJUu06Bz7MTzY6sD90udLIa9qwtC7Rnicr7TBiWSaswZmDqk4EZ8xysdg1fkvhYM6w==}
     engines: {node: '>=12'}
     hasBin: true
     peerDependencies:
@@ -3346,7 +3346,7 @@ packages:
         optional: true
     dependencies:
       colorette: 2.0.19
-      commander: 9.5.0
+      commander: 10.0.1
       debug: 4.3.4
       escalade: 3.1.1
       esm: 3.2.25
@@ -3355,7 +3355,7 @@ packages:
       interpret: 2.2.0
       lodash: 4.17.21
       mysql2: 3.5.0
-      pg-connection-string: 2.5.0
+      pg-connection-string: 2.6.1
       rechoir: 0.8.0
       resolve-from: 5.0.0
       tarn: 3.0.2
@@ -4135,8 +4135,8 @@ packages:
     engines: {node: '>=14.16'}
     dev: false
 
-  /pg-connection-string@2.5.0:
-    resolution: {integrity: sha512-r5o/V/ORTA6TmUnyWZR9nCj1klXCO2CEKNRlVuJptZe85QuhFayC7WeMic7ndayT5IRIR0S0xFxFi2ousartlQ==}
+  /pg-connection-string@2.6.1:
+    resolution: {integrity: sha512-w6ZzNu6oMmIzEAYVw+RLK0+nqHPt8K3ZnknKi+g48Ak2pr3dtljJW3o+D/n2zzCG07Zoe9VOX3aiKpj+BN0pjg==}
     dev: false
 
   /picomatch@2.3.1:
