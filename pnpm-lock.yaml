@@ -24,8 +24,8 @@ dependencies:
     specifier: 16.3.1
     version: 16.3.1
   knex:
-    specifier: 2.5.0
-    version: 2.5.0(mysql2@3.5.1)
+    specifier: 2.5.1
+    version: 2.5.1(mysql2@3.5.1)
   ky:
     specifier: 0.33.3
     version: 0.33.3
@@ -3317,8 +3317,8 @@ packages:
     engines: {node: '>= 8'}
     dev: false
 
-  /knex@2.5.0(mysql2@3.5.1):
-    resolution: {integrity: sha512-h6Ru3PJmZjCDUEqLgwQ/RJUu06Bz7MTzY6sD90udLIa9qwtC7Rnicr7TBiWSaswZmDqk4EZ8xysdg1fkvhYM6w==}
+  /knex@2.5.1(mysql2@3.5.1):
+    resolution: {integrity: sha512-z78DgGKUr4SE/6cm7ku+jHvFT0X97aERh/f0MUKAKgFnwCYBEW4TFBqtHWFYiJFid7fMrtpZ/gxJthvz5mEByA==}
     engines: {node: '>=12'}
     hasBin: true
     peerDependencies:
