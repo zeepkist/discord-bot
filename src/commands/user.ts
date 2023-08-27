@@ -39,6 +39,22 @@ export const user: Command = {
       type: ApplicationCommandOptionType.String,
       required: false,
       minLength: 0
+    },
+    {
+      name: 'page',
+      description: 'Select the page to show',
+      type: ApplicationCommandOptionType.String,
+      required: false,
+      choices: [
+        {
+          name: 'Stats',
+          value: 'stats'
+        },
+        {
+          name: 'Records',
+          value: 'records'
+        }
+      ]
     }
   ],
   ephemeral: false,
@@ -54,8 +70,11 @@ export const user: Command = {
     const id = interaction.options.data.find(option => option.name === 'id')
       ?.value as number
 
+    const page = interaction.options.data.find(option => option.name === 'page')
+      ?.value as string
+
     log.info(
-      `Discord ID: ${discordUser?.id}, Steam ID: ${steamId}, ID: ${id}`,
+      `Discord ID: ${discordUser?.id}, Steam ID: ${steamId}, ID: ${id}, Page: ${page}`,
       interaction
     )
 
@@ -70,7 +89,7 @@ export const user: Command = {
         ? await getUserBySteamId(steamId)
         : await getUser(id)
       log.info(`Found user: ${user.steamName}`, interaction)
-      await userEmbed(interaction, user, discordUser)
+      await userEmbed(interaction, user, discordUser, page)
     } catch (error) {
       log.error(String(error), interaction)
       userNotFoundEmbed(interaction)
