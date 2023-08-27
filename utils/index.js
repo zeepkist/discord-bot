@@ -7,3 +7,5 @@ export * from './log.js';
 export * from './medal.js';
 export * from './numberToMonospace.js';
 export * from './providedBy.js';
+export * from './toDistance.js';
+export * from './toDuration.js';

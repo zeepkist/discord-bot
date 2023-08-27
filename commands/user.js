@@ -28,6 +28,22 @@ export const user = {
             type: ApplicationCommandOptionType.String,
             required: false,
             minLength: 0
+        },
+        {
+            name: 'page',
+            description: 'Select the page to show',
+            type: ApplicationCommandOptionType.String,
+            required: false,
+            choices: [
+                {
+                    name: 'Stats',
+                    value: 'stats'
+                },
+                {
+                    name: 'Records',
+                    value: 'records'
+                }
+            ]
         }
     ],
     ephemeral: false,
@@ -36,7 +52,9 @@ export const user = {
         const steamId = interaction.options.data.find(option => option.name === 'steamid')?.value;
         const id = interaction.options.data.find(option => option.name === 'id')
             ?.value;
-        log.info(`Discord ID: ${discordUser?.id}, Steam ID: ${steamId}, ID: ${id}`, interaction);
+        const page = interaction.options.data.find(option => option.name === 'page')
+            ?.value;
+        log.info(`Discord ID: ${discordUser?.id}, Steam ID: ${steamId}, ID: ${id}, Page: ${page}`, interaction);
         if (!discordUser?.id && !steamId && !id) {
             discordUser = interaction.user;
         }
@@ -47,7 +65,7 @@ export const user = {
                     ? await getUserBySteamId(steamId)
                     : await getUser(id);
             log.info(`Found user: ${user.steamName}`, interaction);
-            await userEmbed(interaction, user, discordUser);
+            await userEmbed(interaction, user, discordUser, page);
         }
         catch (error) {
             log.error(String(error), interaction);
