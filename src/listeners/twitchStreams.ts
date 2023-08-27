@@ -111,5 +111,5 @@ export const twitchStreams = async (client: Client) => {
 
   setInterval(async () => {
     sendMonthlyStats(channel)
-  }, addHours(0, 6).getTime())
+  }, addHours(0, 18).getTime())
 }
