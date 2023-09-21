@@ -6,7 +6,7 @@ import {
   UserRanking
 } from '@zeepkist/gtr-api'
 import { CommandInteraction, EmbedBuilder } from 'discord.js'
-import { HTTPError } from 'ky-universal'
+import { HTTPError } from 'ky'
 
 import { formatOrdinal, log } from '../../../utils/index.js'
 import { listRecords } from '../../lists/listRecords.js'

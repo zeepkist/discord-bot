@@ -6,7 +6,7 @@ on:
 
 env:
   FORCE_COLOR: true
-  NODE_VERSION: 18
+  NODE_VERSION: 20
 
 jobs:
   setup:

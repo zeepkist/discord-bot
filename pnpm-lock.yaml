@@ -27,11 +27,8 @@ dependencies:
     specifier: 2.5.1
     version: 2.5.1(mysql2@3.6.1)
   ky:
-    specifier: 0.33.3
-    version: 0.33.3
-  ky-universal:
-    specifier: 0.12.0
-    version: 0.12.0(ky@0.33.3)
+    specifier: 1.0.1
+    version: 1.0.1
   mysql2:
     specifier: 3.6.1
     version: 3.6.1
@@ -3436,6 +3433,11 @@ packages:
   /ky@0.33.3:
     resolution: {integrity: sha512-CasD9OCEQSFIam2U8efFK81Yeg8vNMTBUqtMOHlrcWQHqUX3HeCl9Dr31u4toV7emlH8Mymk5+9p0lL6mKb/Xw==}
     engines: {node: '>=14.16'}
+    dev: false
+
+  /ky@1.0.1:
+    resolution: {integrity: sha512-UvcwpQO0LOuZwG0Ti3VDo6w57KYt+r4bWEYlNaMt82hgyFtse86QtOGum1RzsZni31FndXQl6NvtDArfunt2JQ==}
+    engines: {node: '>=18'}
     dev: false
 
   /levn@0.4.1:
