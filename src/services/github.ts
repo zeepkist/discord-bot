@@ -1,4 +1,4 @@
-import ky from 'ky-universal'
+import ky from 'ky'
 
 import { GITHUB_API_URL } from '../constants.js'
 import { GitHubRelease } from '../models/github.js'
