@@ -1,5 +1,5 @@
 import { getLevels, getRecords, getStats, getUserRanking } from '@zeepkist/gtr-api';
-import { HTTPError } from 'ky-universal';
+import { HTTPError } from 'ky';
 import { formatOrdinal, log, toDistance, toDuration } from '../../../utils/index.js';
 export const userEmbedStats = async (interaction, user, embed) => {
     const levelsCreated = await getLevels({

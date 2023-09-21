@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
-import { HTTPError } from 'ky-universal';
+import { HTTPError } from 'ky';
 import { STEAM_URL, ZEEPKIST_URL } from '../../constants.js';
 import { getPlayerSummaries } from '../../services/steam.js';
 import { log } from '../../utils/index.js';

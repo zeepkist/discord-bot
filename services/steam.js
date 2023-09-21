@@ -1,4 +1,4 @@
-import ky from 'ky-universal';
+import ky from 'ky';
 import { STEAM_API_URL } from '../constants.js';
 import { log } from '../utils/index.js';
 const key = process.env.STEAM_KEY;
