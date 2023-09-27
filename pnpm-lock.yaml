@@ -44,8 +44,8 @@ devDependencies:
     specifier: ~4.1.0
     version: 4.1.0
   '@rushstack/eslint-patch':
-    specifier: ~1.4.0
-    version: 1.4.0
+    specifier: ~1.5.0
+    version: 1.5.0
   '@semantic-release/changelog':
     specifier: ~6.0.3
     version: 6.0.3(semantic-release@22.0.5)
@@ -742,8 +742,8 @@ packages:
       config-chain: 1.1.13
     dev: true
 
-  /@rushstack/eslint-patch@1.4.0:
-    resolution: {integrity: sha512-cEjvTPU32OM9lUFegJagO0mRnIn+rbqrG89vV8/xLnLFX0DoR0r1oy5IlTga71Q7uT3Qus7qm7wgeiMT/+Irlg==}
+  /@rushstack/eslint-patch@1.5.0:
+    resolution: {integrity: sha512-EF3948ckf3f5uPgYbQ6GhyA56Dmv8yg0+ir+BroRjwdxyZJsekhZzawOecC2rOTPCz173t7ZcR1HHZu0dZgOCw==}
     dev: true
 
   /@sapphire/async-queue@1.5.0:
