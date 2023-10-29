@@ -27,8 +27,8 @@ dependencies:
     specifier: 3.0.1
     version: 3.0.1(mysql2@3.6.2)
   ky:
-    specifier: 1.1.1
-    version: 1.1.1
+    specifier: 1.1.2
+    version: 1.1.2
   mysql2:
     specifier: 3.6.2
     version: 3.6.2
@@ -3407,8 +3407,8 @@ packages:
     engines: {node: '>=18'}
     dev: false
 
-  /ky@1.1.1:
-    resolution: {integrity: sha512-fEzUY9u7/Mlh5TRF1whK46OpwzTBA1VLm0L3waLD0oZepijQqZ51oqIcA3D9AiuxR+MZXt5g5g07n0y0MF5QRA==}
+  /ky@1.1.2:
+    resolution: {integrity: sha512-voehdKw8MleNTfcAVlZ9nObJQiWXvb5b3sYpVP6s8VYEdrmnbs7aYdNfAE0nC8wch8TXjH1ksnwTOvYcxrf1Gw==}
     engines: {node: '>=18'}
     dev: false
 
