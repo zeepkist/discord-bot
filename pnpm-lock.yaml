@@ -59,8 +59,8 @@ devDependencies:
     specifier: ~12.1.0
     version: 12.1.0(semantic-release@22.0.7)
   '@types/node':
-    specifier: ~20.8.0
-    version: 20.8.10
+    specifier: ~20.9.0
+    version: 20.9.0
   '@typescript-eslint/eslint-plugin':
     specifier: ~6.10.0
     version: 6.10.0(@typescript-eslint/parser@6.10.0)(eslint@8.53.0)(typescript@5.2.2)
@@ -935,12 +935,12 @@ packages:
   /@types/node-fetch@2.6.8:
     resolution: {integrity: sha512-nnH5lV9QCMPsbEVdTb5Y+F3GQxLSw1xQgIydrb2gSfEavRPs50FnMr+KUaa+LoPSqibm2N+ZZxH7lavZlAT4GA==}
     dependencies:
-      '@types/node': 20.8.10
+      '@types/node': 20.9.0
       form-data: 4.0.0
     dev: false
 
-  /@types/node@20.8.10:
-    resolution: {integrity: sha512-TlgT8JntpcbmKUFzjhsyhGfP2fsiz1Mv56im6enJ905xG1DAYesxJaeSbGqQmAw8OWPdhyJGhGSQGKRNJ45u9w==}
+  /@types/node@20.9.0:
+    resolution: {integrity: sha512-nekiGu2NDb1BcVofVcEKMIwzlx4NjHlcjhoxxKBNLtz15Y1z7MYf549DFvkHSId02Ax6kGwWntIBPC3l/JZcmw==}
     dependencies:
       undici-types: 5.26.5
 
@@ -959,7 +959,7 @@ packages:
   /@types/ws@8.5.8:
     resolution: {integrity: sha512-flUksGIQCnJd6sZ1l5dqCEG/ksaoAg/eUwiLAGTJQcfgvZJKF++Ta4bJA6A5aPSJmsr+xlseHn4KLgVlNnvPTg==}
     dependencies:
-      '@types/node': 20.8.10
+      '@types/node': 20.9.0
     dev: false
 
   /@typescript-eslint/eslint-plugin@6.10.0(@typescript-eslint/parser@6.10.0)(eslint@8.53.0)(typescript@5.2.2):
