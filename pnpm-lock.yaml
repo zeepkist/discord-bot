@@ -25,13 +25,13 @@ dependencies:
     version: 16.3.1
   knex:
     specifier: 3.0.1
-    version: 3.0.1(mysql2@3.6.3)
+    version: 3.0.1(mysql2@3.6.4)
   ky:
     specifier: 1.1.3
     version: 1.1.3
   mysql2:
-    specifier: 3.6.3
-    version: 3.6.3
+    specifier: 3.6.4
+    version: 3.6.4
   winston:
     specifier: 3.11.0
     version: 3.11.0
@@ -3413,7 +3413,7 @@ packages:
     engines: {node: '>= 8'}
     dev: false
 
-  /knex@3.0.1(mysql2@3.6.3):
+  /knex@3.0.1(mysql2@3.6.4):
     resolution: {integrity: sha512-ruASxC6xPyDklRdrcDy6a9iqK+R9cGK214aiQa+D9gX2ZnHZKv6o6JC9ZfgxILxVAul4bZ13c3tgOAHSuQ7/9g==}
     engines: {node: '>=16'}
     hasBin: true
@@ -3450,7 +3450,7 @@ packages:
       getopts: 2.3.0
       interpret: 2.2.0
       lodash: 4.17.21
-      mysql2: 3.6.3
+      mysql2: 3.6.4
       pg-connection-string: 2.6.1
       rechoir: 0.8.0
       resolve-from: 5.0.0
@@ -3739,8 +3739,8 @@ packages:
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  /mysql2@3.6.3:
-    resolution: {integrity: sha512-qYd/1CDuW1KYZjD4tzg2O8YS3X/UWuGH8ZMHyMeggMTXL3yOdMisbwZ5SNkHzDGlZXKYLAvV8tMrEH+NUMz3fw==}
+  /mysql2@3.6.4:
+    resolution: {integrity: sha512-x27dKYnowULCLFIdrtYKKNtUIIdfWSx5JR+UE94rJT09XPPnh4w4lJLHo97HAxdZ+3zlklRZOQN68WyLOeXu7w==}
     engines: {node: '>= 8.0'}
     dependencies:
       denque: 2.1.0
