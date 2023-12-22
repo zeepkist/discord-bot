@@ -1,6 +1,6 @@
 import { CommandInteraction } from 'discord.js'
 
-import { createCommands } from '../../commands/createCommands.js'
+import { createCommands } from '../../utils/createCommands.js'
 import { findCommand, log } from '../../utils/index.js'
 
 const commands = createCommands()

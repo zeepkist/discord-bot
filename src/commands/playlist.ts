@@ -2,11 +2,11 @@ import { ApplicationCommandType, EmbedBuilder } from 'discord.js'
 
 import { Command } from '../types/index.js'
 
-export const users: Command = {
-  name: 'users',
+export const playlist: Command = {
+  name: 'playlist',
   description: 'Placeholder',
   type: ApplicationCommandType.ChatInput,
-  ephemeral: false,
+  ephemeral: true,
   run: async interaction => {
     const embed = new EmbedBuilder()
       .setTitle('Placeholder')

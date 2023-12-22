@@ -6,10 +6,7 @@ import {
   UserApplicationCommandData
 } from 'discord.js'
 
-export const enum CommandName {
-  Command = 'command',
-  ContextMenu = 'contextMenu'
-}
+import { PaginatedButtonActionEnum } from '../enums/index.js'
 
 export interface Command extends ChatInputApplicationCommandData {
   ephemeral: boolean
@@ -27,7 +24,11 @@ export interface Button {
   run: (interaction: ButtonInteraction) => void
 }
 
-export type PaginatedButtonAction = 'first' | 'previous' | 'next' | 'last'
+export type PaginatedButtonAction =
+  | PaginatedButtonActionEnum.First
+  | PaginatedButtonActionEnum.Previous
+  | PaginatedButtonActionEnum.Next
+  | PaginatedButtonActionEnum.Last
 
 export interface PaginatedButton extends Omit<Button, 'run' | 'type'> {
   type: 'pagination'
@@ -36,4 +37,11 @@ export interface PaginatedButton extends Omit<Button, 'run' | 'type'> {
     command: string,
     action: PaginatedButtonAction
   ) => void
+}
+
+/**
+ * Pagination buttons
+ */
+export interface CollectorFilterValue {
+  customId: string
 }

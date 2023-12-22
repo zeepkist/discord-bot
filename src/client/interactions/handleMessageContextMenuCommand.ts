@@ -1,6 +1,6 @@
 import { CommandInteraction } from 'discord.js'
 
-import { createContextMenus } from '../../contextMenus/createContextMenus.js'
+import { createContextMenus } from '../../utils/createContextMenus.js'
 import { log } from '../../utils/log.js'
 
 const contextMenus = createContextMenus()

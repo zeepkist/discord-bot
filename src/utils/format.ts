@@ -1,21 +1,27 @@
+import { User } from '@zeepkist/graphql/gtr'
+import { Level } from '@zeepkist/graphql/zworpshop'
 import { formatDistanceToNowStrict } from 'date-fns'
-import { bold, hyperlink, italic } from 'discord.js'
+import { bold, hyperlink, inlineCode, italic } from 'discord.js'
 
 import { ZEEPKIST_URL } from '../config/index.js'
-import { Level } from '../models/level.js'
-import { User } from '../models/user.js'
+import { DiscordDateEnum } from '../enums/index.js'
 import { numberToMonospace } from './index.js'
 
 export const formatRank = (rank: number): string =>
-  bold(`${numberToMonospace(rank)}`.padStart(3, ' '))
+  bold(`${numberToMonospace(rank)})`.padStart(4, ' '))
 
 export const formatLevel = (level: Level): string =>
   `${hyperlink(level.name, `${ZEEPKIST_URL}/level/${level.id}`)} by ${italic(
-    level.author
+    level.fileAuthor
   )}`
 
-export const formatUser = (user: User): string =>
-  hyperlink(user.steamName, `${ZEEPKIST_URL}/user/${user.steamId}`)
+export const formatUser = (
+  user: Pick<User, 'steamName' | 'steamId'>
+): string => {
+  if (!user.steamName) return bold('Unknown')
+
+  return hyperlink(user.steamName, `${ZEEPKIST_URL}/user/${user.steamId}`)
+}
 
 export const formatRelativeDate = (date: string) => {
   return formatDistanceToNowStrict(new Date(date), {
@@ -23,6 +29,15 @@ export const formatRelativeDate = (date: string) => {
   })
     .replaceAll('second', 'sec')
     .replaceAll('minute', 'min')
+}
+
+export const formatDiscordDate = (
+  date: string,
+  type: DiscordDateEnum = DiscordDateEnum.Relative
+) => {
+  const timestamp = new Date(date).getTime()
+
+  return `<t:${Math.floor(timestamp / 1000)}:${type}>`
 }
 
 const pad = (number: number, size: number) =>
@@ -37,10 +52,13 @@ export const formatResultTime = (input: number, precision = 4) => {
 
   let string = ''
   if (hours) string += `${pad(hours, 2)}:`
-  return (string += `${pad(minutes, 2)}:${pad(seconds, 2)}.${pad(
+
+  const result = (string += `${pad(minutes, 2)}:${pad(seconds, 2)}.${pad(
     milliseconds,
     precision
   )}`)
+
+  return inlineCode(result)
 }
 
 export const formatOrdinal = (number: number) => {
