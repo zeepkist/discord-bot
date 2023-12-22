@@ -9,8 +9,11 @@ import {
 import { PAGINATION_LIMIT } from '../config/index.js'
 import { PaginatedButtonActionEnum } from '../enums/index.js'
 import { database } from '../services/database.js'
-import { PaginatedMessage, PaginatedMessageQuery } from '../types/database.js'
-import { PaginatedButtonAction } from '../types/index.js'
+import {
+  PaginatedButtonAction,
+  PaginatedMessage,
+  PaginatedMessageQuery
+} from '../types/index.js'
 import { extractPages, log, providedBy } from '../utils/index.js'
 import { paginatedButtons } from './paginatedButtons.js'
 

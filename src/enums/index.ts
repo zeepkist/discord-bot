@@ -18,8 +18,7 @@ export const enum PaginatedButtonTypeEnum {
 export const enum RecordType {
   WorldRecord = 'wr',
   PersonalBest = 'pb',
-  AnyPercent = 'any%',
-  Valid = 'valid'
+  All = 'all'
 }
 
 export const enum DiscordDateEnum {

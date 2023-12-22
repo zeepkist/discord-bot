@@ -6,7 +6,7 @@ import {
   UserApplicationCommandData
 } from 'discord.js'
 
-import { PaginatedButtonActionEnum } from '../enums/index.js'
+import { PaginatedButtonActionEnum, RecordType } from '../enums/index.js'
 
 export interface Command extends ChatInputApplicationCommandData {
   ephemeral: boolean
@@ -44,4 +44,21 @@ export interface PaginatedButton extends Omit<Button, 'run' | 'type'> {
  */
 export interface CollectorFilterValue {
   customId: string
+}
+
+export interface PaginatedMessageQuery {
+  id?: number
+  workshopId?: string
+  author?: string
+  name?: string
+  user?: User | null
+  recordType?: RecordType
+}
+
+export interface PaginatedMessage {
+  messageId: string
+  currentPage: number
+  query: string | PaginatedMessageQuery
+  createdAt: Date
+  updatedAt: Date
 }

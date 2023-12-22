@@ -7,10 +7,12 @@ import {
   Record
 } from '@zeepkist/graphql/gtr'
 import { Level } from '@zeepkist/graphql/zworpshop'
+import { User } from 'discord.js'
 
 import { PAGINATION_LIMIT } from '../config/index.js'
 import { RecordType } from '../enums/index.js'
 import { getLevel } from './getLevel.js'
+import { getUserByDiscordId } from './getUsers.js'
 
 interface ExtendedRecord
   extends Omit<
@@ -22,13 +24,16 @@ interface ExtendedRecord
   isWorldRecord?: boolean
 }
 
-const getValidRecords = async (offset: number) => {
+const getValidRecords = async (offset: number, user?: number) => {
   const response = await gtr.query({
     allRecords: {
       __args: {
         first: PAGINATION_LIMIT,
         offset,
-        orderBy: [enumRecordsOrderBy.DATE_CREATED_DESC]
+        orderBy: [enumRecordsOrderBy.DATE_CREATED_DESC],
+        condition: {
+          user
+        }
       },
       totalCount: true,
       pageInfo: {
@@ -58,13 +63,16 @@ const getValidRecords = async (offset: number) => {
   return response.allRecords
 }
 
-const getPersonalBests = async (offset: number) => {
+const getPersonalBests = async (offset: number, user?: number) => {
   const response = await gtr.query({
     allPersonalBests: {
       __args: {
         first: PAGINATION_LIMIT,
         offset,
-        orderBy: [enumRecordsOrderBy.DATE_CREATED_DESC]
+        orderBy: [enumRecordsOrderBy.DATE_CREATED_DESC],
+        condition: {
+          user
+        }
       },
       totalCount: true,
       pageInfo: {
@@ -90,13 +98,16 @@ const getPersonalBests = async (offset: number) => {
   return response.allPersonalBests
 }
 
-const getWorldRecords = async (offset: number) => {
+const getWorldRecords = async (offset: number, user?: number) => {
   const response = await gtr.query({
     allWorldRecords: {
       __args: {
         first: PAGINATION_LIMIT,
         offset,
-        orderBy: [enumRecordsOrderBy.DATE_CREATED_DESC]
+        orderBy: [enumRecordsOrderBy.DATE_CREATED_DESC],
+        condition: {
+          user
+        }
       },
       totalCount: true,
       pageInfo: {
@@ -104,7 +115,6 @@ const getWorldRecords = async (offset: number) => {
         hasPreviousPage: true
       },
       nodes: {
-        time: true,
         dateCreated: true,
         level: true,
         userByUser: {
@@ -123,12 +133,20 @@ const getWorldRecords = async (offset: number) => {
   return response.allWorldRecords
 }
 
-export const getRecords = async (offset: number, type: RecordType) => {
+export const getRecords = async (
+  offset: number,
+  type: RecordType = RecordType.All,
+  discordUser?: User | null
+) => {
+  const user = discordUser
+    ? await getUserByDiscordId(discordUser.id)
+    : undefined
+
   const response = await (type === RecordType.WorldRecord
-    ? getWorldRecords(offset)
+    ? getWorldRecords(offset, user?.id)
     : type === RecordType.PersonalBest
-      ? getPersonalBests(offset)
-      : getValidRecords(offset))
+      ? getPersonalBests(offset, user?.id)
+      : getValidRecords(offset, user?.id))
 
   if (!response) return
 

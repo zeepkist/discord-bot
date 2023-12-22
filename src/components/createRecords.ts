@@ -18,13 +18,27 @@ import {
 export const createRecords = async (properties: PaginatedData) => {
   const { interaction } = properties
   const data = await getPaginatedData(properties)
-  const records = await getRecords(data.offset, RecordType.Valid)
+  const records = await getRecords(
+    data.offset,
+    data.query.recordType,
+    data.query.user
+  )
 
   const totalPages = Math.ceil(
     (records?.totalCount ?? PAGINATION_LIMIT) / PAGINATION_LIMIT
   )
 
-  const embed = createEmbed(`Recent Records`)
+  const titleUser = data.query.user
+    ? ` by ${data.query.user.displayName ?? data.query.user.tag}`
+    : ''
+  const titleRecordType =
+    data.query.recordType === RecordType.WorldRecord
+      ? 'World Records'
+      : data.query.recordType === RecordType.PersonalBest
+        ? 'Personal Bests'
+        : 'Records'
+
+  const embed = createEmbed(`Recent ${titleRecordType}${titleUser}`)
 
   const description = records?.nodes.map(record => {
     if (!record || !record.userByUser) return
