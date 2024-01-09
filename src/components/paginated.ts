@@ -6,15 +6,16 @@ import {
   EmbedBuilder
 } from 'discord.js'
 
-import { PaginatedButtonAction } from '../button.js'
-import { PAGINATION_LIMIT } from '../constants.js'
+import { PAGINATION_LIMIT } from '../config/index.js'
+import { PaginatedButtonActionEnum } from '../enums/index.js'
+import { database } from '../services/database.js'
 import {
+  PaginatedButtonAction,
   PaginatedMessage,
   PaginatedMessageQuery
-} from '../models/database/paginatedMessage.js'
-import { database } from '../services/database.js'
+} from '../types/index.js'
 import { extractPages, log, providedBy } from '../utils/index.js'
-import { paginationButtons } from './paginationButtons.js'
+import { paginatedButtons } from './paginatedButtons.js'
 
 export interface PaginatedData {
   interaction: CommandInteraction | ButtonInteraction
@@ -29,16 +30,16 @@ const setCurrentPage = (
   totalPages: number
 ) => {
   switch (action) {
-    case 'first': {
+    case PaginatedButtonActionEnum.First: {
       return 1
     }
-    case 'previous': {
+    case PaginatedButtonActionEnum.Previous: {
       return currentPage - 1
     }
-    case 'next': {
+    case PaginatedButtonActionEnum.Next: {
       return currentPage + 1
     }
-    case 'last': {
+    case PaginatedButtonActionEnum.Last: {
       return totalPages
     }
     default: {
@@ -121,7 +122,7 @@ export const sendPaginatedMessage = async ({
     })
     .setTimestamp()
 
-  const pagination = paginationButtons(
+  const pagination = paginatedButtons(
     interaction,
     customId,
     currentPage,

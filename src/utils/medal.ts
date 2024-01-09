@@ -1,4 +1,4 @@
-import { IS_PRODUCTION } from '../constants.js'
+import { IS_PRODUCTION } from '../config/index.js'
 
 export const MEDAL = {
   WR: '<:wr:1065822034090799135>',

@@ -1,7 +1,7 @@
+import { User } from '@zeepkist/graphql/gtr'
+import { Level } from '@zeepkist/graphql/zworpshop'
 import test from 'ava'
 
-import { Level } from '../models/level.js'
-import { User } from '../models/user.js'
 import { formatLevel, formatOrdinal, formatRank, formatUser } from './index.js'
 
 const macro = test.macro((t, input: string, expected: string) =>
@@ -10,25 +10,37 @@ const macro = test.macro((t, input: string, expected: string) =>
 
 // formatRank
 
-test('displays rank 1', macro, formatRank(1), '** 𝟷**')
-test('displays rank 10', macro, formatRank(2), '** 𝟸**')
-test('displays rank 100', macro, formatRank(100), '**𝟷𝟶𝟶**')
-test('displays rank 1000', macro, formatRank(1000), '**𝟷𝟶𝟶𝟶**')
+test('displays rank 1', macro, formatRank(1), '** 𝟷)**')
+test('displays rank 10', macro, formatRank(2), '** 𝟸)**')
+test('displays rank 100', macro, formatRank(100), '**𝟷𝟶𝟶)**')
+test('displays rank 1000', macro, formatRank(1000), '**𝟷𝟶𝟶𝟶)**')
 
 // formatLevel
 
 const level: Level = {
   id: 1,
-  uniqueId: '1',
   workshopId: '1',
   name: 'Level 1',
-  author: 'Author Name',
-  timeAuthor: 30.4532,
-  timeGold: 30.6,
-  timeSilver: 32,
-  timeBronze: 36,
-  thumbnailUrl: ''
+  nodeId: '1',
+  imageUrl: '',
+  createdAt: '2021-01-01T00:00:00.000Z',
+  updatedAt: '2021-01-01T00:00:00.000Z',
+  valid: true,
+  validation: 30,
+  gold: 32,
+  silver: 34,
+  bronze: 36,
+  authorId: 1,
+  fileHash: '',
+  fileUrl: '',
+  fileAuthor: 'Author Name',
+  fileUid: '',
+  // eslint-disable-next-line unicorn/no-null
+  replacedBy: null,
+  deleted: false,
+  __typename: 'Level'
 }
+
 test(
   'displays level link',
   macro,
@@ -38,11 +50,12 @@ test(
 
 // formatUser
 
-const user: User = {
+const user: Pick<User, 'id' | 'steamId' | 'steamName'> = {
   id: 1,
   steamId: '2',
   steamName: 'User Name'
 }
+
 test(
   'displays user link',
   macro,

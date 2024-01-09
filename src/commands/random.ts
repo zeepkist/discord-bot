@@ -1,38 +1,20 @@
-import { getRandomLevels } from '@zeepkist/gtr-api'
-import { ApplicationCommandType, CommandInteraction } from 'discord.js'
+import { ApplicationCommandType, EmbedBuilder } from 'discord.js'
 
-import { Command } from '../command.js'
-import { errorReply } from '../components/errorReply.js'
-import { paginatedLevel } from '../components/paginated/paginatedLevel.js'
-import { log } from '../utils/log.js'
+import { Command } from '../types/index.js'
 
 export const random: Command = {
   name: 'random',
-  description: 'Get a random Zeepkist level',
+  description: 'Placeholder',
   type: ApplicationCommandType.ChatInput,
   ephemeral: false,
-  run: async (interaction: CommandInteraction) => {
-    const levels = await getRandomLevels({
-      Limit: 1
+  run: async interaction => {
+    const embed = new EmbedBuilder()
+      .setTitle('Placeholder')
+      .setColor(0xff_92_00)
+      .setDescription('Placeholder')
+
+    await interaction.editReply({
+      embeds: [embed]
     })
-
-    if (levels.levels.length === 0) {
-      return errorReply(
-        interaction,
-        'No levels found',
-        'We could not find any levels.'
-      )
-    }
-
-    const level = levels.levels[0]
-
-    log.info(`Got random level ${level.id} (${level.name})`)
-
-    await paginatedLevel({
-      interaction,
-      action: 'first',
-      query: { id: level.id }
-    })
-    return
   }
 }

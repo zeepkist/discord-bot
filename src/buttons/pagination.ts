@@ -1,10 +1,10 @@
 import { ButtonInteraction } from 'discord.js'
 
-import { PaginatedButton, PaginatedButtonAction } from '../button.js'
-import { paginatedLevel } from '../components/paginated/paginatedLevel.js'
-import { paginatedLevels } from '../components/paginated/paginatedLevels.js'
-import { paginatedRankings } from '../components/paginated/paginatedRankings.js'
-import { paginatedRecent } from '../components/paginated/paginatedRecent.js'
+import { createLeaderboard } from '../components/createLeaderboard.js'
+import { createRecords } from '../components/createRecords.js'
+import { PaginatedButtonTypeEnum } from '../enums/index.js'
+import { PaginatedButton, PaginatedButtonAction } from '../types/index.js'
+import { log } from '../utils/index.js'
 
 export const pagination: PaginatedButton = {
   name: 'paginationButton',
@@ -15,20 +15,16 @@ export const pagination: PaginatedButton = {
     action: PaginatedButtonAction
   ): Promise<void> => {
     switch (command) {
-      case 'recent': {
-        await paginatedRecent({ interaction, action })
+      case PaginatedButtonTypeEnum.Leaderboard: {
+        await createLeaderboard({ interaction, action })
         break
       }
-      case 'level': {
-        await paginatedLevel({ interaction, action })
+      case PaginatedButtonTypeEnum.Records: {
+        await createRecords({ interaction, action })
         break
       }
-      case 'levels': {
-        await paginatedLevels({ interaction, action })
-        break
-      }
-      case 'rankings': {
-        await paginatedRankings({ interaction, action })
+      default: {
+        log.error(`Unknown pagination button command: ${command}`)
         break
       }
     }

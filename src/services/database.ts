@@ -1,9 +1,6 @@
-import { config } from 'dotenv'
 import knex from 'knex'
 
 import { log } from '../utils/index.js'
-
-config()
 
 export const database = knex.knex({
   client: 'mysql2',
