@@ -86,8 +86,8 @@ export const user: Command = {
       const user = discordUser?.id
         ? await getUserByDiscordId(discordUser.id)
         : steamId
-        ? await getUserBySteamId(steamId)
-        : await getUser(id)
+          ? await getUserBySteamId(steamId)
+          : await getUser(id)
       log.info(`Found user: ${user.steamName}`, interaction)
       await userEmbed(interaction, user, discordUser, page)
     } catch (error) {

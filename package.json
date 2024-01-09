@@ -7,8 +7,8 @@
     "build": "tsc",
     "lint": "eslint . --ext .js,.cjs,.mjs,.ts,.cts,.mts --fix --ignore-path .gitignore",
     "lint:ci": "eslint . --ext .js,.cjs,.mjs,.ts,.cts,.mts --ignore-path .gitignore",
-    "test": "ava",
-    "coverage": "c8 --all --src=dist --skip-full ava",
+    "test": "ava src/",
+    "coverage": "c8 --all --src=dist --skip-full ava src/",
     "migrate": "knex migrate:latest",
     "make": "knex migrate:make"
   },

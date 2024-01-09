@@ -1,7 +1,7 @@
 import { ActivityType, Client } from 'discord.js'
 
-import { createCommands } from '../../utils/createCommands.js'
 import { ZEEPKIST_URL } from '../../config/index.js'
+import { createCommands } from '../../utils/createCommands.js'
 import { createContextMenus } from '../../utils/createContextMenus.js'
 import { log } from '../../utils/log.js'
 

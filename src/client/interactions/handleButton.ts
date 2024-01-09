@@ -1,7 +1,7 @@
 import { ButtonInteraction } from 'discord.js'
 
-import { createButtons } from '../../utils/createButtons.js'
 import { PaginatedButtonAction } from '../../types/index.js'
+import { createButtons } from '../../utils/createButtons.js'
 import { findCommand, log } from '../../utils/index.js'
 
 const buttons = createButtons()
