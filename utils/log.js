@@ -50,6 +50,18 @@ export const log = {
             logger.info(message);
         }
     },
+    warn: (message, interaction) => {
+        if (interaction) {
+            const guild = guildName(interaction);
+            const name = interactionName(interaction);
+            logger.warn(message, {
+                label: `[${guild}][${name}]`
+            });
+        }
+        else {
+            logger.warn(message);
+        }
+    },
     error: (message, interaction) => {
         if (interaction) {
             const guild = guildName(interaction);

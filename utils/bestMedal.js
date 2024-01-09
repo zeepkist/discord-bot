@@ -1,14 +1,14 @@
 import { MEDAL } from './medal.js';
-export const bestMedal = (record) => {
-    if (record.isWorldRecord)
+export const bestMedal = (time, level, isWorldRecord) => {
+    if (isWorldRecord)
         return MEDAL.WR;
-    else if (record.time < record.level.timeAuthor)
+    else if (time < level.validation)
         return MEDAL.AUTHOR;
-    else if (record.time < record.level.timeGold)
+    else if (time < level.gold)
         return MEDAL.GOLD;
-    else if (record.time < record.level.timeSilver)
+    else if (time < level.silver)
         return MEDAL.SILVER;
-    else if (record.time < record.level.timeBronze)
+    else if (time < level.bronze)
         return MEDAL.BRONZE;
     else
         return MEDAL.NONE;

@@ -1,9 +1,9 @@
 import { ApplicationCommandType, EmbedBuilder } from 'discord.js';
-export const random = {
-    name: 'random',
+export const playlist = {
+    name: 'playlist',
     description: 'Placeholder',
     type: ApplicationCommandType.ChatInput,
-    ephemeral: false,
+    ephemeral: true,
     run: async (interaction) => {
         const embed = new EmbedBuilder()
             .setTitle('Placeholder')

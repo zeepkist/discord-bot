@@ -1,5 +1,7 @@
 export * from './bestMedal.js';
+export * from './createEmbed.js';
 export * from './extractPages.js';
+export * from './findCommand.js';
 export * from './format.js';
 export * from './formatThumbnailEmbed.js';
 export * from './inviteUrl.js';

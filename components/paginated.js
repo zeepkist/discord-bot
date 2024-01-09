@@ -1,19 +1,19 @@
-import { PAGINATION_LIMIT } from '../constants.js';
+import { PAGINATION_LIMIT } from '../config/index.js';
 import { database } from '../services/database.js';
 import { extractPages, log, providedBy } from '../utils/index.js';
-import { paginationButtons } from './paginationButtons.js';
+import { paginatedButtons } from './paginatedButtons.js';
 const setCurrentPage = (action, currentPage, totalPages) => {
     switch (action) {
-        case 'first': {
+        case "first": {
             return 1;
         }
-        case 'previous': {
+        case "previous": {
             return currentPage - 1;
         }
-        case 'next': {
+        case "next": {
             return currentPage + 1;
         }
-        case 'last': {
+        case "last": {
             return totalPages;
         }
         default: {
@@ -57,7 +57,7 @@ export const sendPaginatedMessage = async ({ customId, interaction, embed, compo
         text: `Page ${currentPage} of ${totalPages}. ${providedBy}`
     })
         .setTimestamp();
-    const pagination = paginationButtons(interaction, customId, currentPage, totalPages);
+    const pagination = paginatedButtons(interaction, customId, currentPage, totalPages);
     const isUpdatingMessage = interaction.isMessageComponent();
     const messageContent = {
         embeds: [embed],

@@ -1,21 +1,31 @@
 import test from 'ava';
 import { formatLevel, formatOrdinal, formatRank, formatUser } from './index.js';
 const macro = test.macro((t, input, expected) => t.is(input, expected));
-test('displays rank 1', macro, formatRank(1), '** 𝟷**');
-test('displays rank 10', macro, formatRank(2), '** 𝟸**');
-test('displays rank 100', macro, formatRank(100), '**𝟷𝟶𝟶**');
-test('displays rank 1000', macro, formatRank(1000), '**𝟷𝟶𝟶𝟶**');
+test('displays rank 1', macro, formatRank(1), '** 𝟷)**');
+test('displays rank 10', macro, formatRank(2), '** 𝟸)**');
+test('displays rank 100', macro, formatRank(100), '**𝟷𝟶𝟶)**');
+test('displays rank 1000', macro, formatRank(1000), '**𝟷𝟶𝟶𝟶)**');
 const level = {
     id: 1,
-    uniqueId: '1',
     workshopId: '1',
     name: 'Level 1',
-    author: 'Author Name',
-    timeAuthor: 30.4532,
-    timeGold: 30.6,
-    timeSilver: 32,
-    timeBronze: 36,
-    thumbnailUrl: ''
+    nodeId: '1',
+    imageUrl: '',
+    createdAt: '2021-01-01T00:00:00.000Z',
+    updatedAt: '2021-01-01T00:00:00.000Z',
+    valid: true,
+    validation: 30,
+    gold: 32,
+    silver: 34,
+    bronze: 36,
+    authorId: 1,
+    fileHash: '',
+    fileUrl: '',
+    fileAuthor: 'Author Name',
+    fileUid: '',
+    replacedBy: null,
+    deleted: false,
+    __typename: 'Level'
 };
 test('displays level link', macro, formatLevel(level), '[Level 1](https://zeepki.st/level/1) by _Author Name_');
 const user = {

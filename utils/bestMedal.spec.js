@@ -1,35 +1,31 @@
 import test from 'ava';
 import { bestMedal } from './index.js';
-const macro = test.macro((t, input, expected) => t.is(bestMedal(input), expected));
+const macro = test.macro((t, { time, level, isWorldRecord }, expected) => t.is(bestMedal(time, level, isWorldRecord), expected));
 const level = {
     id: 1,
-    uniqueId: '1',
     workshopId: '1',
     name: 'Test Level',
-    author: 'Test User',
-    timeAuthor: 30.4532,
-    timeGold: 30.6,
-    timeSilver: 32,
-    timeBronze: 36,
-    thumbnailUrl: ''
+    nodeId: '1',
+    imageUrl: '',
+    createdAt: '2021-01-01T00:00:00.000Z',
+    updatedAt: '2021-01-01T00:00:00.000Z',
+    valid: true,
+    validation: 30,
+    gold: 32,
+    silver: 34,
+    bronze: 36,
+    authorId: 1,
+    fileHash: '',
+    fileUrl: '',
+    fileAuthor: '',
+    fileUid: '',
+    replacedBy: null,
+    deleted: false,
+    __typename: 'Level'
 };
-const createLevelRecord = (time, isWorldRecord = false) => ({
-    id: 1,
-    dateCreated: '2021-01-01T00:00:00.000Z',
-    time,
-    splits: [],
-    ghostUrl: '',
-    screenshotUrl: '',
-    isBest: false,
-    isValid: true,
-    isWorldRecord,
-    gameVersion: '',
-    user: { id: 1, steamId: '1', steamName: 'Test User' },
-    level
-});
-test('displays world record medal', macro, createLevelRecord(30.4, true), '<:wr:1065822034090799135>');
-test('displays author medal', macro, createLevelRecord(30.4), '<:author:1065842677020626944>');
-test('displays gold medal', macro, createLevelRecord(30.5), '<:gold:1065842710365351947>');
-test('displays silver medal', macro, createLevelRecord(31), '<:silver:1065842724433051748>');
-test('displays bronze medal', macro, createLevelRecord(33), '<:bronze:1065842732259606578>');
-test('displays no medal', macro, createLevelRecord(38), '<:blank:1065818232734351390>');
+test('displays world record medal', macro, { time: 30.5, level, isWorldRecord: true }, '<:wr:1065822034090799135>');
+test('displays author medal', macro, { time: 29.5, level }, '<:author:1065842677020626944>');
+test('displays gold medal', macro, { time: 31, level }, '<:gold:1065842710365351947>');
+test('displays silver medal', macro, { time: 33, level }, '<:silver:1065842724433051748>');
+test('displays bronze medal', macro, { time: 35, level }, '<:bronze:1065842732259606578>');
+test('displays no medal', macro, { time: 38, level }, '<:blank:1065818232734351390>');
