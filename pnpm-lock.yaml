@@ -12,8 +12,8 @@ dependencies:
     specifier: ~7.0.6
     version: 7.0.6
   '@zeepkist/graphql':
-    specifier: ~1.8.0
-    version: 1.8.0
+    specifier: ~1.25.0
+    version: 1.25.0
   date-fns:
     specifier: ~2.30.0
     version: 2.30.0
@@ -1149,8 +1149,8 @@ packages:
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
     dev: false
 
-  /@zeepkist/graphql@1.8.0:
-    resolution: {integrity: sha512-dFwFCO9kbcmA8gVW2SyiwW0UeGirMVclWvLDnfWKtyqr02iNyiYh/OvSd/+0FT+WRajKU1f3d6ebGrU7a8Ndxw==}
+  /@zeepkist/graphql@1.25.0:
+    resolution: {integrity: sha512-79GYCNXFG/lxFyxNr44q+t7IIzzx5in2FjS9ekI0ch//i0ysx1U+mYPe9KTPcTAAFDzA09ME1eGFA7I8cmfvtw==}
     dev: false
 
   /JSONStream@1.3.5:
