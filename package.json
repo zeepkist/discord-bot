@@ -46,7 +46,7 @@
     "prettier": "~3.1.0",
     "semantic-release": "~22.0.10",
     "tsx": "~4.6.2",
-    "typescript": "~5.3.3"
+    "typescript": "~5.4.0"
   },
   "ava": {
     "utilizeParallelBuilds": true,
