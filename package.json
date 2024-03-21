@@ -13,8 +13,8 @@
     "make": "knex migrate:make"
   },
   "dependencies": {
-    "@twurple/api": "~7.0.6",
-    "@twurple/auth": "~7.0.6",
+    "@twurple/api": "~7.1.0",
+    "@twurple/auth": "~7.1.0",
     "@zeepkist/graphql": "~1.25.0",
     "date-fns": "~2.30.0",
     "discord.js": "~14.14.1",
