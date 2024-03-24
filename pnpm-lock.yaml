@@ -33,11 +33,11 @@ dependencies:
     specifier: ~3.9.0
     version: 3.9.2
   winston:
-    specifier: ~3.12.0
-    version: 3.12.0
+    specifier: ~3.13.0
+    version: 3.13.0
   winston-daily-rotate-file:
     specifier: ~4.7.1
-    version: 4.7.1(winston@3.12.0)
+    version: 4.7.1(winston@3.13.0)
 
 devDependencies:
   '@ava/typescript':
@@ -5295,7 +5295,7 @@ packages:
       string-width: 4.2.3
     dev: true
 
-  /winston-daily-rotate-file@4.7.1(winston@3.12.0):
+  /winston-daily-rotate-file@4.7.1(winston@3.13.0):
     resolution: {integrity: sha512-7LGPiYGBPNyGHLn9z33i96zx/bd71pjBn9tqQzO3I4Tayv94WPmBNwKC7CO1wPHdP9uvu+Md/1nr6VSH9h0iaA==}
     engines: {node: '>=8'}
     peerDependencies:
@@ -5304,7 +5304,7 @@ packages:
       file-stream-rotator: 0.6.1
       object-hash: 2.2.0
       triple-beam: 1.4.1
-      winston: 3.12.0
+      winston: 3.13.0
       winston-transport: 4.7.0
     dev: false
 
@@ -5317,8 +5317,8 @@ packages:
       triple-beam: 1.4.1
     dev: false
 
-  /winston@3.12.0:
-    resolution: {integrity: sha512-OwbxKaOlESDi01mC9rkM0dQqQt2I8DAUMRLZ/HpbwvDXm85IryEHgoogy5fziQy38PntgZsLlhAYHz//UPHZ5w==}
+  /winston@3.13.0:
+    resolution: {integrity: sha512-rwidmA1w3SE4j0E5MuIufFhyJPBDG7Nu71RkZor1p2+qHvJSZ9GYDA81AyleQcZbh/+V6HjeBdfnTZJm9rSeQQ==}
     engines: {node: '>= 12.0.0'}
     dependencies:
       '@colors/colors': 1.6.0
