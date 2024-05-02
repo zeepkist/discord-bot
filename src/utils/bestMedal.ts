@@ -8,9 +8,10 @@ export const bestMedal = (
   isWorldRecord?: boolean
 ) => {
   if (isWorldRecord) return MEDAL.WR
-  else if (time < level.validation) return MEDAL.AUTHOR
-  else if (time < level.gold) return MEDAL.GOLD
-  else if (time < level.silver) return MEDAL.SILVER
-  else if (time < level.bronze) return MEDAL.BRONZE
+  else if (!level.metadatumByMetadataId) return MEDAL.NONE
+  else if (time < level.metadatumByMetadataId.validation) return MEDAL.AUTHOR
+  else if (time < level.metadatumByMetadataId.gold) return MEDAL.GOLD
+  else if (time < level.metadatumByMetadataId.silver) return MEDAL.SILVER
+  else if (time < level.metadatumByMetadataId.bronze) return MEDAL.BRONZE
   else return MEDAL.NONE
 }

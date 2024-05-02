@@ -158,10 +158,12 @@ export const getRecords = async (
         id: true,
         fileAuthor: true,
         name: true,
-        validation: true,
-        gold: true,
-        silver: true,
-        bronze: true
+        metadatumByMetadataId: {
+          bronze: true,
+          silver: true,
+          gold: true,
+          validation: true
+        }
       })
 
       if (!level) return
