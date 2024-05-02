@@ -124,10 +124,12 @@ export const getRecords = async (offset, type = "all", discordUser) => {
             id: true,
             fileAuthor: true,
             name: true,
-            validation: true,
-            gold: true,
-            silver: true,
-            bronze: true
+            metadatumByMetadataId: {
+                bronze: true,
+                silver: true,
+                gold: true,
+                validation: true
+            }
         });
         if (!level)
             return;

@@ -13,40 +13,40 @@
     "make": "knex migrate:make"
   },
   "dependencies": {
-    "@twurple/api": "~7.0.6",
-    "@twurple/auth": "~7.0.6",
-    "@zeepkist/graphql": "~1.8.0",
+    "@twurple/api": "~7.1.0",
+    "@twurple/auth": "~7.1.0",
+    "@zeepkist/graphql": "~1.26.0",
     "date-fns": "~2.30.0",
     "discord.js": "~14.14.1",
-    "dotenv": "~16.3.1",
-    "knex": "~3.0.1",
-    "ky": "~1.1.3",
-    "mysql2": "~3.6.5",
-    "winston": "~3.11.0",
+    "dotenv": "~16.4.0",
+    "knex": "~3.1.0",
+    "ky": "~1.2.0",
+    "mysql2": "~3.9.0",
+    "winston": "~3.13.0",
     "winston-daily-rotate-file": "~4.7.1"
   },
   "devDependencies": {
     "@ava/typescript": "~4.1.0",
-    "@rushstack/eslint-patch": "~1.6.0",
+    "@rushstack/eslint-patch": "~1.10.0",
     "@semantic-release/changelog": "~6.0.3",
     "@semantic-release/commit-analyzer": "~11.1.0",
     "@semantic-release/github": "~9.2.4",
     "@semantic-release/release-notes-generator": "~12.1.0",
-    "@types/node": "~20.10.3",
-    "@typescript-eslint/eslint-plugin": "~6.13.2",
-    "@typescript-eslint/parser": "~6.13.2",
-    "ava": "~6.0.0",
-    "c8": "~8.0.1",
-    "eslint": "~8.55.0",
+    "@types/node": "~20.12.0",
+    "@typescript-eslint/eslint-plugin": "~6.21.0",
+    "@typescript-eslint/parser": "~6.21.0",
+    "ava": "~6.1.0",
+    "c8": "~9.1.0",
+    "eslint": "~8.57.0",
     "eslint-config-prettier": "~9.1.0",
     "eslint-plugin-import": "~2.29.0",
-    "eslint-plugin-prettier": "~5.0.1",
+    "eslint-plugin-prettier": "~5.1.0",
     "eslint-plugin-simple-import-sort": "~10.0.0",
-    "eslint-plugin-unicorn": "~49.0.0",
-    "prettier": "~3.1.0",
+    "eslint-plugin-unicorn": "~50.0.0",
+    "prettier": "~3.2.0",
     "semantic-release": "~22.0.10",
-    "tsx": "~4.6.2",
-    "typescript": "~5.3.3"
+    "tsx": "~4.8.0",
+    "typescript": "~5.4.0"
   },
   "ava": {
     "utilizeParallelBuilds": true,
@@ -70,5 +70,5 @@
       }
     ]
   },
-  "packageManager": "pnpm@8.14.0"
+  "packageManager": "pnpm@9.0.6"
 }
