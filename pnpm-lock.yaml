@@ -43,8 +43,8 @@ importers:
         version: 5.0.0(winston@3.13.0)
     devDependencies:
       '@ava/typescript':
-        specifier: ~4.1.0
-        version: 4.1.0
+        specifier: ~5.0.0
+        version: 5.0.0
       '@rushstack/eslint-patch':
         specifier: ~1.10.0
         version: 1.10.2
@@ -71,7 +71,7 @@ importers:
         version: 6.21.0(eslint@8.57.0)(typescript@5.4.5)
       ava:
         specifier: ~6.1.0
-        version: 6.1.2(@ava/typescript@4.1.0)
+        version: 6.1.2(@ava/typescript@5.0.0)
       c8:
         specifier: ~9.1.0
         version: 9.1.0
@@ -108,9 +108,9 @@ importers:
 
 packages:
 
-  '@ava/typescript@4.1.0':
-    resolution: {integrity: sha512-1iWZQ/nr9iflhLK9VN8H+1oDZqe93qxNnyYUz+jTzkYPAHc5fdZXBrqmNIgIfFhWYXK5OaQ5YtC7OmLeTNhVEg==}
-    engines: {node: ^14.19 || ^16.15 || ^18 || ^20}
+  '@ava/typescript@5.0.0':
+    resolution: {integrity: sha512-2twsQz2fUd95QK1MtKuEnjkiN47SKHZfi/vWj040EN6Eo2ZW3SNcAwncJqXXoMTYZTWtBRXYp3Fg8z+JkFI9aQ==}
+    engines: {node: ^18.18 || ^20.8 || ^21 || ^22}
 
   '@babel/code-frame@7.24.2':
     resolution: {integrity: sha512-y5+tLQyV8pg3fsiln67BVLD1P13Eg4lh5RW9mF0zUuvLrv9uIQ4MCL+CRT+FTsBlBjcIan6PGsLcBN0m3ClUyQ==}
@@ -1305,10 +1305,6 @@ packages:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
 
-  execa@7.2.0:
-    resolution: {integrity: sha512-UduyVP7TLB5IcAQl+OzLyLcS/l32W/GLg+AhHJ+ow40FOk2U3SAllPwR44v4vmdFwIWqpdwxxpQbF1n5ta9seA==}
-    engines: {node: ^14.18.0 || ^16.14.0 || >=18.0.0}
-
   execa@8.0.1:
     resolution: {integrity: sha512-VyhnebXciFV2DESc+p6B+y0LjSm0krU4OgJN44qFAhBY0TJ+1V61tYD2+wHusZ6F9n5K+vl8k0sTy7PEfV4qpg==}
     engines: {node: '>=16.17'}
@@ -1580,10 +1576,6 @@ packages:
   https-proxy-agent@7.0.4:
     resolution: {integrity: sha512-wlwpilI7YdjSkWaQ/7omYBMTliDcmCN8OLihO6I9B86g06lMyAoqgoDpV0XqoaPOKj+0DIdAvnsWfyAAhmimcg==}
     engines: {node: '>= 14'}
-
-  human-signals@4.3.1:
-    resolution: {integrity: sha512-nZXjEF2nbo7lIw3mgYjItAfgQXog3OjJogSbKa2CQIIvSGWcKgeJnQlNXip6NglNzYH45nSRiEVimMvYL8DDqQ==}
-    engines: {node: '>=14.18.0'}
 
   human-signals@5.0.0:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
@@ -3071,10 +3063,10 @@ packages:
 
 snapshots:
 
-  '@ava/typescript@4.1.0':
+  '@ava/typescript@5.0.0':
     dependencies:
       escape-string-regexp: 5.0.0
-      execa: 7.2.0
+      execa: 8.0.1
 
   '@babel/code-frame@7.24.2':
     dependencies:
@@ -3824,7 +3816,7 @@ snapshots:
 
   async@3.2.5: {}
 
-  ava@6.1.2(@ava/typescript@4.1.0):
+  ava@6.1.2(@ava/typescript@5.0.0):
     dependencies:
       '@vercel/nft': 0.26.4
       acorn: 8.11.3
@@ -3867,7 +3859,7 @@ snapshots:
       write-file-atomic: 5.0.1
       yargs: 17.7.2
     optionalDependencies:
-      '@ava/typescript': 4.1.0
+      '@ava/typescript': 5.0.0
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -4518,18 +4510,6 @@ snapshots:
 
   esutils@2.0.3: {}
 
-  execa@7.2.0:
-    dependencies:
-      cross-spawn: 7.0.3
-      get-stream: 6.0.1
-      human-signals: 4.3.1
-      is-stream: 3.0.0
-      merge-stream: 2.0.0
-      npm-run-path: 5.3.0
-      onetime: 6.0.0
-      signal-exit: 3.0.7
-      strip-final-newline: 3.0.0
-
   execa@8.0.1:
     dependencies:
       cross-spawn: 7.0.3
@@ -4834,8 +4814,6 @@ snapshots:
       debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
-
-  human-signals@4.3.1: {}
 
   human-signals@5.0.0: {}
 
