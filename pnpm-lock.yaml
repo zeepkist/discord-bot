@@ -30,8 +30,8 @@ importers:
         specifier: ~3.1.0
         version: 3.1.0(mysql2@3.10.3)
       ky:
-        specifier: ~1.4.0
-        version: 1.4.0
+        specifier: ~1.5.0
+        version: 1.5.0
       mysql2:
         specifier: ~3.10.0
         version: 3.10.3
@@ -1975,8 +1975,8 @@ packages:
   kuler@2.0.0:
     resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
 
-  ky@1.4.0:
-    resolution: {integrity: sha512-tPhhoGUiEiU/WXR4rt8klIoLdnTtyu+9jVKHd/wauEjYud32jyn63mzKWQweaQrHWxBQtYoVtdcEnYX1LosnFQ==}
+  ky@1.5.0:
+    resolution: {integrity: sha512-bkQo+UqryW6Zmo/DsixYZE4Z9t2mzvNMhceyIhuMuInb3knm5Q+GNGMKveydJAj+Z6piN1SwI6eR/V0G+Z0BtA==}
     engines: {node: '>=18'}
 
   levn@0.4.1:
@@ -5279,7 +5279,7 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  ky@1.4.0: {}
+  ky@1.5.0: {}
 
   levn@0.4.1:
     dependencies:
