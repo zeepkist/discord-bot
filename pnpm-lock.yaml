@@ -15,8 +15,8 @@ importers:
         specifier: ~7.2.0
         version: 7.2.0
       '@zeepkist/graphql':
-        specifier: ~1.26.0
-        version: 1.26.0
+        specifier: ~1.169.0
+        version: 1.169.0
       date-fns:
         specifier: ~3.6.0
         version: 3.6.0
@@ -670,8 +670,8 @@ packages:
     resolution: {integrity: sha512-RaI5qZo6D2CVS6sTHFKg1v5Ohq/+Bo2LZ5gzUEwZ/WkHhwtGTCB/sVLw8ijOkAUxasZ+WshN/Rzj4ywsABJ5ZA==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
 
-  '@zeepkist/graphql@1.26.0':
-    resolution: {integrity: sha512-zWhma6tBuRcephoQhMhf+YLnGw9/JRJ0hS1hnwh6763YgHCrfB6OvcrcNMVK4dopGtP9c14/cb5Di+Wt7iYcxQ==}
+  '@zeepkist/graphql@1.169.0':
+    resolution: {integrity: sha512-crMHGcO9NagXC3g5YXQkyKljf7/HpMAa/+CutdMsOmqMoVbRuEppDkB5xfxuLkRwOobJ21i3A9VaRpY7appWjg==}
 
   JSONStream@1.3.5:
     resolution: {integrity: sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==}
@@ -3837,7 +3837,7 @@ snapshots:
 
   '@vladfrangu/async_event_emitter@2.4.6': {}
 
-  '@zeepkist/graphql@1.26.0': {}
+  '@zeepkist/graphql@1.169.0': {}
 
   JSONStream@1.3.5:
     dependencies:
